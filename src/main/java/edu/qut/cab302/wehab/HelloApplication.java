@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.sql.Connection;
 
 import java.io.IOException;
 
@@ -17,7 +18,11 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
+        Connection connection = DatabaseConnection.getInstance(); // Connects to the database
+
         launch();
+
     }
 }
