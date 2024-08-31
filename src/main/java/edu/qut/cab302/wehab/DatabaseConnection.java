@@ -9,7 +9,7 @@ public class DatabaseConnection
 
     private DatabaseConnection()
     {
-        String url = "jdbc:sqlite:database.db"; // <-- CHANGED THIS <3
+        String url = "jdbc:sqlite:db/database.db"; // <-- CHANGED THIS <3
         try
         {
             instance = DriverManager.getConnection(url);

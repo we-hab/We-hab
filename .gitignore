@@ -36,3 +36,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Ignore all files in the db directory ###
+/db/*
+
+### Allow the db directory itself to be tracked ###
+!/db/.gitkeep
