@@ -34,7 +34,7 @@ public class UserAccountDAO
     {
         try
         {
-            PreparedStatement insertUser = connection.prepareStatement( "INSERT INTO userAccounts (firstName, lastName, age) VALUES (?, ?, ?");
+            PreparedStatement insertUser = connection.prepareStatement( "INSERT INTO userAccounts (firstName, lastName, age) VALUES (?, ?, ?)");
             insertUser.setString(1, userAccount.getFirstName());
             insertUser.setString(2, userAccount.getLastName());
             insertUser.setInt(3, userAccount.getAge());
