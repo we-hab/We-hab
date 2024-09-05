@@ -38,7 +38,7 @@ public class UserAccountDAO
             insertUser.setString(2, userAccount.getFirstName());
             insertUser.setString(3, userAccount.getLastName());
             insertUser.setString(4, userAccount.getEmail());
-            insertUser.setString(5, userAccount.getPassword());
+            insertUser.setString(5, userAccount.getHashedPassword());
             insertUser.execute();
 
         } catch (SQLException error) { System.err.println(error); }
@@ -53,7 +53,7 @@ public class UserAccountDAO
             updateAccount.setString(2, userAccount.getFirstName());
             updateAccount.setString(3, userAccount.getLastName());
             updateAccount.setString(4, userAccount.getEmail());
-            updateAccount.setString(5, userAccount.getPassword());
+            updateAccount.setString(5, userAccount.getHashedPassword());
             updateAccount.setString(6, userAccount.getUsername());
             updateAccount.execute();
 
