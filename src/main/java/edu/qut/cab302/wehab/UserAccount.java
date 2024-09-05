@@ -2,43 +2,49 @@ package edu.qut.cab302.wehab;
 
 public class UserAccount
 {
-    private int id;
+    private String username;
     private String firstName;
     private String lastName;
-    private int age;
+    private String email;
+    private String password;
 
-    public UserAccount(int id, String firstName, String lastName, int age)
+    public UserAccount(String username, String firstName, String lastName, String email, String password)
     {
-        this.id = id;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
+        this.email = email;
+        this.password = password;
     }
 
-    public UserAccount(String firstName, String lastName, int age)
-    {
-        // Since the id is auto-incremented, it's nice to have a constructor without it.
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-    }
+    // Username - Primary Key
+    public String getUsername() { return username; }
+    public void getUsername(String username) { this.username = username; }
 
-    public int getId() { return id; }
+    // First and Last Name
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
-    public int getAge() { return age; }
-    public void setAge( int age ) { this.age = age; }
+
+    // Email
+    public String getEmail() { return email; }
+    public void setEmail( String email ) { this.email = email; }
+
+
+    //Password
+    public String getPassword() { return password; }
+    public void getPassword(String password) { this.password = password; }
 
     @Override
     public String toString()
     {
         return "UserAccount{" +
-                "id =" + id +
+                "username =" + username +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=" + age +
+                ", email=" + email +
+                ", password=" + password +
                 '}';
     }
 
