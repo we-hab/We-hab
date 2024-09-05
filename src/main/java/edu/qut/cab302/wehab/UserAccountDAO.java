@@ -1,7 +1,5 @@
 package edu.qut.cab302.wehab;
-import javafx.scene.chart.PieChart;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,23 +19,26 @@ public class UserAccountDAO
             Statement createTable = connection.createStatement();
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS userAccounts (" +
-                            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            "id INTEGER PRIMARY KEY, " +
                             "firstName VARCHAR NOT NULL, " +
                             "lastName VARCHAR NOT NULL, " +
-                            "age INTEGER NOT NULL" +
+                            "email VARCHAR NOT NULL" +
+                            "password VARCHAR NOT NULL" +
                             ")"
             );
         } catch (SQLException error) { System.err.println(error); }
     }
 
-    public void insert(UserAccount userAccount)
+    public void registerAccount(UserAccount userAccount)
     {
         try
         {
-            PreparedStatement insertUser = connection.prepareStatement( "INSERT INTO userAccounts (firstName, lastName, age) VALUES (?, ?, ?)");
-            insertUser.setString(1, userAccount.getFirstName());
-            insertUser.setString(2, userAccount.getLastName());
-            insertUser.setInt(3, userAccount.getAge());
+            PreparedStatement insertUser = connection.prepareStatement( "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)");
+            insertUser.setString(1, userAccount.getUsername());
+            insertUser.setString(2, userAccount.getFirstName());
+            insertUser.setString(3, userAccount.getLastName());
+            insertUser.setString(4, userAccount.getEmail());
+            insertUser.setString(5, userAccount.getPassword());
             insertUser.execute();
 
         } catch (SQLException error) { System.err.println(error); }
@@ -47,22 +48,24 @@ public class UserAccountDAO
     {
         try
         {
-            PreparedStatement updateAccount = connection.prepareStatement("UPDATE userAccounts SET firstName = ?, lastName = ?, age = ? WHERE id = ?");
-            updateAccount.setString(1, userAccount.getFirstName());
-            updateAccount.setString(2, userAccount.getLastName());
-            updateAccount.setInt(3, userAccount.getAge());
-            updateAccount.setInt(4, userAccount.getId());
+            PreparedStatement updateAccount = connection.prepareStatement("UPDATE userAccounts SET username = ?, firstName = ?, lastName = ?, email = ?, password = ? WHERE username = ?");
+            updateAccount.setString(1, userAccount.getUsername());
+            updateAccount.setString(2, userAccount.getFirstName());
+            updateAccount.setString(3, userAccount.getLastName());
+            updateAccount.setString(4, userAccount.getEmail());
+            updateAccount.setString(5, userAccount.getPassword());
+            updateAccount.setString(6, userAccount.getUsername());
             updateAccount.execute();
 
         } catch (SQLException error) { System.err.println(error); }
     }
 
-    public void delete(int id)
+    public void delete(String username)
     {
         try
         {
-            PreparedStatement deleteUser = connection.prepareStatement("DELETE FROM userAccounts WHERE id = ?");
-            deleteUser.setInt(1, id);
+            PreparedStatement deleteUser = connection.prepareStatement("DELETE FROM userAccounts WHERE username = ?");
+            deleteUser.setString(1, username);
             deleteUser.execute();
 
         } catch (SQLException error) { System.err.println(error); }
@@ -79,10 +82,11 @@ public class UserAccountDAO
             {
                 users.add(
                         new UserAccount(
-                            rs.getInt("id"),
+                            rs.getString("username"),
                             rs.getString("firstName"),
                             rs.getString("lastName"),
-                            rs.getInt("age")
+                            rs.getString("email"),
+                            rs.getString("password")
                         )
                 );
             }
@@ -94,16 +98,17 @@ public class UserAccountDAO
     {
         try
         {
-            PreparedStatement getUser = connection.prepareStatement("SELECT * FROM userAccounts WHERE id = ?");
+            PreparedStatement getUser = connection.prepareStatement("SELECT * FROM userAccounts WHERE username = ?");
             getUser.setInt(1, id);
             ResultSet rs = getUser.executeQuery();
             if (rs.next())
             {
                 return new UserAccount(
-                        rs.getInt("id"),
+                        rs.getString("username"),
                         rs.getString("firstName"),
                         rs.getString("lastName"),
-                        rs.getInt("age")
+                        rs.getString("email"),
+                        rs.getString("password")
                 );
             }
         } catch (SQLException error) { System.err.println(error); }
@@ -125,8 +130,8 @@ public class UserAccountDAO
             userAccountDAO.createTable();
 
             // TEMP Records
-            userAccountDAO.insert(new UserAccount("Ryan", "Whiteman", 25));
-            userAccountDAO.insert(new UserAccount("Connor", "Beddow", 95));
+            //userAccountDAO.insert(new UserAccount("Ryan", "Whiteman", 25));
+            //userAccountDAO.insert(new UserAccount("Connor", "Beddow", 95));
 
             /* List all users
             List<UserAccount> users = userAccountDAO.getAll();

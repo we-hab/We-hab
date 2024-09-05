@@ -23,6 +23,5 @@ public class HelloApplication extends Application {
         Connection connection = DatabaseConnection.getInstance(); // Connects to the database
 
         launch();
-
     }
 }
