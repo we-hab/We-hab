@@ -11,6 +11,6 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <Label fx:id="welcomeText"/>
+    <Label fx:id="welcomeText" wrapText="true"/>
     <Button text="Hello!" onAction="#onHelloButtonClick"/>
 </VBox>
