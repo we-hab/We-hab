@@ -21,7 +21,8 @@ public class HelloApplication extends Application {
     public static void main(String[] args)
     {
         Connection connection = DatabaseConnection.getInstance(); // Connects to the database
-
+        DatabaseConnection.createTable();
+        UserAccountDAO userAccountDAO = new UserAccountDAO();
         launch();
     }
 }
