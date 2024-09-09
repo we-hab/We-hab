@@ -10,25 +10,6 @@ public class UserAccountDAO
     private Connection connection;
     public UserAccountDAO() { connection = DatabaseConnection.getInstance(); }
 
-    // Tables
-
-    public void createTable()
-    {
-        try
-        {
-            Statement createTable = connection.createStatement();
-            createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS userAccounts (" +
-                            "id INTEGER PRIMARY KEY, " +
-                            "firstName VARCHAR NOT NULL, " +
-                            "lastName VARCHAR NOT NULL, " +
-                            "email VARCHAR NOT NULL" +
-                            "password VARCHAR NOT NULL" +
-                            ")"
-            );
-        } catch (SQLException error) { System.err.println(error); }
-    }
-
     public void registerAccount(UserAccount userAccount)
     {
         try
@@ -38,11 +19,27 @@ public class UserAccountDAO
             insertUser.setString(2, userAccount.getFirstName());
             insertUser.setString(3, userAccount.getLastName());
             insertUser.setString(4, userAccount.getEmail());
-            insertUser.setString(5, userAccount.getPassword());
+            insertUser.setString(5, userAccount.getHashedPassword());
             insertUser.execute();
 
         } catch (SQLException error) { System.err.println(error); }
     }
+    //// TEST
+    public void testRegAccount()
+    {
+        try
+        {
+            PreparedStatement insertUser = connection.prepareStatement( "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)");
+            insertUser.setString(1, "RyanIsAmazing");
+            insertUser.setString(2, "Ryan");
+            insertUser.setString(3, "Whaaaaa");
+            insertUser.setString(4, "Ryan@gmail.com");
+            insertUser.setString(5, "test");
+            insertUser.execute();
+        } catch (SQLException error) { System.err.println(error); }
+
+    }
+    /////
 
     public void update(UserAccount userAccount)
     {
@@ -53,7 +50,7 @@ public class UserAccountDAO
             updateAccount.setString(2, userAccount.getFirstName());
             updateAccount.setString(3, userAccount.getLastName());
             updateAccount.setString(4, userAccount.getEmail());
-            updateAccount.setString(5, userAccount.getPassword());
+            updateAccount.setString(5, userAccount.getHashedPassword());
             updateAccount.setString(6, userAccount.getUsername());
             updateAccount.execute();
 
@@ -123,48 +120,4 @@ public class UserAccountDAO
         }
         catch (SQLException error) { System.err.println(error); }
     }
-
-    public static class Main {
-        public static void main(String[] args) {
-            UserAccountDAO userAccountDAO = new UserAccountDAO();
-            userAccountDAO.createTable();
-
-            // TEMP Records
-            //userAccountDAO.insert(new UserAccount("Ryan", "Whiteman", 25));
-            //userAccountDAO.insert(new UserAccount("Connor", "Beddow", 95));
-
-            /* List all users
-            List<UserAccount> users = userAccountDAO.getAll();
-            for (UserAccount user : users) { System.out.println(user);
-            */
-
-            /* Retrieve a user by ID number
-            UserAccount user = userAccountDAO.getById(2);
-            System.out.println(user);
-             */
-
-            /* Update an existing user's account
-            UserAccount user = userAccountDAO.getById(2);
-            System.out.println("Before update:");
-            System.out.println(user);
-
-            user.setAge((59));
-            userAccountDAO.update(user);
-            System.out.println("After the updated age:");
-            System.out.println(userAccountDAO.getById(2));
-             */
-
-            /* Delete an account
-            System.out.println("Before deleting a record with id = 1:");
-            for (UserAccount user : userAccountDAO.getAll()) {System.out.println(user);}
-
-            userAccountDAO.delete(1); // Replace the 1 with the number
-            System.out.println("After deleting the record with id - 1:");
-            for (UserAccount user : userAccountDAO.getAll()) { System.out.println(user);}
-            */
-
-            userAccountDAO.close();
-        }
-    }
-
 }

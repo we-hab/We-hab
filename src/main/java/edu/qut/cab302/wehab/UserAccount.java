@@ -1,12 +1,16 @@
 package edu.qut.cab302.wehab;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 public class UserAccount
 {
+
+    // MAKE USERNAME UNIQUE, IF ALREADY IN DB THEN DON'T CREATE.
     private String username;
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
+    private String hashedPassword;
 
     public UserAccount(String username, String firstName, String lastName, String email, String password)
     {
@@ -14,7 +18,7 @@ public class UserAccount
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.hashedPassword = hashedPassword(password);
     }
 
     // Username - Primary Key
@@ -33,8 +37,16 @@ public class UserAccount
 
 
     //Password
-    public String getPassword() { return password; }
-    public void getPassword(String password) { this.password = password; }
+    private String hashedPassword(String password) { return BCrypt.withDefaults().hashToString(12, password.toCharArray()); }
+
+    public boolean checkPassword(String password)
+    {
+        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), this.hashedPassword);
+        return result.verified;
+    }
+
+    public String getHashedPassword() { return hashedPassword; }
+    public void getPassword(String password) { this.hashedPassword = hashedPassword(password); }
 
     @Override
     public String toString()
@@ -43,8 +55,8 @@ public class UserAccount
                 "username =" + username +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email=" + email +
-                ", password=" + password +
+                ", email=" + email + '\'' +
+                ", password=" + hashedPassword + '\'' +
                 '}';
     }
 
