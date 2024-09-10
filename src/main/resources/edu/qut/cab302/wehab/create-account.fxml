@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="edu.qut.cab302.wehab.MainController" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
 
     <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40; -fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
@@ -33,27 +33,27 @@
 
             <!-- First Name -->
             <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField promptText="John" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="firstNameField" promptText="John" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
             <!-- Last Name -->
             <Label text="Last Name:" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <TextField promptText="Smith" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="lastNameField" promptText="Smith" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
             <!-- Username -->
             <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <TextField promptText="exampleName..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="usernameField" promptText="exampleName..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
             <!-- Email -->
             <Label text="Email:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField promptText="example@mail.com" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="emailField" promptText="example@mail.com" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
             <!-- Password -->
             <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <PasswordField promptText="password..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <PasswordField fx:id="passwordField" promptText="password..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="5" />
 
             <!-- Confirm Password -->
             <Label text="Confirm Password:" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <PasswordField promptText="password..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <PasswordField fx:id="passwordFieldConfirm" promptText="password..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          <rowConstraints>
             <RowConstraints />
             <RowConstraints />
@@ -66,7 +66,7 @@
 
         <!-- Next Button -->
         <HBox alignment="CENTER" spacing="20" style="-fx-padding: 20 0 0 0;">
-            <Button style="-fx-background-color: #00FF7F; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 10 40 10 40;" text="Next" />
+            <Button onAction="#onRegisterClick" style="-fx-background-color: #00FF7F; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 10 40 10 40;" text="Next" />
         </HBox>
 
     </VBox>

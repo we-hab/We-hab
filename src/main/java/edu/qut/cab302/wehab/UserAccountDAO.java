@@ -26,22 +26,6 @@ public class UserAccountDAO
 
         } catch (SQLException error) { System.err.println(error); }
     }
-    //// TEST
-    public void testRegAccount()
-    {
-        try
-        {
-            PreparedStatement insertUser = connection.prepareStatement( "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)");
-            insertUser.setString(1, "RyanIsAmazing");
-            insertUser.setString(2, "Ryan");
-            insertUser.setString(3, "Whaaaaa");
-            insertUser.setString(4, "Ryan@gmail.com");
-            insertUser.setString(5, "test");
-            insertUser.execute();
-        } catch (SQLException error) { System.err.println(error); }
-
-    }
-    /////
 
     public boolean LoginToAccount(String enteredUsername, String enteredPassword)
     {
@@ -149,6 +133,22 @@ public class UserAccountDAO
             }
         } catch (SQLException error) { System.err.println(error); }
         return null;
+    }
+
+    public List<String> getAllusernames()
+    {
+        List<String> usernames = new ArrayList<>();
+        try
+        {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT username FROM userAccounts");
+
+            while (result.next())
+            {
+                usernames.add(result.getString("username"));
+            }
+        } catch (SQLException error) { System.err.println(error); }
+        return usernames;
     }
 
     private void close()
