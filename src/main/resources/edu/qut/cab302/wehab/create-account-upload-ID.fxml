@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.CreateAccountUploadID">
+
+    <!-- VBox containing all UI elements -->
+    <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20; -fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+
+        <!-- Back Button -->
+        <HBox alignment="CENTER_LEFT">
+            <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="Back" />
+        </HBox>
+
+        <!-- Title -->
+        <Text style="-fx-font-size: 36px; -fx-font-weight: bold;" text="Create an account" />
+
+        <!-- Date of Birth Section -->
+        <VBox alignment="CENTER" spacing="10">
+            <Label style="-fx-font-size: 16px;" text="Date of birth" />
+            <DatePicker style="-fx-font-size: 14px;" />
+        </VBox>
+
+        <!-- Upload ID Section -->
+        <VBox alignment="CENTER" spacing="10">
+            <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: white; -fx-font-size: 14px;" text="Upload ID" />
+            <StackPane alignment="CENTER" style="-fx-background-color: #808080; -fx-padding: 40; -fx-border-radius: 5; -fx-background-radius: 5;">
+                <!-- Circle to indicate upload -->
+                <Circle radius="30" style="-fx-fill: #D3D3D3;" />
+                <Text style="-fx-font-size: 24px; -fx-font-weight: bold;" text="↑" />
+            </StackPane>
+        </VBox>
+
+        <!-- Create Account Button -->
+        <HBox alignment="CENTER" spacing="10">
+            <Button style="-fx-background-color: #00FF7F; -fx-text-fill: black; -fx-font-size: 16px; -fx-padding: 10 30 10 30;" text="Create account" />
+        </HBox>
+
+    </VBox>
+</AnchorPane>

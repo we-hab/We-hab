@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -11,62 +12,62 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="20" style="-fx-padding: 20; -fx-background-color: white;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
 
-    <!-- Header -->
-    <Text fontSmoothingType="GRAY" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="Create an account" />
+    <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40; -fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-    <!-- Form -->
-    <GridPane hgap="20" vgap="20">
-        <columnConstraints>
-            <ColumnConstraints percentWidth="50" />
-            <ColumnConstraints percentWidth="50" />
-        </columnConstraints>
+        <!-- Back Button -->
+        <HBox alignment="CENTER_LEFT">
+            <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="Back" />
+        </HBox>
 
-        <!-- First Name -->
-        <Label text="First Name:" GridPane.rowIndex="2" />
-        <TextField promptText="John" GridPane.rowIndex="3" />
+        <!-- Title -->
+        <Text style="-fx-font-size: 36px; -fx-font-weight: bold;" text="Create an account" />
 
-        <!-- Last Name -->
-        <Label text="Last Name:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <TextField promptText="Smith" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <!-- Form -->
+        <GridPane alignment="CENTER" hgap="20" vgap="20">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50" />
+                <ColumnConstraints percentWidth="50" />
+            </columnConstraints>
 
-        <!-- Username -->
-        <Label text="Username:" GridPane.rowIndex="5" />
-        <TextField promptText="exampleName..." GridPane.rowIndex="5" />
+            <!-- First Name -->
+            <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField promptText="John" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-        <!-- Email -->
-        <Label text="Email:" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <TextField promptText="example@mail.com" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <!-- Last Name -->
+            <Label text="Last Name:" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <TextField promptText="Smith" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <!-- Password -->
-        <Label text="Password:" GridPane.rowIndex="7" />
-        <PasswordField promptText="password..." GridPane.rowIndex="7" />
+            <!-- Username -->
+            <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField promptText="exampleName..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
-        <!-- Confirm Password -->
-        <Label text="Confirm Password:" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-        <PasswordField promptText="password..." GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Label text="Last Name:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label text="Username:" GridPane.rowIndex="4" />
-      <Label text="Email:" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Label text="Password" GridPane.rowIndex="6" />
-      <Label text="Confirm Password:" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
+            <!-- Email -->
+            <Label text="Email:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField promptText="example@mail.com" style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-    </GridPane>
+            <!-- Password -->
+            <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <PasswordField promptText="password..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="0" GridPane.rowIndex="5" />
 
-    <!-- Back Button and Next Button -->
-    <HBox alignment="CENTER" spacing="20">
-        <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: white;" text="Back" />
-        <Button style="-fx-background-color: #00FF7F; -fx-text-fill: black;" text="Next" />
-    </HBox>
-</VBox>
+            <!-- Confirm Password -->
+            <Label text="Confirm Password:" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <PasswordField promptText="password..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+
+        <!-- Next Button -->
+        <HBox alignment="CENTER" spacing="20" style="-fx-padding: 20 0 0 0;">
+            <Button style="-fx-background-color: #00FF7F; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 10 40 10 40;" text="Next" />
+        </HBox>
+
+    </VBox>
+</AnchorPane>
