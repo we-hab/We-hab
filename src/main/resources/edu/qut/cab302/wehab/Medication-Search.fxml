@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.qut.cab302.wehab.MedicationSearch"
+            prefHeight="800.0" prefWidth="1280.0">
+
+    <!-- Main Container VBox -->
+    <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+
+        <!-- Back Button -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="Back" style="-fx-background-color: #A9A9A9; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" />
+        </HBox>
+
+        <!-- Title -->
+        <Text text="Medication Search" style="-fx-font-size: 36px; -fx-font-weight: bold;" />
+
+        <!-- Search Bar -->
+        <HBox alignment="CENTER" spacing="10">
+            <Label text="Search for a medication:" style="-fx-font-size: 16px;" />
+            <TextField promptText="Eg. Panadol ..." style="-fx-background-color: #D3D3D3; -fx-font-size: 16px; -fx-padding: 10px;" />
+            <Button style="-fx-background-color: #A9A9A9; -fx-font-size: 16px;">
+                <ImageView fx:id="searchIcon" fitHeight="20" fitWidth="20">
+                    <Image url="@/images/search-icon.png" />
+                </ImageView>
+            </Button>
+
+        </HBox>
+
+        <!-- Results Section -->
+        <VBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="Results:" style="-fx-font-size: 18px; -fx-underline: true;" />
+
+            <!-- Scrollable results container -->
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                <VBox spacing="20">
+                    <!-- Individual Result (Repeatable block for search results) -->
+                    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: #A9A9A9; -fx-padding: 10; -fx-background-radius: 10; -fx-border-radius: 10;">
+                        <VBox alignment="CENTER_LEFT" spacing="5">
+                            <Text text="Panadol" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+                            <Text text="Paracetamol is a non-opioid analgesic and antipyretic agent used to treat fever and mild to moderate pain." style="-fx-font-size: 14px; -fx-fill: white;" />
+                        </VBox>
+                        <Button text="View" style="-fx-background-color: white; -fx-text-fill: black; -fx-padding: 5 20;" />
+                    </HBox>
+
+                    <!-- Additional Results will go here -->
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </VBox>
+</AnchorPane>
