@@ -1,5 +1,7 @@
 package edu.qut.cab302.wehab;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +16,13 @@ public class UserAccountDAO
     {
         try
         {
-            PreparedStatement insertUser = connection.prepareStatement( "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)");
-            insertUser.setString(1, userAccount.getUsername());
-            insertUser.setString(2, userAccount.getFirstName());
-            insertUser.setString(3, userAccount.getLastName());
-            insertUser.setString(4, userAccount.getEmail());
-            insertUser.setString(5, userAccount.getHashedPassword());
-            insertUser.execute();
+            PreparedStatement tryRegister = connection.prepareStatement( "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)");
+            tryRegister.setString(1, userAccount.getUsername());
+            tryRegister.setString(2, userAccount.getFirstName());
+            tryRegister.setString(3, userAccount.getLastName());
+            tryRegister.setString(4, userAccount.getEmail());
+            tryRegister.setString(5, userAccount.getHashedPassword());
+            tryRegister.execute();
 
         } catch (SQLException error) { System.err.println(error); }
     }
@@ -40,6 +42,43 @@ public class UserAccountDAO
 
     }
     /////
+
+    public boolean LoginToAccount(String enteredUsername, String enteredPassword)
+    {
+        try
+        {
+            // What I need to do is check the username and password that is entered against the database and if both match, then login and if not, then return false and ask to try again.
+            PreparedStatement tryLogin = connection.prepareStatement("SELECT username, password FROM userAccounts WHERE username = ?");
+            tryLogin.setString(1, enteredUsername);
+            ResultSet resultSet = tryLogin.executeQuery();
+
+            if (resultSet.next())
+            {
+                String storedHashedPassword = resultSet.getString("password");
+
+                BCrypt.Result result = BCrypt.verifyer().verify(enteredPassword.toCharArray(), storedHashedPassword);
+
+                if (result.verified)
+                {
+                    System.out.println("Login Successful lol");
+                    return true;
+                }
+                else
+                {
+                    System.out.println("Incorrect password. Try again");
+                    return false;
+                }
+            }
+            else
+            {
+                System.out.println("Username not found");
+                return false;
+            }
+
+        } catch (SQLException error) { System.err.println(error); return false; }
+    }
+
+
 
     public void update(UserAccount userAccount)
     {

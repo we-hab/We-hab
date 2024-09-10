@@ -59,5 +59,4 @@ public class UserAccount
                 ", password=" + hashedPassword + '\'' +
                 '}';
     }
-
 }
