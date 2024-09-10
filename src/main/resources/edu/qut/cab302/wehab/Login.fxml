@@ -7,9 +7,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.MainController">
    <center>
       <Pane prefHeight="276.0" prefWidth="457.0" BorderPane.alignment="CENTER">
          <children>
@@ -19,14 +20,19 @@
                   <Label alignment="CENTER" prefHeight="17.0" prefWidth="433.0" text="Login" />
                   <HBox prefHeight="28.0" prefWidth="414.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="Email:" />
-                        <TextArea prefHeight="200.0" prefWidth="200.0" promptText="example@mail.com" />
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="Username:" />
+                        <TextArea fx:id="usernameField" prefHeight="200.0" prefWidth="200.0" promptText="username123..." />
                      </children>
                   </HBox>
                   <HBox prefHeight="28.0" prefWidth="414.0">
                      <children>
                         <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="Password:" />
-                        <PasswordField prefHeight="26.0" prefWidth="200.0" promptText="password..." />
+                        <PasswordField fx:id="passwordField" prefHeight="26.0" prefWidth="200.0" promptText="password..." />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="28.0" prefWidth="414.0">
+                     <children>
+                        <Button text="Login" onAction="#onLoginClick"/>
                      </children>
                   </HBox>
                </children>
