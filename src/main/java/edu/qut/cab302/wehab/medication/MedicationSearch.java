@@ -1,10 +1,7 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.medication;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
 
 public class MedicationSearch {

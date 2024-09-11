@@ -1,4 +1,4 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.medication;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
