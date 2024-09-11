@@ -32,8 +32,8 @@
                   <HBox prefHeight="28.0" prefWidth="414.0">
                      <children>
                         <Button onAction="#onLoginClick" text="Login" />
-                        <Button onAction="#goToRegisterScreen" text="Register Account" />
-                        <TextField fx:id="Error" alignment="BOTTOM_RIGHT" />
+                        <Button text="Register Account" />
+                        <Label fx:id="ErrorMsg" alignment="BOTTOM_RIGHT" />
                      </children>
                   </HBox>
                </children>
