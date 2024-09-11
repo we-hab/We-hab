@@ -8,10 +8,26 @@ import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class OpenFDAClient {
 
-    public static String getMedicationInfo(String medicationName, boolean isGenericName) {
+    public static JSONArray getResultsArray(JSONObject apiResult) {
+
+        JSONArray results = apiResult.getJSONArray("results");
+        return results;
+
+    }
+
+    public static JSONObject getJSONObjectFromString(String rawJSONString) {
+
+        return new JSONObject(rawJSONString);
+
+    }
+
+    public static String searchAPI(String medicationName, boolean isGenericName) {
 
         try {
 
@@ -20,10 +36,10 @@ public class OpenFDAClient {
 
 
             if(isGenericName) {
-                apiUrl = "https://api.fda.gov/drug/ndc.json?search=generic_name:%22" + encodedMedicationName + "%22" + "&limit=1";
+                apiUrl = "https://api.fda.gov/drug/ndc.json?search=generic_name:%22" + encodedMedicationName + "%22" + "&limit=3";
 
             } else {
-                apiUrl = "https://api.fda.gov/drug/ndc.json?search=brand_name:%22" + encodedMedicationName + "%22" + "&limit=1";
+                apiUrl = "https://api.fda.gov/drug/ndc.json?search=brand_name:%22" + encodedMedicationName + "%22" + "&limit=3";
 
             }
             URL url = new URL(apiUrl);
