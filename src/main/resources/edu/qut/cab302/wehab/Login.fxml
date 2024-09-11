@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+
+
+<?import javafx.scene.control.TextField?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.MainController">
+   <center>
+      <Pane prefHeight="276.0" prefWidth="457.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="93.0" prefHeight="400.0" prefWidth="414.0">
+               <children>
+                  <Label alignment="BOTTOM_CENTER" prefHeight="56.0" prefWidth="414.0" text="Welcome " />
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="433.0" text="Login" />
+                  <HBox prefHeight="28.0" prefWidth="414.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="Username:" />
+                        <TextField fx:id="usernameField" prefHeight="200.0" prefWidth="200.0" promptText="username123..." />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="28.0" prefWidth="414.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="Password:" />
+                        <PasswordField fx:id="passwordField" prefHeight="26.0" prefWidth="200.0" promptText="password..." />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="28.0" prefWidth="414.0">
+                     <children>
+                        <Button text="Login" onAction="#onLoginClick"/>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </center>
+</BorderPane>

@@ -9,6 +9,6 @@ public class HelloController {
 
     @FXML
     protected void onHelloButtonClick() {
-        welcomeText.setText(OpenFDAClient.getMedicationInfo("testosterone", true));
+        welcomeText.setText("Welcome to We-Hab! Or is it WeHab? Or We Hab?");
     }
 }

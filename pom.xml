@@ -45,6 +45,17 @@
             <version>3.36.0.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>0.10.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gluonhq</groupId>
+            <artifactId>charm-glisten</artifactId>
+            <version>6.0.9</version>
+        </dependency>
 
     </dependencies>
 
@@ -68,7 +79,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>edu.qut.cab302.wehab/edu.qut.cab302.wehab.HelloApplication</mainClass>
+                            <mainClass>edu.qut.cab302.wehab/edu.qut.cab302.wehab.MainApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

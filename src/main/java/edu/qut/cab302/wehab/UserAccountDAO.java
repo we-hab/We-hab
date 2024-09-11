@@ -1,5 +1,7 @@
 package edu.qut.cab302.wehab;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,39 +12,57 @@ public class UserAccountDAO
     private Connection connection;
     public UserAccountDAO() { connection = DatabaseConnection.getInstance(); }
 
-    // Tables
-
-    public void createTable()
-    {
-        try
-        {
-            Statement createTable = connection.createStatement();
-            createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS userAccounts (" +
-                            "id INTEGER PRIMARY KEY, " +
-                            "firstName VARCHAR NOT NULL, " +
-                            "lastName VARCHAR NOT NULL, " +
-                            "email VARCHAR NOT NULL" +
-                            "password VARCHAR NOT NULL" +
-                            ")"
-            );
-        } catch (SQLException error) { System.err.println(error); }
-    }
-
     public void registerAccount(UserAccount userAccount)
     {
         try
         {
-            PreparedStatement insertUser = connection.prepareStatement( "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)");
-            insertUser.setString(1, userAccount.getUsername());
-            insertUser.setString(2, userAccount.getFirstName());
-            insertUser.setString(3, userAccount.getLastName());
-            insertUser.setString(4, userAccount.getEmail());
-            insertUser.setString(5, userAccount.getPassword());
-            insertUser.execute();
+            PreparedStatement tryRegister = connection.prepareStatement( "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)");
+            tryRegister.setString(1, userAccount.getUsername());
+            tryRegister.setString(2, userAccount.getFirstName());
+            tryRegister.setString(3, userAccount.getLastName());
+            tryRegister.setString(4, userAccount.getEmail());
+            tryRegister.setString(5, userAccount.getHashedPassword());
+            tryRegister.execute();
 
         } catch (SQLException error) { System.err.println(error); }
     }
+
+    public boolean LoginToAccount(String enteredUsername, String enteredPassword)
+    {
+        try
+        {
+            // What I need to do is check the username and password that is entered against the database and if both match, then login and if not, then return false and ask to try again.
+            PreparedStatement tryLogin = connection.prepareStatement("SELECT username, password FROM userAccounts WHERE username = ?");
+            tryLogin.setString(1, enteredUsername);
+            ResultSet resultSet = tryLogin.executeQuery();
+
+            if (resultSet.next())
+            {
+                String storedHashedPassword = resultSet.getString("password");
+
+                BCrypt.Result result = BCrypt.verifyer().verify(enteredPassword.toCharArray(), storedHashedPassword);
+
+                if (result.verified)
+                {
+                    System.out.println("Login Successful lol");
+                    return true;
+                }
+                else
+                {
+                    System.out.println("Incorrect password. Try again");
+                    return false;
+                }
+            }
+            else
+            {
+                System.out.println("Username not found");
+                return false;
+            }
+
+        } catch (SQLException error) { System.err.println(error); return false; }
+    }
+
+
 
     public void update(UserAccount userAccount)
     {
@@ -53,7 +73,7 @@ public class UserAccountDAO
             updateAccount.setString(2, userAccount.getFirstName());
             updateAccount.setString(3, userAccount.getLastName());
             updateAccount.setString(4, userAccount.getEmail());
-            updateAccount.setString(5, userAccount.getPassword());
+            updateAccount.setString(5, userAccount.getHashedPassword());
             updateAccount.setString(6, userAccount.getUsername());
             updateAccount.execute();
 
@@ -115,6 +135,22 @@ public class UserAccountDAO
         return null;
     }
 
+    public List<String> getAllusernames()
+    {
+        List<String> usernames = new ArrayList<>();
+        try
+        {
+            Statement stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT username FROM userAccounts");
+
+            while (result.next())
+            {
+                usernames.add(result.getString("username"));
+            }
+        } catch (SQLException error) { System.err.println(error); }
+        return usernames;
+    }
+
     private void close()
     {
         try
@@ -123,48 +159,4 @@ public class UserAccountDAO
         }
         catch (SQLException error) { System.err.println(error); }
     }
-
-    public static class Main {
-        public static void main(String[] args) {
-            UserAccountDAO userAccountDAO = new UserAccountDAO();
-            userAccountDAO.createTable();
-
-            // TEMP Records
-            //userAccountDAO.insert(new UserAccount("Ryan", "Whiteman", 25));
-            //userAccountDAO.insert(new UserAccount("Connor", "Beddow", 95));
-
-            /* List all users
-            List<UserAccount> users = userAccountDAO.getAll();
-            for (UserAccount user : users) { System.out.println(user);
-            */
-
-            /* Retrieve a user by ID number
-            UserAccount user = userAccountDAO.getById(2);
-            System.out.println(user);
-             */
-
-            /* Update an existing user's account
-            UserAccount user = userAccountDAO.getById(2);
-            System.out.println("Before update:");
-            System.out.println(user);
-
-            user.setAge((59));
-            userAccountDAO.update(user);
-            System.out.println("After the updated age:");
-            System.out.println(userAccountDAO.getById(2));
-             */
-
-            /* Delete an account
-            System.out.println("Before deleting a record with id = 1:");
-            for (UserAccount user : userAccountDAO.getAll()) {System.out.println(user);}
-
-            userAccountDAO.delete(1); // Replace the 1 with the number
-            System.out.println("After deleting the record with id - 1:");
-            for (UserAccount user : userAccountDAO.getAll()) { System.out.println(user);}
-            */
-
-            userAccountDAO.close();
-        }
-    }
-
 }
