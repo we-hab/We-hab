@@ -42,7 +42,7 @@
                <image>
                   <Image url="@Wehab%20banner.png" />
                </image></ImageView>
-            <Button mnemonicParsing="false" text="Sign Out">
+            <Button mnemonicParsing="false" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Sign Out">
                <HBox.margin>
                   <Insets left="60.0" />
                </HBox.margin></Button>
@@ -52,10 +52,10 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="339.0" prefWidth="268.0">
                <children>
-                  <Button layoutX="25.0" layoutY="43.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" text="Dashbboard" />
-                  <Button layoutX="25.0" layoutY="129.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" text="Workouts" />
-                  <Button layoutX="25.0" layoutY="217.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" text="Medication" />
-                  <Button layoutX="25.0" layoutY="299.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" text="Settings" />
+                  <Button layoutX="25.0" layoutY="43.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Dashboard" />
+                  <Button layoutX="25.0" layoutY="129.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Workouts" />
+                  <Button layoutX="25.0" layoutY="217.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Medication" />
+                  <Button layoutX="25.0" layoutY="299.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-border-color: #0000; -fx-border-image-width: 5px; -fx-font-size: 18px;" text="Settings" />
                </children>
             </AnchorPane>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1083.0">
@@ -255,7 +255,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" prefHeight="89.0" prefWidth="140.0" text="Generate Report">
+                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="170.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Generate Report">
                      <VBox.margin>
                         <Insets bottom="10.0" top="20.0" />
                      </VBox.margin></Button>
