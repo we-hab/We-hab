@@ -13,6 +13,10 @@ import javafx.stage.Stage;
 import javax.sound.midi.SysexMessage;
 import java.util.List;
 
+/**
+ * Main controller for managing application views and user interactions.
+ */
+
 public class MainController {
 
     // Login and Register Variables

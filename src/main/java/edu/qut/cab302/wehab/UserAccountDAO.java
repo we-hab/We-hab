@@ -6,6 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for interacting with UserAccount entities in the database.
+ */
+
 public class UserAccountDAO
 {
     // Create a connection with the database, so we can edit it.

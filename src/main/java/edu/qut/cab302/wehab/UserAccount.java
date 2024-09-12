@@ -2,6 +2,11 @@ package edu.qut.cab302.wehab;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
+/**
+ * Represents a user account in the application.
+ * Stores account details such as username, email and password.
+ */
+
 public class UserAccount
 {
 
@@ -11,6 +16,14 @@ public class UserAccount
     private String lastName;
     private String email;
     private String hashedPassword;
+
+    /**
+     * Constructs a new UserAccount with the specified username and password.
+     *
+     * @param email the email address for the account.
+     * @param username The UNIQUE username for the account.
+     * @param password The password for the account.
+     */
 
     public UserAccount(String username, String firstName, String lastName, String email, String password)
     {
