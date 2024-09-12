@@ -4,13 +4,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 
-public class MedicationSearch {
+public class MedicationSearchController {
 
     @FXML
     private TextField searchField;
 
     @FXML
     protected void search() {
+
     }
 
     public void initialize() {}

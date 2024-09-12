@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.sql.Connection;
 
+import edu.qut.cab302.wehab.medication.OpenFDAClient;
+
 import java.io.IOException;
 
 public class MainApplication extends Application {
@@ -16,7 +18,9 @@ public class MainApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
         stage.setTitle("Hello!");
         stage.setScene(scene);
-        stage.show();
+//        stage.show();
+
+        OpenFDAClient.searchForMedications("abilify");
 
     }
 

@@ -1,22 +1,83 @@
 package edu.qut.cab302.wehab.medication;
 
+import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class Medication {
 
-    private String genericName; // Paracetamol, Lisdexamfetamine, etc.
-    private String brandName; // Panadol, Vyvanse, etc.
-    private String medicationClass; // Antibiotic, SSRI, etc.
-    private String manufacturer; // Square Pharmaceuticals, etc.
-    private String description; // "30 tablets in bottle", etc.
-    private HashMap<String, String> activeIngredients = new HashMap<String, String>(); // Key: Ingredient, Value: Strength
-    private String form; // Tablet, injection etc.
-
-    Medication(JSONObject jsonMedicationData) {
 
 
+    // Fields
+    // Include generic, brand, substance name (active ingredients), (administration) route, type (pharm_class_epc), description
+
+    private String genericName;
+    private String brandName;
+    private JSONArray activeIngredients;
+    private String administrationRoute;
+    private JSONArray establishedPharmacologicClasses;
+    private String description;
+
+
+    // Methods
+    Medication(JSONObject jsonMedicationObject) {
+
+        if(jsonMedicationObject.has("description")) {
+            description = jsonMedicationObject.optJSONArray("description").optString(0);
+        } else if(jsonMedicationObject.has("purpose")) {
+            description = jsonMedicationObject.optJSONArray("purpose").optString(0);
+        }
+
+
+        JSONObject openfda = jsonMedicationObject.getJSONObject("openfda");
+
+        genericName = openfda.optJSONArray("generic_name").optString(0);
+        brandName = openfda.optJSONArray("brand_name").optString(0);
+
+        if(openfda.has("substance_name")) {
+            activeIngredients = openfda.optJSONArray("substance_name");
+        } else if(openfda.has("active_ingredients")) {
+            activeIngredients = openfda.optJSONArray("active_ingredients");
+        }
+
+        if (openfda.has("route")) {
+            administrationRoute = openfda.optJSONArray("route").optString(0);
+        }
+        establishedPharmacologicClasses = openfda.optJSONArray("pharm_class_epc");
+
+
+
+        printInfo();
     }
+
+    public void printInfo() {
+        System.out.println("Generic Name: " + genericName);
+        System.out.println("Brand Name: " + brandName);
+        System.out.print("Active Ingredients:");
+        if (activeIngredients != null) {
+            for(int i = 0; i < activeIngredients.length(); i++) {
+                System.out.println("\n\t- " + activeIngredients.getString(i));
+            }
+        } else {
+            System.out.println(" Unspecified");
+        }
+        System.out.println("Administration Route: " + ((administrationRoute != null) ? administrationRoute : "Unspecified"));
+        System.out.print("Medication Type:");
+
+        if (establishedPharmacologicClasses != null) {
+            for (int i = 0; i < establishedPharmacologicClasses.length(); i++) {
+                System.out.println("\n\t- " + establishedPharmacologicClasses.getString(i));
+            }
+        } else {
+            System.out.println(" Unspecified");
+        }
+
+        System.out.println("Description: " + description);
+        System.out.println();
+    }
+
 
 }
