@@ -18,7 +18,7 @@
 
         <!-- Back Button -->
         <HBox alignment="CENTER_LEFT">
-            <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="Back" />
+            <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="Back" onAction="#backToLoginScreen" />
         </HBox>
 
         <!-- Title -->
@@ -67,6 +67,7 @@
         <!-- Next Button -->
         <HBox alignment="CENTER" spacing="20" style="-fx-padding: 20 0 0 0;">
             <Button onAction="#onRegisterClick" style="-fx-background-color: #00FF7F; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 10 40 10 40;" text="Next" />
+            <Label fx:id="registerErrorText" textFill="red" />
         </HBox>
 
     </VBox>
