@@ -109,6 +109,7 @@ public class OpenFDAClient {
 
             } else {
                 System.out.println("HTTP error response code: " + status);
+                System.out.println("Error searching for medication: " + medicationName);
                 inputStream = connection.getErrorStream();
             }
 
@@ -121,10 +122,6 @@ public class OpenFDAClient {
             }
             reader.close();
             connection.disconnect();
-
-            if(status != 200 && status != 404) {
-                System.out.println("Error searching for medication: " + medicationName);
-            }
 
             return content.toString();
 
