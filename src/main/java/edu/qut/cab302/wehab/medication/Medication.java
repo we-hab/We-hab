@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Medication {
 
-
-
-    // Fields
-    // Include generic, brand, substance name (active ingredients), (administration) route, type (pharm_class_epc), description
-
+    private LocalDate lastUpdated;
     private String genericName;
     private String brandName;
     private JSONArray activeIngredients;
@@ -25,12 +24,15 @@ public class Medication {
     // Methods
     Medication(JSONObject jsonMedicationObject) {
 
+        String effectiveTime = jsonMedicationObject.optString("effective_time");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        lastUpdated = LocalDate.parse(effectiveTime, formatter);
+
         if(jsonMedicationObject.has("description")) {
             description = jsonMedicationObject.optJSONArray("description").optString(0);
         } else if(jsonMedicationObject.has("purpose")) {
             description = jsonMedicationObject.optJSONArray("purpose").optString(0);
         }
-
 
         JSONObject openfda = jsonMedicationObject.getJSONObject("openfda");
 
@@ -54,13 +56,15 @@ public class Medication {
     }
 
     public void printInfo() {
+        System.out.println("Last Updated: " + lastUpdated);
         System.out.println("Generic Name: " + genericName);
         System.out.println("Brand Name: " + brandName);
         System.out.print("Active Ingredients:");
         if (activeIngredients != null) {
             for(int i = 0; i < activeIngredients.length(); i++) {
-                System.out.println("\n\t- " + activeIngredients.getString(i));
+                System.out.print("\n\t- " + activeIngredients.getString(i));
             }
+            System.out.println();
         } else {
             System.out.println(" Unspecified");
         }
@@ -69,8 +73,9 @@ public class Medication {
 
         if (establishedPharmacologicClasses != null) {
             for (int i = 0; i < establishedPharmacologicClasses.length(); i++) {
-                System.out.println("\n\t- " + establishedPharmacologicClasses.getString(i));
+                System.out.print("\n\t- " + establishedPharmacologicClasses.getString(i));
             }
+            System.out.println();
         } else {
             System.out.println(" Unspecified");
         }
