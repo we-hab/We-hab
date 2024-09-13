@@ -31,8 +31,6 @@ public class OpenFDAClient {
 
             ArrayList<Medication> medications = new ArrayList<Medication>();
 
-            LocalDate fiveYearsAgo = LocalDate.now().minusYears(3);
-
             for(int i = 0; i < results.length(); i++) {
                 medications.add(new Medication(results.getJSONObject(i)));
             }
