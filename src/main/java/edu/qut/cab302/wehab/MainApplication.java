@@ -10,6 +10,11 @@ import edu.qut.cab302.wehab.medication.OpenFDAClient;
 
 import java.io.IOException;
 
+/**
+ * Main entry point for the application.
+ * Initializes the application and launches the user interface.
+ */
+
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {

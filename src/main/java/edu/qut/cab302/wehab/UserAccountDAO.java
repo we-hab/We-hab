@@ -6,12 +6,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for interacting with UserAccount entities in the database.
+ */
+
 public class UserAccountDAO
 {
-    // Boring connection stuffs
+    // Create a connection with the database, so we can edit it.
     private Connection connection;
     public UserAccountDAO() { connection = DatabaseConnection.getInstance(); }
 
+    // A class to register a new user into the database.
     public void registerAccount(UserAccount userAccount)
     {
         try
@@ -27,11 +32,11 @@ public class UserAccountDAO
         } catch (SQLException error) { System.err.println(error); }
     }
 
+    // A boolean class to login an existing user, will compare the username and password against the database and return true or false.
     public boolean LoginToAccount(String enteredUsername, String enteredPassword)
     {
         try
         {
-            // What I need to do is check the username and password that is entered against the database and if both match, then login and if not, then return false and ask to try again.
             PreparedStatement tryLogin = connection.prepareStatement("SELECT username, password FROM userAccounts WHERE username = ?");
             tryLogin.setString(1, enteredUsername);
             ResultSet resultSet = tryLogin.executeQuery();
@@ -44,18 +49,18 @@ public class UserAccountDAO
 
                 if (result.verified)
                 {
-                    System.out.println("Login Successful lol");
+                    // Both username and password were found, return true.
                     return true;
                 }
                 else
                 {
-                    System.out.println("Incorrect password. Try again");
+                    // The password was not correct, return false.
                     return false;
                 }
             }
             else
             {
-                System.out.println("Username not found");
+                // The username was not found, return false.
                 return false;
             }
 
