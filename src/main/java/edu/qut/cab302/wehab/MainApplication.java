@@ -16,7 +16,7 @@ public class MainApplication extends Application {
         // Change this line to sandbox your build
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("medication/Medication-Search.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
-        stage.setTitle("Hello!");
+        stage.setTitle("We-Hab");
         stage.setScene(scene);
 //        stage.show();
 
@@ -30,6 +30,5 @@ public class MainApplication extends Application {
         DatabaseConnection.createTable();
         UserAccountDAO userAccountDAO = new UserAccountDAO();
         launch();
-
     }
 }
