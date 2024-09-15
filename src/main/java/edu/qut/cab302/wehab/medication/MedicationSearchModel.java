@@ -75,5 +75,6 @@ public class MedicationSearchModel {
 
         insertMedication = connection.prepareStatement(insertMedicationSQL);
         insertMedication.setString(1, medicationID);
+        insertMedication.executeUpdate();
     }
 }
