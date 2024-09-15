@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Main entry point for the application.
@@ -16,8 +17,10 @@ import java.io.IOException;
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        // Change this line to sandbox your build
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
+        scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
         stage.setTitle("We-Hab");
         stage.setScene(scene);
         stage.show();

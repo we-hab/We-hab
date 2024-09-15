@@ -20,7 +20,7 @@
          <children>
             <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@user.png" />
+                  <Image url="@../../../../images/user.png" />
                </image>
                <HBox.margin>
                   <Insets left="20.0" right="10.0" />
@@ -91,7 +91,7 @@
                                                       <TextArea editable="false" layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="614.0" text="Panadol is a popular over-the-counter medication used to treat pain and fever. It contains paracetamol, a non-opioid analgesic that works to reduce pain signals sent to the brain." wrapText="true" />
                                                       <ImageView fitHeight="85.0" fitWidth="158.0" layoutX="658.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@PanadolBox.jpg" />
+                                                            <Image url="@../../../../images/PanadolBox.jpg" />
                                                          </image>
                                                       </ImageView>
                                                       <Button layoutX="844.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="Log Dose" />
@@ -117,7 +117,7 @@
                                                       <TextArea editable="false" layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="614.0" text="Panadol is a popular over-the-counter medication used to treat pain and fever. It contains paracetamol, a non-opioid analgesic that works to reduce pain signals sent to the brain." wrapText="true" />
                                                       <ImageView fitHeight="85.0" fitWidth="158.0" layoutX="658.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@PanadolBox.jpg" />
+                                                            <Image url="@../../../../images/PanadolBox.jpg" />
                                                          </image>
                                                       </ImageView>
                                                       <Button layoutX="844.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="Log Dose" />
@@ -143,7 +143,7 @@
                                                       <TextArea editable="false" layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="614.0" text="Panadol is a popular over-the-counter medication used to treat pain and fever. It contains paracetamol, a non-opioid analgesic that works to reduce pain signals sent to the brain." wrapText="true" />
                                                       <ImageView fitHeight="85.0" fitWidth="158.0" layoutX="658.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@PanadolBox.jpg" />
+                                                            <Image url="@../../../../images/PanadolBox.jpg" />
                                                          </image>
                                                       </ImageView>
                                                       <Button layoutX="844.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="Log Dose" />
@@ -169,7 +169,7 @@
                                                       <TextArea editable="false" layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="614.0" text="Panadol is a popular over-the-counter medication used to treat pain and fever. It contains paracetamol, a non-opioid analgesic that works to reduce pain signals sent to the brain." wrapText="true" />
                                                       <ImageView fitHeight="85.0" fitWidth="158.0" layoutX="658.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@PanadolBox.jpg" />
+                                                            <Image url="@../../../../images/PanadolBox.jpg" />
                                                          </image>
                                                       </ImageView>
                                                       <Button layoutX="844.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="Log Dose" />
