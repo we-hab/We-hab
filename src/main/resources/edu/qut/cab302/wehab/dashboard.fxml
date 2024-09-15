@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.DashboardController" >
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="1280.0">
          <children>
@@ -31,8 +31,8 @@
                </HBox.margin></ImageView>
             <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0">
                <children>
-                  <Label text="Welcome!" />
-                  <Label text="Firstname" wrapText="true" />
+                  <Label text="Welcome," />
+                  <Label fx:id="loggedInUserLabel" text="BLANK" wrapText="true" />
                </children>
             </VBox>
             <ImageView fitHeight="65.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">

@@ -12,6 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javax.sound.midi.SysexMessage;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * Main controller for managing application views and user interactions.
@@ -36,6 +38,15 @@ public class MainController {
     private PasswordField passwordField;
     @FXML
     private PasswordField passwordFieldConfirm;
+
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+    private boolean isAValidEmail(String email)
+    {
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     // If the user clicks the "Create account" button on the Login screen, change to the register screen.
     @FXML
@@ -80,10 +91,18 @@ public class MainController {
 
         UserAccountDAO userAccountDAO = new UserAccountDAO();
         List<String> usernames = userAccountDAO.getAllusernames();
+        List<String> emails = userAccountDAO.getAllemails();
+
+        final int maxCharLimit = 255;
 
         if (enteredFirstName.isEmpty())
         {
             registerErrorText.setText("Enter a first name.");
+            return;
+        }
+        else if (enteredFirstName.length() > maxCharLimit)
+        {
+            registerErrorText.setText("First name cannot exceed " + maxCharLimit + " characters.");
             return;
         }
         else if (enteredLastName.isEmpty())
@@ -91,9 +110,19 @@ public class MainController {
             registerErrorText.setText("Enter a last name.");
             return;
         }
+        else if (enteredLastName.length() > maxCharLimit)
+        {
+            registerErrorText.setText(" cannot exceed " + maxCharLimit + " characters.");
+            return;
+        }
         else if (enteredUsername.isEmpty())
         {
             registerErrorText.setText("Enter a username.");
+            return;
+        }
+        else if (enteredUsername.length() > maxCharLimit)
+        {
+            registerErrorText.setText(" cannot exceed " + maxCharLimit + " characters.");
             return;
         }
         else if (enteredEmail.isEmpty())
@@ -111,17 +140,29 @@ public class MainController {
             if (usernames.contains(enteredUsername))
             {
                 registerErrorText.setText("Username taken, try another.");
-                System.out.println("Username taken, try another.");
+                return;
+            }
+            else if (emails.contains(enteredEmail)) // Same email
+            {
+                registerErrorText.setText("Email taken, try another.");
+                System.out.println("Email taken, try another.");
+                return;
+            }
+            else if (!isAValidEmail(enteredEmail))
+            {
+                registerErrorText.setText("Enter a valid email address.");
+                return;
             }
             else if (!enteredPassword.equals(enteredPasswordConfirm))
             {
                 registerErrorText.setText("Passwords do not match.");
-                System.out.println("Passwords do not match.");
+                return;
             }
             else
             {
                 UserAccount newAccount = new UserAccount(enteredUsername, enteredFirstName, enteredLastName, enteredEmail, enteredPassword);
                 userAccountDAO.registerAccount(newAccount);
+                Session.getInstance().setLoggedInUser(newAccount);
 
                 try
                 {
@@ -163,8 +204,12 @@ public class MainController {
             // Checks to see whether the inputted username and password match an account in the system
             boolean loginSuccessful = userAccountDAO.LoginToAccount(enteredUsername, enteredPassword);
 
+
             if (loginSuccessful)
             {
+                UserAccount loggedInUser = userAccountDAO.getByUsername(enteredUsername);
+                Session.getInstance().setLoggedInUser(loggedInUser);
+
                 try
                 {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard.fxml"));
