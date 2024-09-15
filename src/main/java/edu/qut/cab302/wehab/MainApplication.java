@@ -19,8 +19,8 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         // Change this line to sandbox your build
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Login.fxml"));
-        scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
+        scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
         stage.setTitle("We-Hab");
         stage.setScene(scene);
         stage.show();
