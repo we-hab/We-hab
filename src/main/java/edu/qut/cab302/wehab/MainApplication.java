@@ -23,9 +23,7 @@ public class MainApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
         stage.setTitle("We-Hab");
         stage.setScene(scene);
-//        stage.show();
-
-        OpenFDAClient.searchForMedications("blahblah");
+        stage.show();
 
     }
 

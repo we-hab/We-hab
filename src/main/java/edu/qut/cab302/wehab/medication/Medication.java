@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Medication {
 
+    private String id;
     private LocalDate lastUpdated;
     private String genericName;
     private String brandName;
@@ -20,9 +21,24 @@ public class Medication {
     private JSONArray establishedPharmacologicClasses;
     private String description;
 
+    private String[] activeIngredientNames;
+    private String[] establishedPharmacologicClassNames;
+
+    public String getID() { return id; }
+    public LocalDate getLastUpdated() { return lastUpdated; }
+    public String getGenericName() { return genericName; }
+    public String getBrandName() { return brandName; }
+    public String[] getActiveIngredients() { return activeIngredientNames; }
+    public String getAdministrationRoute() { return administrationRoute; }
+    public String[] getMedicationTypes() { return establishedPharmacologicClassNames; }
+    public String getDescription() { return description; }
+
+    public boolean hasBrandName() { return brandName != null; }
 
     // Methods
     Medication(JSONObject jsonMedicationObject) {
+
+        id = jsonMedicationObject.getString("id");
 
         String effectiveTime = jsonMedicationObject.optString("effective_time");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -41,18 +57,29 @@ public class Medication {
 
         if(openfda.has("substance_name")) {
             activeIngredients = openfda.optJSONArray("substance_name");
+            activeIngredientNames = new String[activeIngredients.length()];
+            for(int i = 0; i < activeIngredients.length(); i++) {
+                activeIngredientNames[i] = activeIngredients.optString(i);
+            }
         } else if(openfda.has("active_ingredients")) {
             activeIngredients = openfda.optJSONArray("active_ingredients");
+            activeIngredientNames = new String[activeIngredients.length()];
+            for(int i = 0; i < activeIngredients.length(); i++) {
+                activeIngredientNames[i] = activeIngredients.optString(i);
+            }
         }
 
         if (openfda.has("route")) {
             administrationRoute = openfda.optJSONArray("route").optString(0);
         }
-        establishedPharmacologicClasses = openfda.optJSONArray("pharm_class_epc");
 
-
-
-        printInfo();
+        if(openfda.has("pharm_class_epc")) {
+            establishedPharmacologicClasses = openfda.optJSONArray("pharm_class_epc");
+            establishedPharmacologicClassNames = new String[establishedPharmacologicClasses.length()];
+            for(int i = 0; i < establishedPharmacologicClasses.length(); i++) {
+                establishedPharmacologicClassNames[i] = establishedPharmacologicClasses.optString(i);
+            }
+        }
     }
 
     public void printInfo() {
@@ -60,20 +87,21 @@ public class Medication {
         System.out.println("Generic Name: " + genericName);
         System.out.println("Brand Name: " + brandName);
         System.out.print("Active Ingredients:");
-        if (activeIngredients != null) {
-            for(int i = 0; i < activeIngredients.length(); i++) {
-                System.out.print("\n\t- " + activeIngredients.getString(i));
+        if (activeIngredientNames != null) {
+            for(String ingredient : activeIngredientNames) {
+                System.out.print("\n\t- " + ingredient);
             }
             System.out.println();
         } else {
             System.out.println(" Unspecified");
         }
+
         System.out.println("Administration Route: " + ((administrationRoute != null) ? administrationRoute : "Unspecified"));
         System.out.print("Medication Type:");
 
-        if (establishedPharmacologicClasses != null) {
-            for (int i = 0; i < establishedPharmacologicClasses.length(); i++) {
-                System.out.print("\n\t- " + establishedPharmacologicClasses.getString(i));
+        if(establishedPharmacologicClassNames != null) {
+            for(String pharmaClass : establishedPharmacologicClassNames) {
+                System.out.print("\n\t- " + pharmaClass);
             }
             System.out.println();
         } else {

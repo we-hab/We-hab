@@ -23,21 +23,27 @@ import java.time.format.DateTimeFormatter;
 
 public class OpenFDAClient {
 
-    public static ArrayList<Medication> searchForMedications(String query) {
+    private static String resultsMessage;
+    public static String getResultsMessage() { return resultsMessage; }
+
+    public static Medication[] searchForMedications(String query) {
+
+        resultsMessage = "";
 
         JSONArray results = getMedicationsFromResults(getJSONObjectFromRawString(queryAPI(query)));
 
         if(results != null) {
 
-            ArrayList<Medication> medications = new ArrayList<Medication>();
+            int resultsCount = results.length();
+
+            Medication[] medications = new Medication[resultsCount];
 
             for(int i = 0; i < results.length(); i++) {
-                medications.add(new Medication(results.getJSONObject(i)));
+                medications[i] = new Medication(results.getJSONObject(i));
             }
             return medications;
         }
 
-        System.out.println("No results found.");
         return null;
     }
 
@@ -46,8 +52,13 @@ public class OpenFDAClient {
         JSONArray results = apiResult.optJSONArray("results");
 
         if (results != null) {
-            System.out.println("Results: " + apiResult.optJSONObject("meta").optJSONObject("results").optInt("total"));
+            resultsMessage = ("Results: " + apiResult.optJSONObject("meta").optJSONObject("results").optInt("total"));
+            System.out.println(resultsMessage);
             System.out.println();
+        } else if(resultsMessage == "") {
+            {
+                resultsMessage = "No results found.";
+            }
         }
 
         return results;
@@ -103,13 +114,16 @@ public class OpenFDAClient {
                     System.out.println("Generic not found.");
                     inputStream = connection.getErrorStream();
                 } else {
+                    resultsMessage = "Error searching for medication: " + medicationName;
                     System.out.println("HTTP error response code: " + status);
+                    System.out.println(resultsMessage);
                     inputStream = connection.getErrorStream();
                 }
 
             } else {
+                resultsMessage += "Error searching for medication: " + medicationName;
                 System.out.println("HTTP error response code: " + status);
-                System.out.println("Error searching for medication: " + medicationName);
+                System.out.println(resultsMessage);
                 inputStream = connection.getErrorStream();
             }
 
