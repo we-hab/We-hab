@@ -162,6 +162,22 @@ public class UserAccountDAO
         return usernames;
     }
 
+    public List<String> getAllemails()
+    {
+        List<String> emails = new ArrayList<>();
+        try
+        {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT email FROM userAccounts");
+
+            while (result.next())
+            {
+                emails.add((result.getString("email")));
+            }
+        } catch (SQLException error) { System.err.println(error); }
+        return emails;
+    }
+
     private void close()
     {
         try
@@ -169,5 +185,32 @@ public class UserAccountDAO
             connection.close();
         }
         catch (SQLException error) { System.err.println(error); }
+    }
+
+    public UserAccount getByUsername(String enteredUsername)
+    {
+        UserAccount userAccount = null;
+
+        try
+        {
+            PreparedStatement getUserMate = connection.prepareStatement("SELECT * FROM userAccounts WHERE username = ?");
+            getUserMate.setString(1, enteredUsername);
+
+            ResultSet result = getUserMate.executeQuery();
+
+            if (result.next())
+            {
+                userAccount = new UserAccount(
+                        result.getString("username"),
+                        result.getString("firstName"),
+                        result.getString("lastName"),
+                        result.getString("email"),
+                        result.getString("password")
+                );
+            }
+
+        } catch (SQLException error) { System.err.println(error); }
+
+        return userAccount;
     }
 }
