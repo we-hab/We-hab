@@ -17,85 +17,15 @@ import javafx.geometry.Pos;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
-import edu.qut.cab302.wehab.DatabaseConnection;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
+
+import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
 
 /**
  * Handles medication search functionality within the application.
  */
 
 public class MedicationSearchController {
-
-    private Connection connection = DatabaseConnection.getInstance();
-
-    private void createMedicationsTable() throws SQLException {
-
-        Statement createMedicationsTable;
-
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS medications (" +
-                "medicationID VARCHAR(255) PRIMARY KEY" +
-                ")";
-
-        createMedicationsTable = connection.createStatement();
-
-        createMedicationsTable.execute(createTableSQL);
-
-    }
-
-    private void createJunctionTable() throws SQLException {
-        Statement createJunctionTable;
-
-        String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS userMedications (" +
-                "username VARCHAR(255) NOT NULL," +
-                "medicationID VARCHAR(255) NOT NULL," +
-                "PRIMARY KEY (username, medicationID)" +
-                ")";
-
-        createJunctionTable = connection.createStatement();
-
-        createJunctionTable.execute(createJunctionTableSQL);
-    }
-
-    private void deleteMedicationsTable() throws SQLException {
-
-        Statement deleteMedicationsTable;
-        String deleteMedicationsTableSQL = "DROP TABLE IF EXISTS medications";
-        deleteMedicationsTable = connection.createStatement();
-        deleteMedicationsTable.execute(deleteMedicationsTableSQL);
-    }
-
-    private void deleteJunctionTable() throws SQLException {
-        Statement deleteJunctionTable;
-        String deleteJunctionTableSQL = "DROP TABLE IF EXISTS userMedications";
-        deleteJunctionTable = connection.createStatement();
-        deleteJunctionTable.execute(deleteJunctionTableSQL);
-    }
-
-    private void createTables() throws SQLException {
-        createMedicationsTable();
-        createJunctionTable();
-    }
-
-    private void deleteTables() throws SQLException {
-        deleteMedicationsTable();
-        deleteJunctionTable();
-    }
-
-    private void resetTables() throws SQLException {
-        deleteTables();
-        createTables();
-    }
-
-    private void saveMedication(String medicationID) throws SQLException {
-        PreparedStatement insertMedication;
-        String insertMedicationSQL = "INSERT OR IGNORE INTO medications (medicationID) VALUES (?)";
-
-        insertMedication = connection.prepareStatement(insertMedicationSQL);
-        insertMedication.setString(1, medicationID);
-    }
 
     @FXML
     private TextField searchField;
@@ -128,7 +58,6 @@ public class MedicationSearchController {
                 }
             }
         }
-
     }
 
 
@@ -254,6 +183,7 @@ public class MedicationSearchController {
         try {
             System.out.print("Accessing medications table...");
             createMedicationsTable();
+            createJunctionTable();
             System.out.println("success!");
         } catch (SQLException e) {
             System.out.println("failed.\n" + e.getMessage());
