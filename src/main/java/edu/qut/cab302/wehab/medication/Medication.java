@@ -14,8 +14,9 @@ public class Medication {
 
     private String id;
     private LocalDate lastUpdated;
-    private String genericName;
     private String brandName;
+    private String genericName;
+    private String manufacturer;
     private JSONArray activeIngredients;
     private String administrationRoute;
     private JSONArray establishedPharmacologicClasses;
@@ -26,8 +27,9 @@ public class Medication {
 
     public String getID() { return id; }
     public LocalDate getLastUpdated() { return lastUpdated; }
-    public String getGenericName() { return genericName; }
     public String getBrandName() { return brandName; }
+    public String getGenericName() { return genericName; }
+//    public String get
     public String[] getActiveIngredients() { return activeIngredientNames; }
     public String getAdministrationRoute() { return administrationRoute; }
     public String[] getMedicationTypes() { return establishedPharmacologicClassNames; }
@@ -52,8 +54,11 @@ public class Medication {
 
         JSONObject openfda = jsonMedicationObject.getJSONObject("openfda");
 
+        manufacturer = openfda.optJSONArray("manufacturer_name").optString(0);
+
+        brandName = openfda.optJSONArray("brand_name").optString(0) + " (" + manufacturer + ")";
+
         genericName = openfda.optJSONArray("generic_name").optString(0);
-        brandName = openfda.optJSONArray("brand_name").optString(0);
 
         if(openfda.has("substance_name")) {
             activeIngredients = openfda.optJSONArray("substance_name");

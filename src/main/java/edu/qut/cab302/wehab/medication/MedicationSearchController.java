@@ -80,8 +80,13 @@ public class MedicationSearchController {
         Label genericName = new Label("Generic Name: " + ((medication.hasBrandName()) ? medication.getGenericName() : null));
 
         String activeIngredients = "Active Ingredients: ";
-        for(String ingredient : medication.getActiveIngredients()) {
-            activeIngredients += ", " + ingredient;
+
+        if (medication.getActiveIngredients() != null) {
+            for(String ingredient : medication.getActiveIngredients()) {
+                activeIngredients += ", " + ingredient;
+            }
+        } else {
+            activeIngredients += "Unspecified";
         }
         Label activeIngredientsLabel = new Label(activeIngredients);
 
