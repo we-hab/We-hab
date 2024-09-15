@@ -1,0 +1,90 @@
+.main-nav-pane {
+  -fx-background-color: #A5C894;
+  -fx-background-radius: 15px;
+  -fx-border-radius: 15px;
+  -fx-border-color: #000000;
+  -fx-border-width: 0.1px;
+  -fx-padding: 10px;
+  -fx-margin: 10px;
+  -fx-spacing: 20px;
+
+}
+
+.main-nav-pane Button {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #000000;
+  -fx-background-radius: 15px;
+  -fx-border-radius: 15px;
+  -fx-font-size: 18px;
+  -fx-font-family: "Inter";
+}
+
+.main-container {
+  -fx-background-color: #F5F5DC;
+  -fx-padding: 10px;
+  -fx-spacing: 10px;
+}
+
+.main-content-container {
+  -fx-background-color: #F5F5DC;
+  -fx-spacing: 10px;
+}
+
+.main-content-container-vbox {
+  -fx-background-color: #F5F5E5;
+  -fx-background-radius: 15px;
+  -fx-border-radius: 15px;
+  -fx-border-color: #000000;
+  -fx-border-width: 0.1px;
+  -fx-spacing: 10px;
+  -fx-margin: 10px;
+}
+
+.main-header {
+  -fx-background-color: #F5F5DC;
+  -fx-border-width: 0.1px;
+  -fx-border-color: #000000;
+  -fx-font-size: 18px;
+  -fx-font-family: "Inter";
+  -fx-padding: 10px;
+  -fx-spacing: 30px;
+  -fx-alignment: CENTER;
+}
+
+.main-header VBox {
+  -fx-max-width: 100px;
+  -fx-wrap-text: true;
+}
+
+.main-header Button {
+  -fx-background-color: #00ff7f;
+  -fx-border-color: #000000;
+  -fx-background-radius: 15px;
+  -fx-border-radius: 15px;
+    -fx-spacing: 20px;
+}
+
+.primary-button {
+  -fx-base: -fx-primary-button;
+  -fx-background-color: #00ff7f;
+  -fx-border-color: #000000;
+  -fx-background-radius: 15px;
+  -fx-border-radius: 15px;
+}
+
+.secondary-button {
+  -fx-base: -fx-secondary-button;
+  -fx-background-color: #00ff7f;
+  -fx-border-color: #000000;
+  -fx-background-radius: 15px;
+  -fx-border-radius: 15px;
+}
+
+// Formatting for page headers.
+.heading {
+  -fx-base: -fx-heading;
+  -fx-font-size: 36px;
+  -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-font-family: "Inter";
+}
