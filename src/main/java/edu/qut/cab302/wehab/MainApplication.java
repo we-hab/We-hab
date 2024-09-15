@@ -14,6 +14,7 @@ public class MainApplication extends Application {
         // Change this line to sandbox your build
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("dashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
+        scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();

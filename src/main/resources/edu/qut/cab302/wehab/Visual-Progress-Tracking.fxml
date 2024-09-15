@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.ScatterChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="1280.0">
+      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header" stylesheets="@../../../../CSS/MainStyleSheet.css">
          <children>
             <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@user.png" />
+                  <Image url="@../../../../images/user.png" />
                </image>
                <HBox.margin>
-                  <Insets left="20.0" right="10.0" />
+                  <Insets />
                </HBox.margin></ImageView>
-            <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
                <children>
                   <Label text="Welcome!" />
                   <Label text="Firstname" wrapText="true" />
@@ -33,170 +42,169 @@
             </VBox>
             <ImageView fitHeight="65.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
                <HBox.margin>
-                  <Insets left="50.0" right="5.0" />
+                  <Insets />
                </HBox.margin>
                <image>
-                  <Image url="@Wehab%20banner.png" />
+                  <Image url="@../../../../images/Wehab%20banner.png" />
                </image></ImageView>
-            <Button mnemonicParsing="false" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Sign Out">
+            <Button alignment="CENTER" mnemonicParsing="false" text="Sign Out">
                <HBox.margin>
-                  <Insets left="60.0" />
+                  <Insets />
                </HBox.margin></Button>
          </children>
       </HBox>
-      <SplitPane dividerPositions="0.15023474178403756" prefHeight="747.0" prefWidth="1280.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="339.0" prefWidth="268.0">
+      <HBox prefHeight="734.0" prefWidth="1280.0" styleClass="main-container" stylesheets="@../../../../CSS/MainStyleSheet.css">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="702.0" prefWidth="182.0" styleClass="main-nav-pane" stylesheets="@../../../../CSS/MainStyleSheet.css">
                <children>
-                  <Button layoutX="25.0" layoutY="43.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Dashboard" />
-                  <Button layoutX="25.0" layoutY="129.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Workouts" />
-                  <Button layoutX="25.0" layoutY="217.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Medication" />
-                  <Button layoutX="25.0" layoutY="299.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px; -fx-border-color: #000000;" text="Settings" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@../../../../CSS/MainStyleSheet.css" text="Dashboard" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@../../../../CSS/MainStyleSheet.css" text="Workouts" />
+                  <Button mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Medication" />
+                  <Button mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@../../../../CSS/MainStyleSheet.css" text="Settings" />
                </children>
-            </AnchorPane>
-            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="1083.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+            <HBox prefHeight="715.0" prefWidth="1098.0" styleClass="main-content-container" stylesheets="@../../../../CSS/MainStyleSheet.css">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="1083.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="727.0" prefWidth="541.0" styleClass="main-content-container-vbox" stylesheets="@../../../../CSS/MainStyleSheet.css">
                      <children>
-                        <TextField minWidth="-Infinity" prefHeight="44.0" prefWidth="420.0" promptText="Eg. Panadol...">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Month Overview">
                            <font>
                               <Font size="20.0" />
                            </font>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="663.0" prefWidth="64.0">
-                     <children>
-                        <ScrollPane hbarPolicy="NEVER" prefHeight="776.0" prefWidth="1063.0" VBox.vgrow="ALWAYS">
-                          <content>
-                            <AnchorPane minHeight="-Infinity" style="-fx-background-color: #FFFFFF;">
-                                 <children>
-                                    <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="1047.0">
-                                       <children>
-                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="1000.0">
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <children>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="146.0" prefWidth="956.0" style="-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;">
-                                                   <children>
-                                                      <Button layoutX="844.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="View" />
-                                                      <Label fx:id="medicationTitle1" layoutX="6.0" layoutY="8.0" style="-fx-padding:10;" text="Medication.Results.MedicationTitle[i]" />
-                                                      <TextArea editable="false" layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="614.0" text="Panadol is a popular over-the-counter medication used to treat pain and fever. It contains paracetamol, a non-opioid analgesic that works to reduce pain signals sent to the brain." wrapText="true" />
-                                                      <ImageView fitHeight="85.0" fitWidth="158.0" layoutX="658.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@PanadolBox.jpg" />
-                                                         </image>
-                                                      </ImageView>
-                                                      <Button layoutX="844.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="Log Dose" />
-                                                   </children>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                </AnchorPane>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="1000.0">
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <children>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="146.0" prefWidth="956.0" style="-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;">
-                                                   <children>
-                                                      <Button layoutX="844.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="View" />
-                                                      <Label fx:id="medicationTitle11" layoutX="6.0" layoutY="8.0" style="-fx-padding:10;" text="Medication.Results.MedicationTitle[i]" />
-                                                      <TextArea editable="false" layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="614.0" text="Panadol is a popular over-the-counter medication used to treat pain and fever. It contains paracetamol, a non-opioid analgesic that works to reduce pain signals sent to the brain." wrapText="true" />
-                                                      <ImageView fitHeight="85.0" fitWidth="158.0" layoutX="658.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@PanadolBox.jpg" />
-                                                         </image>
-                                                      </ImageView>
-                                                      <Button layoutX="844.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="Log Dose" />
-                                                   </children>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                </AnchorPane>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="1000.0">
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <children>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="146.0" prefWidth="956.0" style="-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;">
-                                                   <children>
-                                                      <Button layoutX="844.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="View" />
-                                                      <Label fx:id="medicationTitle12" layoutX="6.0" layoutY="8.0" style="-fx-padding:10;" text="Medication.Results.MedicationTitle[i]" />
-                                                      <TextArea editable="false" layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="614.0" text="Panadol is a popular over-the-counter medication used to treat pain and fever. It contains paracetamol, a non-opioid analgesic that works to reduce pain signals sent to the brain." wrapText="true" />
-                                                      <ImageView fitHeight="85.0" fitWidth="158.0" layoutX="658.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@PanadolBox.jpg" />
-                                                         </image>
-                                                      </ImageView>
-                                                      <Button layoutX="844.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="Log Dose" />
-                                                   </children>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                </AnchorPane>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="1000.0">
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <children>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="146.0" prefWidth="956.0" style="-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;">
-                                                   <children>
-                                                      <Button layoutX="844.0" layoutY="76.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="View" />
-                                                      <Label fx:id="medicationTitle13" layoutX="6.0" layoutY="8.0" style="-fx-padding:10;" text="Medication.Results.MedicationTitle[i]" />
-                                                      <TextArea editable="false" layoutX="14.0" layoutY="40.0" prefHeight="65.0" prefWidth="614.0" text="Panadol is a popular over-the-counter medication used to treat pain and fever. It contains paracetamol, a non-opioid analgesic that works to reduce pain signals sent to the brain." wrapText="true" />
-                                                      <ImageView fitHeight="85.0" fitWidth="158.0" layoutX="658.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@PanadolBox.jpg" />
-                                                         </image>
-                                                      </ImageView>
-                                                      <Button layoutX="844.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #00FF7F; -fx-border-color: #000000;" text="Log Dose" />
-                                                   </children>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                </AnchorPane>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </VBox>
-                                 </children>
-                              </AnchorPane>
-                          </content>
+                        </Text>
+                        <GridPane alignment="CENTER" style="-fx-border-color: #000000; -fx-grid-lines-visible: true; -fx-background-color: #FFFFFF;">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
-                        </ScrollPane>
+                        </GridPane>
+                        <ScatterChart legendSide="RIGHT" prefHeight="216.0" prefWidth="422.0" style="-fx-border-color: #000000; -fx-background-color: #FFFFFF;" title="Minutes per day">
+                          <xAxis>
+                            <CategoryAxis endMargin="0.0" label="Fortnight" prefHeight="23.0" prefWidth="466.0" startMargin="0.0" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis label="Minutes" prefHeight="137.0" prefWidth="43.0" side="LEFT" upperBound="120.0" />
+                          </yAxis>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </ScatterChart>
+                        <HBox prefHeight="167.0" prefWidth="541.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="270.0" style="-fx-spacing: 10;">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Workout duration by type">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <ListView prefHeight="200.0" prefWidth="200.0">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </ListView>
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="271.0">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" prefHeight="167.0" prefWidth="541.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="270.0" style="-fx-spacing: 10;">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add new workout">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <MenuButton alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="secondary-button" text="WorkoutType">
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" text="Walk" />
+                                          <MenuItem mnemonicParsing="false" text="Jog" />
+                                          <MenuItem mnemonicParsing="false" text="Run" />
+                                          <MenuItem mnemonicParsing="false" text="Sprints" />
+                                        <MenuItem mnemonicParsing="false" text="Golf" />
+                                          <MenuItem mnemonicParsing="false" text="Tennis" />
+                                          <MenuItem mnemonicParsing="false" text="Rugby" />
+                                          <MenuItem mnemonicParsing="false" text="Football (Soccer)" />
+                                          <MenuItem mnemonicParsing="false" text="Football (Rugby League)" />
+                                          <MenuItem mnemonicParsing="false" text="Touch Football" />
+                                          <MenuItem mnemonicParsing="false" text="Hokey" />
+                                          <MenuItem mnemonicParsing="false" text="eSports" />
+                                          <MenuItem mnemonicParsing="false" text="Yoga" />
+                                          <MenuItem mnemonicParsing="false" text="Other" />
+                                      </items>
+                                    </MenuButton>
+                                    <DatePicker prefHeight="30.0" prefWidth="120.0">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </DatePicker>
+                                    <Spinner prefHeight="130.0" prefWidth="120.0" />
+                                    <ComboBox prefHeight="30.0" prefWidth="120.0" promptText="Effort" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="270.0" style="-fx-spacing: 10;">
+                                 <children>
+                                    <TextField prefHeight="218.0" prefWidth="270.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #000000;">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Button mnemonicParsing="false" styleClass="primary-button" stylesheets="@../../../../CSS/MainStyleSheet.css" text="Clear" />
+                                          <Button mnemonicParsing="false" styleClass="primary-button" text="Confirm" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
+                  <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="722.0" prefWidth="565.0" styleClass="main-content-container-vbox" stylesheets="@../../../../CSS/MainStyleSheet.css" />
                </children>
-            </VBox>
-        </items>
-      </SplitPane>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 </VBox>
