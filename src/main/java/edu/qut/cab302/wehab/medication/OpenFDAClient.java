@@ -58,6 +58,7 @@ public class OpenFDAClient {
         } else if(resultsMessage == "") {
             {
                 resultsMessage = "No results found.";
+                System.out.println(resultsMessage);
             }
         }
 

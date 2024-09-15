@@ -173,7 +173,7 @@ public class MedicationSearchController {
 
     public void initialize() {
 
-        // Uncomment to reset tables
+//         Uncomment to reset tables
 //        try {
 //            resetTables();
 //        } catch (SQLException e) {

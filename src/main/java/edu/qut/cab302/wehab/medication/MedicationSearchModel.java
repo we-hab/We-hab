@@ -39,7 +39,7 @@ public class MedicationSearchModel {
         createJunctionTable.execute(createJunctionTableSQL);
     }
 
-    private void deleteMedicationsTable() throws SQLException {
+    private static void deleteMedicationsTable() throws SQLException {
 
         Statement deleteMedicationsTable;
         String deleteMedicationsTableSQL = "DROP TABLE IF EXISTS medications";
@@ -47,24 +47,24 @@ public class MedicationSearchModel {
         deleteMedicationsTable.execute(deleteMedicationsTableSQL);
     }
 
-    private void deleteJunctionTable() throws SQLException {
+    private static void deleteJunctionTable() throws SQLException {
         Statement deleteJunctionTable;
         String deleteJunctionTableSQL = "DROP TABLE IF EXISTS userMedications";
         deleteJunctionTable = connection.createStatement();
         deleteJunctionTable.execute(deleteJunctionTableSQL);
     }
 
-    private void createTables() throws SQLException {
+    private static void createTables() throws SQLException {
         createMedicationsTable();
         createJunctionTable();
     }
 
-    private void deleteTables() throws SQLException {
+    private static void deleteTables() throws SQLException {
         deleteMedicationsTable();
         deleteJunctionTable();
     }
 
-    protected void resetTables() throws SQLException {
+    protected static void resetTables() throws SQLException {
         deleteTables();
         createTables();
     }
