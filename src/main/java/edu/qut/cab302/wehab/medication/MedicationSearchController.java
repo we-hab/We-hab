@@ -108,7 +108,7 @@ public class MedicationSearchController {
         description.setEditable(false);
         description.setWrapText(true);
 
-        ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("PanadolBox.jpg")));
+        ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/edu/qut/cab302/wehab/images/PanadolBox.jpg")));
         icon.setFitWidth(158);
         icon.setFitHeight(85);
         icon.setLayoutX(658);

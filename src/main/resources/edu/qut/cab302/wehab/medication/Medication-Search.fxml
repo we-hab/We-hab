@@ -23,7 +23,7 @@
          <children>
             <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../user.png" />
+                  <Image url="@../images/user.png" />
                </image>
                <HBox.margin>
                   <Insets left="20.0" right="10.0" />
@@ -39,7 +39,7 @@
                   <Insets left="50.0" right="5.0" />
                </HBox.margin>
                <image>
-                  <Image url="@../Wehab banner.png" />
+                  <Image url="@../images/Wehab banner.png" />
                </image></ImageView>
             <Button mnemonicParsing="false" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Sign Out">
                <HBox.margin>
