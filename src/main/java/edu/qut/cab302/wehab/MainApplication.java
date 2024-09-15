@@ -7,12 +7,13 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Change this line to sandbox your build
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Visual-Progress-Tracking.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
         scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
         stage.setTitle("Hello!");
