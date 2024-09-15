@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-
+/**
+ * Controller for managing reminders, such as viewing, editing, and deleting them.
+ */
 public class RemindersController {
 
     @FXML

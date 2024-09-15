@@ -42,3 +42,4 @@ build/
 
 ### Allow the db directory itself to be tracked ###
 !/db/.gitkeep
+/JavaDoc/

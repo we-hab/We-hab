@@ -9,14 +9,19 @@ import java.sql.Connection;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Main entry point for the application.
+ * Initializes the application and launches the user interface.
+ */
+
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Change this line to sandbox your build
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Visual-Progress-Tracking.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Login.fxml"));
         scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
-        stage.setTitle("Hello!");
+        Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
+        stage.setTitle("We-Hab");
         stage.setScene(scene);
         stage.show();
     }
