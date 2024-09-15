@@ -32,7 +32,13 @@ public class UserAccountDAO
         } catch (SQLException error) { System.err.println(error); }
     }
 
-    // A boolean class to login an existing user, will compare the username and password against the database and return true or false.
+
+    /**
+     * A class to login an existing user, will compare against the database for the entered username and password, and will return true or false if all correct.
+     * @param enteredUsername The username created by the user
+     * @param enteredPassword The password created of the user
+     * @return
+     */
     public boolean LoginToAccount(String enteredUsername, String enteredPassword)
     {
         try
