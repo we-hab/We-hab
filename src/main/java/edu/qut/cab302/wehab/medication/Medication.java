@@ -29,7 +29,7 @@ public class Medication {
     public LocalDate getLastUpdated() { return lastUpdated; }
     public String getBrandName() { return brandName; }
     public String getGenericName() { return genericName; }
-//    public String get
+    public String getManufacturer() { return manufacturer; }
     public String[] getActiveIngredients() { return activeIngredientNames; }
     public String getAdministrationRoute() { return administrationRoute; }
     public String[] getMedicationTypes() { return establishedPharmacologicClassNames; }
