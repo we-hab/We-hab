@@ -18,4 +18,8 @@ public class Session
     public UserAccount getLoggedInUser() { return loggedInUser; }
 
     public void setLoggedInUser(UserAccount loggedInUser) { this.loggedInUser = loggedInUser; }
+
+    public void clearLoggedInUser() {
+        loggedInUser = null;
+    }
 }

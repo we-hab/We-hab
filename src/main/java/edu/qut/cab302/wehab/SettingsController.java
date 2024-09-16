@@ -1,49 +1,48 @@
 package edu.qut.cab302.wehab;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.io.IOException;
-import edu.qut.cab302.wehab.MainApplication;
 
+public class SettingsController implements Initializable {
 
-public class DashboardController implements Initializable {
-
-    @FXML
-    private Button medicationButton;
     @FXML
     private Button workoutButton;
     @FXML
-    private Button settingsButton;
+    private Button medicationButton;
+    @FXML
+    private Button dashboardButton;
     @FXML
     private Label loggedInUserLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        medicationButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-               try {
-                   MainApplication.switchScene("medication/Medication-Search.fxml");
-               } catch (IOException e) {
-                   System.out.println("Failed to load medication page.\n" + e.getMessage());
-                   throw new RuntimeException(e);
-               }
-           }
-        });
-
+        // Workout button action
         workoutButton.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
                 try {
                     MainApplication.switchScene("Visual-Progress-Tracking.fxml");
+                } catch (IOException e) {
+                    System.out.println("Failed to load workout page.\n" + e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        // Medication button action
+        medicationButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    MainApplication.switchScene("medication/Medication-Search.fxml");
                 } catch (IOException e) {
                     System.out.println("Failed to load medication page.\n" + e.getMessage());
                     throw new RuntimeException(e);
@@ -51,14 +50,14 @@ public class DashboardController implements Initializable {
             }
         });
 
-        settingsButton.setOnAction(new EventHandler<ActionEvent>() {
-
+        // Dashboard button action
+        dashboardButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    MainApplication.switchScene("settings-page.fxml");
+                    MainApplication.switchScene("dashboard.fxml");
                 } catch (IOException e) {
-                    System.out.println("Failed to load medication page.\n" + e.getMessage());
+                    System.out.println("Failed to load dashboard page.\n" + e.getMessage());
                     throw new RuntimeException(e);
                 }
             }
@@ -89,6 +88,4 @@ public class DashboardController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
-  
 }
