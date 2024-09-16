@@ -17,7 +17,8 @@ public class DashboardController implements Initializable {
     @FXML
     private Button medicationButton;
 
-    public void initialize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         medicationButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -30,14 +31,7 @@ public class DashboardController implements Initializable {
                }
            }
         });
-    }
-  
-      @FXML
-    private Label loggedInUserLabel;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
 
         if (loggedInUser != null)
@@ -49,5 +43,8 @@ public class DashboardController implements Initializable {
             loggedInUserLabel.setText("Error");
         }
     }
+  
+      @FXML
+    private Label loggedInUserLabel;
   
 }
