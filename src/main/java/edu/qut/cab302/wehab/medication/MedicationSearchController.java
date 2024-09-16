@@ -1,6 +1,10 @@
 package edu.qut.cab302.wehab.medication;
 
+import edu.qut.cab302.wehab.MainApplication;
+import edu.qut.cab302.wehab.Session;
+import edu.qut.cab302.wehab.UserAccount;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -17,7 +21,10 @@ import javafx.geometry.Pos;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
+import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
 
@@ -25,7 +32,7 @@ import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
  * Handles medication search functionality within the application.
  */
 
-public class MedicationSearchController {
+public class MedicationSearchController implements Initializable {
 
     @FXML
     private TextField searchField;
@@ -38,6 +45,81 @@ public class MedicationSearchController {
 
     private Label resultMessage;
 
+    @FXML
+    private Button dashboardButton;
+    @FXML
+    private Button workoutButton;
+    @FXML
+    private Button settingsButton;
+    @FXML
+    private Label loggedInUserLabel;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Medication button action
+        dashboardButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    MainApplication.switchScene("dashboard.fxml");
+                } catch (IOException e) {
+                    System.out.println("Failed to load the dashboard.\n" + e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        // Settings button action
+        settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    MainApplication.switchScene("settings-page.fxml");
+                } catch (IOException e) {
+                    System.out.println("Failed to load settings page.\n" + e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        // Dashboard button action
+        workoutButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    MainApplication.switchScene("Visual-Progress-Tracking.fxml");
+                } catch (IOException e) {
+                    System.out.println("Failed to load the workout page.\n" + e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
+
+        if (loggedInUser != null)
+        {
+            String fullname = loggedInUser.getFirstName();
+            loggedInUserLabel.setText(fullname);
+        } else
+        {
+            loggedInUserLabel.setText("Error");
+        }
+    }
+
+    @FXML
+    private void handleSignOut(ActionEvent event) {
+        // Step 1: Clear session
+        Session.getInstance().clearLoggedInUser();
+
+        // Step 2: Navigate to the login screen
+        try {
+            MainApplication.switchScene("Login.fxml");  // Adjust the path based on your structure
+        } catch (IOException e) {
+            System.out.println("Failed to load login page.\n" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     protected void search() {
@@ -127,7 +209,7 @@ public class MedicationSearchController {
         viewButton.setPrefSize(81, 25);
         viewButton.setStyle("-fx-background-color: #00FF7F; -fx-border-color: #000000;");
 
-        Button logDoseButton = new Button("Log Dose");
+        Button logDoseButton = new Button("Add to List");
         logDoseButton.setLayoutX(844);
         logDoseButton.setLayoutY(40);
         logDoseButton.setPrefSize(81, 25);
