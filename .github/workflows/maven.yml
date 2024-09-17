@@ -38,3 +38,4 @@ jobs:
         with:
           branch: gh-pages        # The branch where GitHub Pages is served from
           folder: target/site/apidocs  # The folder containing the generated Javadoc
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
