@@ -70,7 +70,7 @@
                 <version>3.4.0</version>
                 <configuration>
                     <destDir>javadoc</destDir>
-                    <reportOutputDirectory>${project.build.directory}/docs</reportOutputDirectory>
+                    <reportOutputDirectory>${project.build.directory}/site/apidocs</reportOutputDirectory>
                 </configuration>
             </plugin>
             <plugin>
