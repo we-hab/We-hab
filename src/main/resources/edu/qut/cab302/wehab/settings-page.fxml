@@ -36,7 +36,7 @@
                   <Image url="@images/Wehab_banner-removebg.png" />
                </image>
             </ImageView>
-            <Button fx:id="signOutButton" onAction="#handleSignOut" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
+            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
