@@ -71,6 +71,17 @@ public class MedicationSearchController implements Initializable {
         {
             loggedInUserLabel.setText("Error");
         }
+
+        try {
+            System.out.print("Accessing medications table...");
+            createMedicationsTable();
+            createJunctionTable();
+            System.out.println("success!");
+        } catch (SQLException e) {
+            System.out.println("failed.\n" + e.getMessage());
+        }
+
+        resultsPane.setPadding(new Insets(20, 20, 20, 20));
     }
 
     @FXML
@@ -208,27 +219,6 @@ public class MedicationSearchController implements Initializable {
         medicationListing.getChildren().add(anchorPane);
 
         return medicationListing;
-    }
-
-    public void initialize() {
-
-//         Uncomment to reset tables
-//        try {
-//            resetTables();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-
-        try {
-            System.out.print("Accessing medications table...");
-            createMedicationsTable();
-            createJunctionTable();
-            System.out.println("success!");
-        } catch (SQLException e) {
-            System.out.println("failed.\n" + e.getMessage());
-        }
-
-        resultsPane.setPadding(new Insets(20, 20, 20, 20));
     }
 
 }
