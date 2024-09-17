@@ -22,7 +22,7 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         // Change this line to sandbox your build
         primaryStage = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("dashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
         scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
         stage.setTitle("We-Hab");

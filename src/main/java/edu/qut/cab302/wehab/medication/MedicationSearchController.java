@@ -1,6 +1,6 @@
 package edu.qut.cab302.wehab.medication;
 
-import edu.qut.cab302.wehab.MainApplication;
+import edu.qut.cab302.wehab.ButtonController;
 import edu.qut.cab302.wehab.Session;
 import edu.qut.cab302.wehab.UserAccount;
 import javafx.fxml.FXML;
@@ -52,48 +52,14 @@ public class MedicationSearchController implements Initializable {
     @FXML
     private Button settingsButton;
     @FXML
+    private Button signOutButton;
+    @FXML
     private Label loggedInUserLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Medication button action
-        dashboardButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    MainApplication.switchScene("dashboard.fxml");
-                } catch (IOException e) {
-                    System.out.println("Failed to load the dashboard.\n" + e.getMessage());
-                    throw new RuntimeException(e);
-                }
-            }
-        });
 
-        // Settings button action
-        settingsButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    MainApplication.switchScene("settings-page.fxml");
-                } catch (IOException e) {
-                    System.out.println("Failed to load settings page.\n" + e.getMessage());
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        // Dashboard button action
-        workoutButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    MainApplication.switchScene("Visual-Progress-Tracking.fxml");
-                } catch (IOException e) {
-                    System.out.println("Failed to load the workout page.\n" + e.getMessage());
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        ButtonController.initialiseButtons(dashboardButton, workoutButton, null, settingsButton, signOutButton);
 
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
 
@@ -104,20 +70,6 @@ public class MedicationSearchController implements Initializable {
         } else
         {
             loggedInUserLabel.setText("Error");
-        }
-    }
-
-    @FXML
-    private void handleSignOut(ActionEvent event) {
-        // Step 1: Clear session
-        Session.getInstance().clearLoggedInUser();
-
-        // Step 2: Navigate to the login screen
-        try {
-            MainApplication.switchScene("Login.fxml");  // Adjust the path based on your structure
-        } catch (IOException e) {
-            System.out.println("Failed to load login page.\n" + e.getMessage());
-            throw new RuntimeException(e);
         }
     }
 
