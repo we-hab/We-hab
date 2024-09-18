@@ -21,7 +21,6 @@ import javafx.geometry.Pos;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -87,16 +86,16 @@ public class MedicationSearchController implements Initializable {
     @FXML
     protected void search() {
 
-        OpenFDAClient openFDAClient = new OpenFDAClient();
+        OpenFDAClient apiClient = new OpenFDAClient();
 
         if (!searchField.getText().isEmpty()) {
 
             resultsScrollPane.setVvalue(0.0);
             resultsPane.getChildren().clear();
 
-            Medication[] results = openFDAClient.searchForMedications(searchField.getText());
+            Medication[] results = apiClient.searchForMedications(searchField.getText());
 
-            resultMessage = new Label(openFDAClient.getResultsMessage());
+            resultMessage = new Label(apiClient.getResultsMessageForView());
             resultsPane.getChildren().add(resultMessage);
 
             if (results != null) {
