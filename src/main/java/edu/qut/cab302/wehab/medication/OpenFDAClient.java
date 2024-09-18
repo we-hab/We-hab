@@ -66,13 +66,13 @@ public class OpenFDAClient {
 
     }
 
-    public static JSONObject getJSONObjectFromRawString(String rawJSONString) {
+    private static JSONObject getJSONObjectFromRawString(String rawJSONString) {
 
         return new JSONObject(rawJSONString);
 
     }
 
-    public String queryAPI(String medicationName) {
+    private String queryAPI(String medicationName) {
 
         try {
 
