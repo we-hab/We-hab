@@ -23,10 +23,10 @@ import java.time.format.DateTimeFormatter;
 
 public class OpenFDAClient {
 
-    private static String resultsMessage;
-    public static String getResultsMessage() { return resultsMessage; }
+    private String resultsMessage;
+    public String getResultsMessage() { return resultsMessage; }
 
-    public static Medication[] searchForMedications(String query) {
+    public Medication[] searchForMedications(String query) {
 
         resultsMessage = "";
 
@@ -47,7 +47,7 @@ public class OpenFDAClient {
         return null;
     }
 
-    private static JSONArray getMedicationsFromResults(JSONObject apiResult) {
+    private JSONArray getMedicationsFromResults(JSONObject apiResult) {
 
         JSONArray results = apiResult.optJSONArray("results");
 
@@ -72,7 +72,7 @@ public class OpenFDAClient {
 
     }
 
-    public static String queryAPI(String medicationName) {
+    public String queryAPI(String medicationName) {
 
         try {
 

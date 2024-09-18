@@ -87,14 +87,16 @@ public class MedicationSearchController implements Initializable {
     @FXML
     protected void search() {
 
+        OpenFDAClient openFDAClient = new OpenFDAClient();
+
         if (!searchField.getText().isEmpty()) {
 
             resultsScrollPane.setVvalue(0.0);
             resultsPane.getChildren().clear();
 
-            Medication[] results = OpenFDAClient.searchForMedications(searchField.getText());
+            Medication[] results = openFDAClient.searchForMedications(searchField.getText());
 
-            resultMessage = new Label(OpenFDAClient.getResultsMessage());
+            resultMessage = new Label(openFDAClient.getResultsMessage());
             resultsPane.getChildren().add(resultMessage);
 
             if (results != null) {
