@@ -11,7 +11,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.10.0</junit.version>
+        <junit.version>5.11.0</junit.version>
         <java.version>21</java.version>
     </properties>
 
@@ -41,9 +41,16 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.13.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.36.0.3</version>
+            <version>3.41.2.2</version>
         </dependency>
 
         <dependency>
@@ -51,6 +58,15 @@
             <artifactId>bcrypt</artifactId>
             <version>0.10.2</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -61,7 +77,7 @@
                 <version>3.4.0</version>
                 <configuration>
                     <destDir>javadoc</destDir>
-                    <reportOutputDirectory>${project.build.directory}/docs</reportOutputDirectory>
+                    <reportOutputDirectory>${project.build.directory}/site/apidocs</reportOutputDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -82,7 +98,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>edu.qut.cab302.wehab/edu.qut.cab302.wehab.MainApplication</mainClass>
+                            <mainClass>edu.qut.cab302.wehab.MainApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

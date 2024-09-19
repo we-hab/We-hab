@@ -15,10 +15,14 @@ import java.util.Objects;
  */
 
 public class MainApplication extends Application {
+
+    private static Stage primaryStage;
+
     @Override
     public void start(Stage stage) throws IOException {
         // Change this line to sandbox your build
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Login.fxml"));
+        primaryStage = stage;
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("dashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
         scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
         stage.setTitle("We-Hab");
@@ -32,5 +36,13 @@ public class MainApplication extends Application {
         DatabaseConnection.createTable();
         UserAccountDAO userAccountDAO = new UserAccountDAO();
         launch();
+    }
+
+    public static void switchScene(String fxmlFile) throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(fxmlFile));
+        Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
+        scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
