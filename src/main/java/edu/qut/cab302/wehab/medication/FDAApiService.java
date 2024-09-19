@@ -1,10 +1,7 @@
 package edu.qut.cab302.wehab.medication;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 import java.io.BufferedReader;
@@ -27,6 +24,10 @@ public class FDAApiService {
         return (HttpURLConnection) url.openConnection();
     }
 
+    protected URL createUrlObject(String urlString) throws MalformedURLException {
+        return new URL(urlString);
+    }
+
     public String queryAPI(String medicationName) {
 
         resultsMessage = null;
@@ -41,7 +42,7 @@ public class FDAApiService {
 
             apiUrlString = "https://api.fda.gov/drug/label.json?search=openfda.brand_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
 
-            URL url = new URL(apiUrlString);
+            URL url = createUrlObject(apiUrlString);
             HttpURLConnection connection = openConnection(url);
             connection.setRequestMethod("GET");
 
