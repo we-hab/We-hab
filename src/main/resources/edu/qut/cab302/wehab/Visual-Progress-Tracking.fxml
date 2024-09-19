@@ -20,188 +20,127 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:controller="edu.qut.cab302.wehab.VisualProgressTrackingController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header" stylesheets="@MainStyleSheet.css">
-         <children>
-            <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/user.png" />
-               </image>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin></ImageView>
-            <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
-               <children>
-                  <Label text="Welcome," />
-                  <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
-               </children>
-            </VBox>
-            <ImageView fitHeight="65.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <image>
-                  <Image url="@images/Wehab_banner-removebg.png" />
-               </image></ImageView>
-            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin></Button>
-         </children>
-      </HBox>
-      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" stylesheets="@MainStyleSheet.css">
-         <children>
-            <VBox alignment="TOP_CENTER" prefHeight="693.0" prefWidth="174.0" styleClass="main-nav-pane" stylesheets="@MainStyleSheet.css">
-               <children>
-                  <Button fx:id="dashboardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@MainStyleSheet.css" text="Dashboard" />
-                  <Button fx:id="workoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@MainStyleSheet.css" text="Workouts" />
-                  <Button fx:id="medicationButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Medication" />
-                  <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@MainStyleSheet.css" text="Settings" />
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </VBox>
-            <HBox prefHeight="693.0" prefWidth="1070.0" styleClass="main-content-container" stylesheets="@MainStyleSheet.css">
-               <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="727.0" prefWidth="541.0" styleClass="main-content-container-vbox" stylesheets="@MainStyleSheet.css">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Month Overview">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Text>
-                        <GridPane alignment="CENTER" style="-fx-border-color: #000000; -fx-grid-lines-visible: true; -fx-background-color: #FFFFFF;">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <VBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                        </GridPane>
-                        <ScatterChart legendSide="RIGHT" prefHeight="216.0" prefWidth="422.0" style="-fx-border-color: #000000; -fx-background-color: #FFFFFF;" title="Minutes per day">
-                          <xAxis>
-                            <CategoryAxis endMargin="0.0" label="Fortnight" prefHeight="23.0" prefWidth="466.0" startMargin="0.0" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis label="Minutes" prefHeight="137.0" prefWidth="43.0" side="LEFT" upperBound="120.0" />
-                          </yAxis>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                        </ScatterChart>
-                        <HBox prefHeight="167.0" prefWidth="541.0">
-                           <children>
-                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="270.0" style="-fx-spacing: 10;">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Workout duration by type">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Text>
-                                    <ListView prefHeight="200.0" prefWidth="200.0">
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </VBox.margin>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                    </ListView>
-                                 </children>
-                              </VBox>
-                              <VBox layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="271.0">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="167.0" prefWidth="541.0">
-                           <children>
-                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="270.0" style="-fx-spacing: 10;">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add new workout">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Text>
-                                    <MenuButton alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="secondary-button" text="WorkoutType">
-                                      <items>
-                                        <MenuItem mnemonicParsing="false" text="Walk" />
-                                          <MenuItem mnemonicParsing="false" text="Jog" />
-                                          <MenuItem mnemonicParsing="false" text="Run" />
-                                          <MenuItem mnemonicParsing="false" text="Sprints" />
-                                        <MenuItem mnemonicParsing="false" text="Golf" />
-                                          <MenuItem mnemonicParsing="false" text="Tennis" />
-                                          <MenuItem mnemonicParsing="false" text="Rugby" />
-                                          <MenuItem mnemonicParsing="false" text="Football (Soccer)" />
-                                          <MenuItem mnemonicParsing="false" text="Football (Rugby League)" />
-                                          <MenuItem mnemonicParsing="false" text="Touch Football" />
-                                          <MenuItem mnemonicParsing="false" text="Hokey" />
-                                          <MenuItem mnemonicParsing="false" text="eSports" />
-                                          <MenuItem mnemonicParsing="false" text="Yoga" />
-                                          <MenuItem mnemonicParsing="false" text="Other" />
-                                      </items>
-                                    </MenuButton>
-                                    <DatePicker prefHeight="30.0" prefWidth="120.0">
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </DatePicker>
-                                    <Spinner prefHeight="130.0" prefWidth="120.0" />
-                                    <ComboBox prefHeight="30.0" prefWidth="120.0" promptText="Effort" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </HBox.margin>
-                              </VBox>
-                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="270.0" style="-fx-spacing: 10;">
-                                 <children>
-                                    <TextField prefHeight="218.0" prefWidth="270.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #000000;">
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </VBox.margin>
-                                    </TextField>
-                                    <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 10;">
-                                       <children>
-                                          <Button mnemonicParsing="false" styleClass="primary-button" stylesheets="@MainStyleSheet.css" text="Clear" />
-                                          <Button mnemonicParsing="false" styleClass="primary-button" text="Confirm" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="10.0" />
-                                 </padding>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="722.0" prefWidth="565.0" styleClass="main-content-container-vbox" stylesheets="@MainStyleSheet.css" />
-               </children>
-            </HBox>
-         </children>
-      </HBox>
-   </children>
+<VBox fx:controller="edu.qut.cab302.wehab.WorkoutController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <!-- Header Section -->
+        <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header" stylesheets="@MainStyleSheet.css">
+            <children>
+                <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/user.png" />
+                    </image>
+                </ImageView>
+                <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
+                    <children>
+                        <Label text="Welcome!" />
+                        <Label text="Firstname" wrapText="true" />
+                    </children>
+                </VBox>
+                <ImageView fitHeight="65.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/Wehab_banner-removebg.png" />
+                    </image>
+                </ImageView>
+                <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+
+        <!-- Main Container Section -->
+        <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" stylesheets="@MainStyleSheet.css">
+            <children>
+                <!-- Navigation Pane -->
+                <VBox alignment="TOP_CENTER" prefHeight="693.0" prefWidth="174.0" styleClass="main-nav-pane" stylesheets="@MainStyleSheet.css">
+                    <children>
+                        <Button fx:id="dashboardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Dashboard" />
+                        <Button fx:id="workoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Workouts" />
+                        <Button fx:id="medicationButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Medication" />
+                        <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Settings" />
+                    </children>
+                </VBox>
+
+                <!-- Main Content Area -->
+                <HBox prefHeight="693.0" prefWidth="1070.0" styleClass="main-content-container" stylesheets="@MainStyleSheet.css">
+                    <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="727.0" prefWidth="541.0" styleClass="main-content-container-vbox" stylesheets="@MainStyleSheet.css">
+                            <children>
+                                <!-- Month Overview Section -->
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Month Overview">
+                                    <font>
+                                        <Font size="20.0" />
+                                    </font>
+                                </Text>
+                                <GridPane fx:id="monthOverviewGrid" alignment="CENTER" style="-fx-border-color: #000000; -fx-grid-lines-visible: true; -fx-background-color: #FFFFFF;">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </GridPane>
+                                <ScatterChart fx:id="minutesPerDayChart" legendSide="RIGHT" prefHeight="216.0" prefWidth="422.0" style="-fx-border-color: #000000; -fx-background-color: #FFFFFF;" title="Minutes per day">
+                                    <xAxis>
+                                        <CategoryAxis endMargin="0.0" label="Fortnight" prefHeight="23.0" prefWidth="466.0" startMargin="0.0" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Minutes" prefHeight="137.0" prefWidth="43.0" side="LEFT" upperBound="120.0" />
+                                    </yAxis>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </ScatterChart>
+
+                                <!-- Workout Section -->
+                                <HBox alignment="TOP_CENTER" prefHeight="167.0" prefWidth="541.0">
+                                    <children>
+                                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="270.0" style="-fx-spacing: 10;">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add new workout">
+                                                    <font>
+                                                        <Font size="20.0" />
+                                                    </font>
+                                                </Text>
+                                                <!-- Workout Type ComboBox -->
+                                                <ComboBox fx:id="workoutTypeComboBox" prefHeight="30.0" prefWidth="120.0" />
+
+                                                <!-- Date Picker for Date -->
+                                                <DatePicker fx:id="datePicker" prefHeight="30.0" prefWidth="120.0" />
+
+                                                <!-- Spinner for Duration -->
+                                                <Spinner fx:id="durationSpinner" prefHeight="30.0" prefWidth="120.0" />
+
+                                                <!-- ComboBox for Effort -->
+                                                <ComboBox fx:id="effortComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Effort" />
+
+                                                <!-- Confirm Button -->
+                                                <Button fx:id="confirmButton" mnemonicParsing="false" styleClass="primary-button" text="Confirm" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                                <!-- Workout Section End -->
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+    </children>
 </VBox>
