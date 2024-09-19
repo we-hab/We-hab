@@ -1,5 +1,3 @@
-package edu.qut.cab302.wehab;
-
 import edu.qut.cab302.wehab.UserAccount;
 import edu.qut.cab302.wehab.UserAccountDAO;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,7 +62,7 @@ public class UserAccountDOATest
         UserAccount userAccount = new UserAccount("testUser", "testFirstName", "testLastName", "testEmail", "testPassword");
         userAccountDAO.registerAccount(userAccount);
 
-        boolean loginSuccessful = userAccountDAO.LoginToAccount("testUser", "bobJaehgrtwhrthrthaneTmart");
+        boolean loginSuccessful = userAccountDAO.LoginToAccount("testUser", "bobJaneTmart");
         assertFalse(loginSuccessful);
     }
 
@@ -72,7 +70,7 @@ public class UserAccountDOATest
     @Test
     void testLoginWithAUsernameThatDoesntExist()
     {
-        boolean loginSuccessful = userAccountDAO.LoginToAccount("testUser", "testPassdgsgdsfgsword");
+        boolean loginSuccessful = userAccountDAO.LoginToAccount("testUser", "testPassword");
         assertFalse(loginSuccessful);
     }
 
@@ -115,7 +113,7 @@ public class UserAccountDOATest
     void testCharLimitFirstName()
     {
         String longInput = "a".repeat(266);
-        UserAccount userAccount = new UserAccount("testeeeUser", longInput, "testLastname", "testEmail@gmail.com", "testPassword");
+        UserAccount userAccount = new UserAccount("testUser", longInput, "testLastname", "testEmail@gmail.com", "testPassword");
         userAccountDAO.registerAccount(userAccount);
 
         List<String> users = userAccountDAO.getAllusernames();
@@ -127,7 +125,7 @@ public class UserAccountDOATest
     void testCharLimitLastName()
     {
         String longInput = "a".repeat(266);
-        UserAccount userAccount = new UserAccount("testeUser", "firstNameTest", longInput, "testEmail@gmail.com", "testPassword");
+        UserAccount userAccount = new UserAccount("testUser", "firstNameTest", longInput, "testEmail@gmail.com", "testPassword");
         userAccountDAO.registerAccount(userAccount);
 
         List<String> users = userAccountDAO.getAllusernames();
@@ -139,11 +137,10 @@ public class UserAccountDOATest
     void testCharLimitUsername()
     {
         String longInput = "a".repeat(266);
-        UserAccount userAccount = new UserAccount(longInput, "firstNameTest", "testLastname", "testEmail@gmail.com", "testPsgadfgdsfgdsfassword");
+        UserAccount userAccount = new UserAccount(longInput, "firstNameTest", "testLastname", "testEmail@gmail.com", "testPassword");
         userAccountDAO.registerAccount(userAccount);
 
         List<String> users = userAccountDAO.getAllusernames();
-        //for ()
-        assertFalse(users.contains(longInput));
+        assertFalse(users.contains("testUser"));
     }
 }

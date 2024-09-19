@@ -25,28 +25,16 @@ public class DatabaseConnection
 
     public static void createTable()
     {
-        String createUserAccountsTableSQL =
+        String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS userAccounts (" +
                         "username VARCHAR(255) PRIMARY KEY, " +
                         "firstName VARCHAR(255) NOT NULL, " +
                         "lastName VARCHAR(255) NOT NULL, " +
                         "email VARCHAR(255) NOT NULL," +
                         "password VARCHAR(255) NOT NULL" +
-                        ");";
-        String createMoodRatingTable =
-                "CREATE TABLE IF NOT EXISTS moodRatings (" +
-                        "username VARCHAR(255)," +
-                        "ratingDate DATE," +
-                        "moodRating INT, " +
-                        "PRIMARY KEY (username, ratingDate)," +
-                        "FOREIGN KEY (username) REFERENCES userAccounts(username)" +
-                        ");";
+                        ")";
 
-        try (Statement createTable = instance.createStatement())
-        {
-            createTable.execute(createUserAccountsTableSQL);
-            createTable.execute(createMoodRatingTable);
-        } catch (SQLException error) { System.err.println(error); }
+        try (Statement createTable = instance.createStatement()) { createTable.execute(createTableSQL); } catch (SQLException error) { System.err.println(error); }
     }
 
     public static Connection getInstance()

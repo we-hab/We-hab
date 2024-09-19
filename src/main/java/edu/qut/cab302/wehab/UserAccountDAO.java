@@ -3,10 +3,8 @@ package edu.qut.cab302.wehab;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PropertyPermission;
 
 /**
  * Data Access Object (DAO) for interacting with UserAccount entities in the database.
@@ -214,40 +212,5 @@ public class UserAccountDAO
         } catch (SQLException error) { System.err.println(error); }
 
         return userAccount;
-    }
-
-    public void insertMoodRating(String username, LocalDate date, int moodRating)
-    {
-        try
-        {
-            String insertSQL = "INSERT INTO moodRatings (username, ratingDate, moodRating) VALUES (?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(insertSQL);
-            statement.setString(1, username);
-            statement.setDate(2, java.sql.Date.valueOf(date));
-            statement.setInt(3, moodRating);
-            statement.execute();
-        } catch (SQLException error) { System.err.println(error); }
-    }
-
-    public List<MoodRating> getLast7DaysOfRatings(String username)
-    {
-        List<MoodRating> moodRatings = new ArrayList<>();
-
-        try
-        {
-            String sqlStatement = "SELECT * FROM moodRatings WHERE username = ? AND ratingDate >= date('now', '-7 days') ORDER BY ratingDate ASC";
-            PreparedStatement statement = connection.prepareStatement(sqlStatement);
-            statement.setString(1, username);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next())
-            {
-                LocalDate date = result.getDate("ratingDate").toLocalDate();
-                int rating = result.getInt("moodRating");
-                moodRatings.add(new MoodRating(date, rating));
-            }
-        } catch (SQLException error) { System.err.println(error); }
-
-        return moodRatings;
     }
 }
