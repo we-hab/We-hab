@@ -11,8 +11,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -85,7 +86,6 @@ public class WorkoutController {
         updateMinutesPerDayChart();
     }
 
-
     // Method to update the Month Overview grid
     private void updateMonthOverview() {
         // Clear the existing content
@@ -96,6 +96,15 @@ public class WorkoutController {
             if (workout.getDate().getMonth() == LocalDate.now().getMonth()) {
                 // Create a label to represent the workout and add it to the grid
                 Label workoutLabel = new Label(workout.getWorkoutType() + " " + workout.getDuration() + " mins");
+
+                // Set the width to avoid cut off and enable text wrapping
+                workoutLabel.setMaxWidth(100); // Adjust width as needed
+                workoutLabel.setWrapText(true); // Enable text wrapping
+
+                // Add a tooltip for detailed view
+                Tooltip tooltip = new Tooltip(workout.getWorkoutType() + ": " + workout.getDuration() + " mins, Effort: " + workout.getEffort());
+                Tooltip.install(workoutLabel, tooltip);
+
                 int row = workout.getDate().getDayOfMonth() / 7; // Example row calculation
                 int column = workout.getDate().getDayOfMonth() % 7; // Example column calculation
                 monthOverviewGrid.add(workoutLabel, column, row);
@@ -120,8 +129,12 @@ public class WorkoutController {
 
         // Add data points to the series
         for (Map.Entry<LocalDate, Integer> entry : dailyMinutes.entrySet()) {
-            series.getData().add(new XYChart.Data<>(entry.getKey().toString(), entry.getValue()));
+            String formattedDate = entry.getKey().toString(); // You can format the date if needed
+            series.getData().add(new XYChart.Data<>(formattedDate, entry.getValue()));
         }
+
+        // Rotate X-Axis labels
+        minutesPerDayChart.getXAxis().setTickLabelRotation(45); // Rotate labels for better readability
 
         // Add series to the scatter chart
         minutesPerDayChart.getData().add(series);
