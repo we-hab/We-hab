@@ -1,5 +1,6 @@
 package edu.qut.cab302.wehab.medication;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -22,6 +23,10 @@ public class FDAApiService {
     private String resultsMessage;
     public String getResultsMessage() { return resultsMessage; }
 
+    protected HttpURLConnection openConnection(URL url) throws IOException {
+        return (HttpURLConnection) url.openConnection();
+    }
+
     public String queryAPI(String medicationName) {
 
         resultsMessage = null;
@@ -29,15 +34,15 @@ public class FDAApiService {
         try {
 
             String encodedMedicationName = URLEncoder.encode(medicationName, StandardCharsets.UTF_8.toString());
-            String apiUrl;
+            String apiUrlString;
 
             LocalDate cutoffDate = LocalDate.now().minusYears(3);
             String cutoffTime = cutoffDate.toString();
 
-            apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.brand_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
+            apiUrlString = "https://api.fda.gov/drug/label.json?search=openfda.brand_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
 
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            URL url = new URL(apiUrlString);
+            HttpURLConnection connection = openConnection(url);
             connection.setRequestMethod("GET");
 
             int status = 0;
@@ -54,8 +59,8 @@ public class FDAApiService {
 
             } else if (status == 404) {
                 System.out.println("Brand name not found. Trying generic search...");
-                apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
-                url = new URL(apiUrl);
+                apiUrlString = "https://api.fda.gov/drug/label.json?search=openfda.generic_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
+                url = new URL(apiUrlString);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 status = connection.getResponseCode();
