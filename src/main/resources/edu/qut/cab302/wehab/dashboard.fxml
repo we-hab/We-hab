@@ -9,60 +9,64 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.DashboardController" >
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.DashboardController">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="1280.0">
+      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header" stylesheets="@MainStyleSheet.css">
          <children>
             <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../images/user.png" />
+                  <Image url="@images/user.png" />
                </image>
                <HBox.margin>
-                  <Insets left="20.0" right="10.0" />
-               </HBox.margin></ImageView>
-            <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0">
+                  <Insets />
+               </HBox.margin>
+            </ImageView>
+            <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
                <children>
-                  <Label text="Welcome," />
-                  <Label fx:id="loggedInUserLabel" text="BLANK" wrapText="true" />
+                  <Label text="Welcome!" />
+                  <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
                </children>
             </VBox>
             <ImageView fitHeight="65.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
                <HBox.margin>
-                  <Insets left="50.0" right="5.0" />
+                  <Insets />
                </HBox.margin>
                <image>
-                  <Image url="@Wehab%20banner.png" />
-               </image></ImageView>
-            <Button mnemonicParsing="false" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Sign Out">
+                  <Image url="@images/Wehab_banner-removebg.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
                <HBox.margin>
-                  <Insets left="60.0" />
-               </HBox.margin></Button>
+                  <Insets />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
-      <SplitPane dividerPositions="0.15023474178403756" prefHeight="747.0" prefWidth="1280.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="339.0" prefWidth="268.0">
+      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" stylesheets="@MainStyleSheet.css">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="702.0" prefWidth="182.0" styleClass="main-nav-pane" stylesheets="@MainStyleSheet.css">
                <children>
-                  <Button layoutX="25.0" layoutY="43.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Dashboard" />
-                  <Button layoutX="25.0" layoutY="129.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Workouts" />
-                  <Button layoutX="25.0" layoutY="217.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Medication" />
-                  <Button layoutX="25.0" layoutY="299.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" style="-fx-background-color: #00FF7F; -fx-border-color: #0000; -fx-border-image-width: 5px; -fx-font-size: 18px;" text="Settings" />
+                  <Button fx:id="dashboardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@MainStyleSheet.css" text="Dashboard" />
+                  <Button fx:id="workoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@MainStyleSheet.css" text="Workouts" />
+                  <Button fx:id="medicationButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Medication" />
+                  <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@MainStyleSheet.css" text="Settings" />
                </children>
-            </AnchorPane>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1083.0">
                <children>
-                  <HBox prefHeight="723.0" prefWidth="1083.0">
+                  <HBox prefHeight="723.0" prefWidth="1083.0" styleClass="main-content-container" stylesheets="@MainStyleSheet.css">
                      <children>
-                        <VBox prefHeight="717.0" prefWidth="680.0">
+                        <VBox prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox" stylesheets="@MainStyleSheet.css">
                            <children>
                               <TableView prefHeight="200.0" prefWidth="200.0">
                                 <columns>
@@ -102,7 +106,7 @@
                               <Insets />
                            </HBox.margin>
                         </VBox>
-                        <VBox prefHeight="717.0" prefWidth="680.0">
+                        <VBox prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox" stylesheets="@MainStyleSheet.css">
                            <children>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                  <children>
@@ -110,7 +114,8 @@
                                     <ListView prefHeight="200.0" prefWidth="200.0">
                                        <VBox.margin>
                                           <Insets />
-                                       </VBox.margin></ListView>
+                                       </VBox.margin>
+                                    </ListView>
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
@@ -255,13 +260,14 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="170.0" style="-fx-background-color: #00FF7F; -fx-font-size: 18px;" text="Generate Report">
+                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="170.0" styleClass="primary-button" stylesheets="@MainStyleSheet.css" text="Generate Report">
                      <VBox.margin>
                         <Insets bottom="10.0" top="20.0" />
-                     </VBox.margin></Button>
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
-        </items>
-      </SplitPane>
+         </children>
+      </HBox>
    </children>
 </VBox>

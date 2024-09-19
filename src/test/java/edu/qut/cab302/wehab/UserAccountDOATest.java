@@ -44,9 +44,6 @@ public class UserAccountDOATest
         assertEquals(1, users.stream().filter(username -> username.equals("testUser")).count());
     }
 
-    // Test to see how long I can make my username
-
-
     // Test login with correct username and password
     @Test
     void testLoginWithCorrectUsernameAndPassword()
