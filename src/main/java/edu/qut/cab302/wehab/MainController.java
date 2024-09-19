@@ -100,7 +100,7 @@ public class MainController {
             registerErrorText.setText("Enter a first name.");
             return;
         }
-        else if (enteredFirstName.length() > maxCharLimit)
+        else if (enteredFirstName.length() < maxCharLimit)
         {
             registerErrorText.setText("First name cannot exceed " + maxCharLimit + " characters.");
             return;
@@ -110,7 +110,7 @@ public class MainController {
             registerErrorText.setText("Enter a last name.");
             return;
         }
-        else if (enteredLastName.length() > maxCharLimit)
+        else if (enteredLastName.length() < maxCharLimit)
         {
             registerErrorText.setText(" cannot exceed " + maxCharLimit + " characters.");
             return;
@@ -120,7 +120,7 @@ public class MainController {
             registerErrorText.setText("Enter a username.");
             return;
         }
-        else if (enteredUsername.length() > maxCharLimit)
+        else if (enteredUsername.length() < maxCharLimit)
         {
             registerErrorText.setText(" cannot exceed " + maxCharLimit + " characters.");
             return;
