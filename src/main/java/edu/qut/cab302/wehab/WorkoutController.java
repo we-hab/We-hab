@@ -3,6 +3,7 @@ package edu.qut.cab302.wehab;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -15,11 +16,13 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
-public class WorkoutController {
+public class WorkoutController implements Initializable {
 
     // UI elements
     @FXML
@@ -33,6 +36,18 @@ public class WorkoutController {
     @FXML
     private Button confirmButton;
     @FXML
+    private Button dashboardButton;
+    @FXML
+    private Button workoutButton;
+    @FXML
+    private Button medicationButton;
+    @FXML
+    private Button settingsButton;
+    @FXML
+    private Button signOutButton;
+    @FXML
+    private Label loggedInUserLabel;
+    @FXML
     private GridPane monthOverviewGrid;
     @FXML
     private ScatterChart<String, Number> minutesPerDayChart;
@@ -41,7 +56,19 @@ public class WorkoutController {
     private ObservableList<Workout> workoutList = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize() {
+    public void initialize(URL location, ResourceBundle resources) {
+        ButtonController.initialiseButtons(dashboardButton, null, medicationButton, settingsButton, signOutButton);
+
+        UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
+
+        if (loggedInUser != null)
+        {
+            String firstName = loggedInUser.getFirstName();
+            loggedInUserLabel.setText(firstName + "!");
+        } else
+        {
+            loggedInUserLabel.setText("Error");
+        }
         // Initialize the workout types in the ComboBox
         workoutTypeComboBox.getItems().addAll("Walk", "Jog", "Run", "Yoga", "Cycling", "Other");
 
