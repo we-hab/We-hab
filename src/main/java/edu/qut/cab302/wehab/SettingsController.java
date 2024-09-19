@@ -33,8 +33,8 @@ public class SettingsController implements Initializable {
 
         if (loggedInUser != null)
         {
-            String fullname = loggedInUser.getFirstName();
-            loggedInUserLabel.setText(fullname);
+            String firstName = loggedInUser.getFirstName();
+            loggedInUserLabel.setText(firstName + "!");
         } else
         {
             loggedInUserLabel.setText("Error");

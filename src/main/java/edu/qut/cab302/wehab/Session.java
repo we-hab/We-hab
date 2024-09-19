@@ -5,10 +5,7 @@ public class Session
     private static Session instance;
     private UserAccount loggedInUser;
 
-    private Session()
-    {
-
-    }
+    private Session() { }
 
     public static Session getInstance()
     {
