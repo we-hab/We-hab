@@ -52,7 +52,7 @@ public class Medication {
             description = jsonMedicationObject.optJSONArray("purpose").optString(0);
         }
 
-        JSONObject openfda = jsonMedicationObject.getJSONObject("openfda");
+        JSONObject openfda = jsonMedicationObject.optJSONObject("openfda");
 
         manufacturer = openfda.optJSONArray("manufacturer_name").optString(0);
 
@@ -116,6 +116,4 @@ public class Medication {
         System.out.println("Description: " + description);
         System.out.println();
     }
-
-
 }
