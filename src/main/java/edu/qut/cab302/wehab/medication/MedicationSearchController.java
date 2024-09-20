@@ -4,7 +4,6 @@ import edu.qut.cab302.wehab.ButtonController;
 import edu.qut.cab302.wehab.Session;
 import edu.qut.cab302.wehab.UserAccount;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -21,27 +20,40 @@ import javafx.geometry.Pos;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
 
 /**
- * Handles medication search functionality within the application.
+ * The MedicationSearchController class is responsible for linking the UI view with the
+ * logic for handling the search functionality contained in the {@link MedicationSearchModel}.
+ * It initialises UI components, passes user-entered search criteria to an {@link OpenFDAClient}
+ * to search for medications, and displays search results in the view. This class also interacts
+ * with the database to store medication-related data.
  */
+public class MedicationSearchController {
 
-public class MedicationSearchController implements Initializable {
-
+    /**
+     * The TextField control where the user enters the medication search query.
+     */
     @FXML
     private TextField searchField;
 
+    /**
+     * The VBox container that holds the search results displayed on the screen.
+     */
     @FXML
     private VBox resultsPane;
 
+    /**
+     * The ScrollPane containing the resultsPane.
+     */
     @FXML
     private ScrollPane resultsScrollPane;
 
+    /**
+     * The label that displays the result message after performing the search.
+     */
     private Label resultMessage;
 
     @FXML
@@ -57,9 +69,12 @@ public class MedicationSearchController implements Initializable {
 
     OpenFDAClient apiClient;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    /**
+     * Initialises the controller class and its associated UI components. Sets up buttons, retrieves the
+     * logged-in user's information, initialises the medication tables in the database, and instantiates
+     * the API client.
+     */
+    public void initialize() {
 
         ButtonController.initialiseButtons(dashboardButton, workoutButton, null, settingsButton, signOutButton);
 
@@ -76,8 +91,7 @@ public class MedicationSearchController implements Initializable {
 
         try {
             System.out.print("Accessing medications table...");
-            createMedicationsTable();
-            createJunctionTable();
+            createMedicationTables();
             System.out.println("success!");
         } catch (SQLException e) {
             System.out.println("failed.\n" + e.getMessage());
@@ -88,6 +102,11 @@ public class MedicationSearchController implements Initializable {
         resultsPane.setPadding(new Insets(20, 20, 20, 20));
     }
 
+    /**
+     * Handles the search functionality when the user enters a query in the searchField. The method
+     * clears any previous results from the resultsPane, performs a search for medications using the API,
+     * and displays the results in the resultsPane.
+     */
     @FXML
     protected void search() {
 
@@ -109,7 +128,14 @@ public class MedicationSearchController implements Initializable {
         }
     }
 
-
+    /**
+     * Creates an HBox element representing a single medication result. This includes the medication's
+     * brand name and manufacturer, generic name, last updated date, active ingredients, and a description, along with
+     * buttons to view more details or add the medication to the user's saved medications.
+     *
+     * @param medication The Medication object containing details to display.
+     * @return An HBox containing the medication listing.
+     */
     private HBox createMedicationListing(Medication medication) {
 
         HBox medicationListing = new HBox();

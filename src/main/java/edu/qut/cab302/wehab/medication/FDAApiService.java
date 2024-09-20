@@ -14,20 +14,51 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 
-
+/**
+ * This class is responsible for directly querying the openFDA API to fetch drug label information.
+ * It facilitates searching for a medication by its brand or generic name and handles HTTP requests and responses.
+ */
 public class FDAApiService {
 
+    /** Message containing the result of the HTTP request, used for UI output and error handling. */
     private String resultsMessage;
+
+    /**
+     * @return string containing the result message or error details.
+     */
     public String getResultsMessage() { return resultsMessage; }
 
+    /**
+     * Opens an HTTP connection to the given URL.
+     *
+     * @param url The URL to which the connection is opened.
+     * @return An HttpURLConnection object for the specified URL.
+     * @throws IOException If an input or output exception occurs while opening the connection.
+     */
     protected HttpURLConnection openConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
     }
 
+    /**
+     * Creates a URL object from a string representation of the URL.
+     *
+     * @param urlString The string representation of the URL.
+     * @return A URL object created from the given string.
+     * @throws MalformedURLException If the string is not of a URL structure or cannot be parsed.
+     */
     protected URL createUrlObject(String urlString) throws MalformedURLException {
         return new URL(urlString);
     }
 
+    /**
+     * Queries the API for information about a medication by brand or generic name.
+     * First attempts to search by brand name, and if no results are found, searches by generic name.
+     *
+     * @param medicationName The name of the medication to search for (brand or generic).
+     * @return A String containing the API response, which is typically JSON data.
+     * null returned if an error occurs.
+     * @throws SocketTimeoutException If a connection timeout occurs during the query.
+     */
     public String queryAPI(String medicationName) throws SocketTimeoutException {
 
         resultsMessage = null;
@@ -37,6 +68,7 @@ public class FDAApiService {
             String encodedMedicationName = URLEncoder.encode(medicationName, StandardCharsets.UTF_8.toString());
             String apiUrlString;
 
+            // Define a cutoff date of 3 years before the current date to limit search results.
             LocalDate cutoffDate = LocalDate.now().minusYears(3);
             String cutoffTime = cutoffDate.toString();
 
@@ -93,8 +125,8 @@ public class FDAApiService {
                 System.out.println(resultsMessage);
                 inputStream = connection.getErrorStream();
             }
-
-
+            
+            // Read the API response from the InputStream.
             if (inputStream != null) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
