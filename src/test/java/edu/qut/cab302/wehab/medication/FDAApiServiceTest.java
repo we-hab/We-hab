@@ -22,7 +22,7 @@ import java.net.HttpURLConnection;
 
 public class FDAApiServiceTest {
 
-    private FDAApiService fdaApiService = new FDAApiService();
+    private FDAApiService fdaApiService;
 
     @BeforeEach
     public void setUp() {

@@ -10,6 +10,11 @@ public class MedicationParser {
 
     public Medication[] parseMedications(String jsonResponse) {
 
+        if(jsonResponse == null) {
+            resultsMessage = "No results found.";
+            return null;
+        }
+
         resultsMessage = null;
 
         JSONObject responseJSONObject = new JSONObject(jsonResponse);
