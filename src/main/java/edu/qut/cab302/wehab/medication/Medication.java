@@ -10,6 +10,12 @@ import org.json.JSONArray;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The Medication class represents a medication with various properties
+ * such as FDA ID, brand name, generic name, manufacturer, active ingredients,
+ * and pharmacologic classes. This class parses a JSON object from the
+ * OpenFDA API and stores the relevant details about the medication.
+ */
 public class Medication {
 
     private String id;
@@ -25,19 +31,66 @@ public class Medication {
     private String[] activeIngredientNames;
     private String[] establishedPharmacologicClassNames;
 
+    /**
+     * @return The FDA ID of the medication.
+     */
     public String getID() { return id; }
+
+    /**
+     * @return The last updated date for the medication information.
+     */
     public LocalDate getLastUpdated() { return lastUpdated; }
+
+    /**
+     * @return The brand name of the medication.
+     */
     public String getBrandName() { return brandName; }
+
+    /**
+     * @return The generic name of the medication.
+     */
     public String getGenericName() { return genericName; }
+
+    /**
+     * @return The manufacturer of the medication.
+     */
     public String getManufacturer() { return manufacturer; }
+
+    /**
+     * @return An array of active ingredient names, or null if unspecified.
+     */
     public String[] getActiveIngredients() { return activeIngredientNames; }
+
+    /**
+     * @return The administration route of the medication (e.g., oral, topical),
+     * or null if unspecified.
+     */
     public String getAdministrationRoute() { return administrationRoute; }
+
+    /**
+     * @return An array of the established pharmacologic classes of the medication,
+     * or null if unspecified.
+     */
     public String[] getMedicationTypes() { return establishedPharmacologicClassNames; }
+
+    /**
+     * @return The description or purpose of the medication, or null if unspecified.
+     */
     public String getDescription() { return description; }
 
+    /**
+     * Checks whether the medication has a brand name.
+     *
+     * @return true if a brand name exists, otherwise false.
+     */
     public boolean hasBrandName() { return brandName != null; }
 
-    // Methods
+    /**
+     * Constructs a Medication object by parsing a JSONObject containing the
+     * medication information from the openFDA API.
+     *
+     * @param jsonMedicationObject The JSONObject representing the medication data.
+     */
     Medication(JSONObject jsonMedicationObject) {
 
         id = jsonMedicationObject.getString("id");
@@ -87,6 +140,12 @@ public class Medication {
         }
     }
 
+    /**
+     * *For debugging purposes*
+     * Prints all relevant information about the medication to the console, including its
+     * generic name, brand name, active ingredients, administration route,
+     * pharmacologic classes, and description.
+     */
     public void printInfo() {
         System.out.println("Last Updated: " + lastUpdated);
         System.out.println("Generic Name: " + genericName);
