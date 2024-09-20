@@ -76,7 +76,6 @@ public class FDAApiServiceTest {
     @Test
     public void testQueryAPI_Timeout() throws IOException {
 
-        fdaApiService = new FDAApiService();
         FDAApiService apiServiceSpy = spy(fdaApiService);
 
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
