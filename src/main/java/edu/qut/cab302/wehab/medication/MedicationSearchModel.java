@@ -22,7 +22,6 @@ public class MedicationSearchModel {
         createMedicationsTable = connection.createStatement();
 
         createMedicationsTable.execute(createTableSQL);
-
     }
 
     protected static void createJunctionTable() throws SQLException {
