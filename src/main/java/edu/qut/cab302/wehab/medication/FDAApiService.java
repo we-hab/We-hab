@@ -28,7 +28,7 @@ public class FDAApiService {
         return new URL(urlString);
     }
 
-    public String queryAPI(String medicationName) {
+    public String queryAPI(String medicationName) throws SocketTimeoutException {
 
         resultsMessage = null;
 
@@ -72,37 +72,51 @@ public class FDAApiService {
                 } else if (status == 404) {
                     System.out.println("Generic not found.");
                     inputStream = connection.getErrorStream();
-                } else {
-                    resultsMessage = "Error searching for medication: " + medicationName;
+                } else if (status == 400) {
+                    resultsMessage = "Bad request: " + medicationName;
                     System.out.println("HTTP error response code: " + status);
+                    System.out.println(resultsMessage);
+                    inputStream = connection.getErrorStream();
+                } else {
+                    resultsMessage = "HTTP error response code: " + status;
                     System.out.println(resultsMessage);
                     inputStream = connection.getErrorStream();
                 }
 
+            } else if (status == 400) {
+                resultsMessage = "Bad request: " + medicationName;
+                System.out.println(resultsMessage);
+                inputStream = connection.getErrorStream();
+
             } else {
-                resultsMessage += "Error searching for medication: " + medicationName;
-                System.out.println("HTTP error response code: " + status);
+                resultsMessage = "HTTP error response code: " + status;
                 System.out.println(resultsMessage);
                 inputStream = connection.getErrorStream();
             }
 
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            StringBuilder content = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                content.append(line);
+            if (inputStream != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                StringBuilder content = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    content.append(line);
+                }
+                reader.close();
+                connection.disconnect();
+
+                return content.toString();
+            } else {
+                return null;
             }
-            reader.close();
-            connection.disconnect();
 
-            return content.toString();
-
+        } catch (SocketTimeoutException e) {
+            resultsMessage = e.getMessage();
+            return null;
         } catch (Exception e) {
+            resultsMessage = e.getMessage();
             e.printStackTrace();
             return null;
         }
-
     }
-
 }
