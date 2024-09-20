@@ -55,6 +55,9 @@ public class MedicationSearchController implements Initializable {
     @FXML
     private Label loggedInUserLabel;
 
+    OpenFDAClient apiClient;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -80,13 +83,13 @@ public class MedicationSearchController implements Initializable {
             System.out.println("failed.\n" + e.getMessage());
         }
 
+        apiClient = new OpenFDAClient();
+
         resultsPane.setPadding(new Insets(20, 20, 20, 20));
     }
 
     @FXML
     protected void search() {
-
-        OpenFDAClient apiClient = new OpenFDAClient();
 
         if (!searchField.getText().isEmpty()) {
 
