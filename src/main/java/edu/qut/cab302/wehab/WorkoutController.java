@@ -36,6 +36,9 @@ public class WorkoutController {
     private Button signOutButton;
 
     @FXML
+    private Label loggedInUserLabel;
+
+    @FXML
     private ComboBox<String> workoutTypeComboBox;
     @FXML
     private DatePicker datePicker;
@@ -55,6 +58,17 @@ public class WorkoutController {
 
     @FXML
     public void initialize() {
+
+        UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
+
+        if (loggedInUser != null)
+        {
+            String fullname = loggedInUser.getFirstName();
+            loggedInUserLabel.setText(fullname);
+        } else
+        {
+            loggedInUserLabel.setText("Error");
+        }
 
         ButtonController.initialiseButtons(dashboardButton, null, medicationButton, settingsButton, signOutButton);
 

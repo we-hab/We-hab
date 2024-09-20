@@ -33,7 +33,7 @@
                 <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
                     <children>
                         <Label text="Welcome!" />
-                        <Label text="Firstname" wrapText="true" />
+                        <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
                     </children>
                 </VBox>
                 <ImageView fitHeight="65.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
