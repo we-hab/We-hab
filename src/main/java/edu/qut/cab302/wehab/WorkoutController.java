@@ -22,6 +22,19 @@ import java.util.Map;
 public class WorkoutController {
 
     // UI elements
+
+    @FXML
+    private Button dashboardButton;
+
+    @FXML
+    private Button medicationButton;
+
+    @FXML
+    private Button settingsButton;
+
+    @FXML
+    private Button signOutButton;
+
     @FXML
     private ComboBox<String> workoutTypeComboBox;
     @FXML
@@ -42,6 +55,9 @@ public class WorkoutController {
 
     @FXML
     public void initialize() {
+
+        ButtonController.initialiseButtons(dashboardButton, null, medicationButton, settingsButton, signOutButton);
+
         // Initialize the workout types in the ComboBox
         workoutTypeComboBox.getItems().addAll("Walk", "Jog", "Run", "Yoga", "Cycling", "Other");
 
