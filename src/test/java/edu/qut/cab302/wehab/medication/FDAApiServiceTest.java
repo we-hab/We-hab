@@ -75,10 +75,13 @@ public class FDAApiServiceTest {
 
     @Test
     public void testQueryAPI_Timeout() throws IOException {
+
+        fdaApiService = new FDAApiService();
+        FDAApiService apiServiceSpy = spy(fdaApiService);
+
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
         when(mockConnection.getResponseCode()).thenThrow(new SocketTimeoutException("Connection timed out"));
 
-        FDAApiService apiServiceSpy = spy(fdaApiService);
         doReturn(mockConnection).when(apiServiceSpy).openConnection(any(URL.class));
 
         String result = apiServiceSpy.queryAPI("medication");
