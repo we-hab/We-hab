@@ -74,7 +74,7 @@
                   </HBox>
                   <VBox prefHeight="628.0" prefWidth="1078.0" styleClass="main-content-container-vbox" stylesheets="@../MainStyleSheet.css">
                      <children>
-                        <ScrollPane fx:id="resultsScrollPane" prefHeight="634.0" prefWidth="1084.0">
+                        <ScrollPane fx:id="resultsScrollPane" prefHeight="634.0" prefWidth="1084.0" fitToWidth="true">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2550.0" prefWidth="1063.0">
                                  <children>

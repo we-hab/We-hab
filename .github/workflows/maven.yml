@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - WH-70_medication_testing
   pull_request:
     branches:
       - main
@@ -18,11 +19,11 @@ jobs:
         uses: actions/checkout@v3
       
       # Step 2: Set up JDK
-      - name: Set up JDK 21
+      - name: Set up JDK 22
         uses: actions/setup-java@v3
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: '22'
+          distribution: 'adopt'
 
       # Step 3: Build with Maven
       - name: Build with Maven

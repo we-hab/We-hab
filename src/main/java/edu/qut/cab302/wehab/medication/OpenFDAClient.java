@@ -2,6 +2,8 @@ package edu.qut.cab302.wehab.medication;
 
 import org.json.JSONArray;
 
+import java.net.SocketTimeoutException;
+
 public class OpenFDAClient {
 
     private FDAApiService apiService;
@@ -41,6 +43,10 @@ public class OpenFDAClient {
 
             return searchResults;
 
+        } catch (SocketTimeoutException e) {
+            resultsMessageForView = e.getMessage();
+            e.printStackTrace();
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

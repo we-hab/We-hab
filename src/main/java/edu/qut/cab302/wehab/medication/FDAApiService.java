@@ -1,9 +1,7 @@
 package edu.qut.cab302.wehab.medication;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
+import java.io.IOException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 import java.io.BufferedReader;
@@ -22,22 +20,30 @@ public class FDAApiService {
     private String resultsMessage;
     public String getResultsMessage() { return resultsMessage; }
 
-    public String queryAPI(String medicationName) {
+    protected HttpURLConnection openConnection(URL url) throws IOException {
+        return (HttpURLConnection) url.openConnection();
+    }
+
+    protected URL createUrlObject(String urlString) throws MalformedURLException {
+        return new URL(urlString);
+    }
+
+    public String queryAPI(String medicationName) throws SocketTimeoutException {
 
         resultsMessage = null;
 
         try {
 
             String encodedMedicationName = URLEncoder.encode(medicationName, StandardCharsets.UTF_8.toString());
-            String apiUrl;
+            String apiUrlString;
 
             LocalDate cutoffDate = LocalDate.now().minusYears(3);
             String cutoffTime = cutoffDate.toString();
 
-            apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.brand_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
+            apiUrlString = "https://api.fda.gov/drug/label.json?search=openfda.brand_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
 
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            URL url = createUrlObject(apiUrlString);
+            HttpURLConnection connection = openConnection(url);
             connection.setRequestMethod("GET");
 
             int status = 0;
@@ -54,8 +60,8 @@ public class FDAApiService {
 
             } else if (status == 404) {
                 System.out.println("Brand name not found. Trying generic search...");
-                apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
-                url = new URL(apiUrl);
+                apiUrlString = "https://api.fda.gov/drug/label.json?search=openfda.generic_name:%22" + encodedMedicationName + "%22+AND+effective_time:[" + cutoffTime + "+TO+*]&limit=30";
+                url = new URL(apiUrlString);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 status = connection.getResponseCode();
@@ -66,37 +72,51 @@ public class FDAApiService {
                 } else if (status == 404) {
                     System.out.println("Generic not found.");
                     inputStream = connection.getErrorStream();
-                } else {
-                    resultsMessage = "Error searching for medication: " + medicationName;
+                } else if (status == 400) {
+                    resultsMessage = "Bad request: " + medicationName;
                     System.out.println("HTTP error response code: " + status);
+                    System.out.println(resultsMessage);
+                    inputStream = connection.getErrorStream();
+                } else {
+                    resultsMessage = "HTTP error response code: " + status;
                     System.out.println(resultsMessage);
                     inputStream = connection.getErrorStream();
                 }
 
+            } else if (status == 400) {
+                resultsMessage = "Bad request: " + medicationName;
+                System.out.println(resultsMessage);
+                inputStream = connection.getErrorStream();
+
             } else {
-                resultsMessage += "Error searching for medication: " + medicationName;
-                System.out.println("HTTP error response code: " + status);
+                resultsMessage = "HTTP error response code: " + status;
                 System.out.println(resultsMessage);
                 inputStream = connection.getErrorStream();
             }
 
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            StringBuilder content = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                content.append(line);
+            if (inputStream != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                StringBuilder content = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    content.append(line);
+                }
+                reader.close();
+                connection.disconnect();
+
+                return content.toString();
+            } else {
+                return null;
             }
-            reader.close();
-            connection.disconnect();
 
-            return content.toString();
-
+        } catch (SocketTimeoutException e) {
+            resultsMessage = e.getMessage();
+            return null;
         } catch (Exception e) {
+            resultsMessage = e.getMessage();
             e.printStackTrace();
             return null;
         }
-
     }
-
 }
