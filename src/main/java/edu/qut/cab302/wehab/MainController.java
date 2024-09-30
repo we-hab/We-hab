@@ -95,44 +95,54 @@ public class MainController {
 
         final int maxCharLimit = 255;
 
+        registerErrorText.getStyleClass().remove("error-label");
+
         if (enteredFirstName.isEmpty())
         {
             registerErrorText.setText("Enter a first name.");
+            registerErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else if (enteredFirstName.length() > maxCharLimit)
         {
             registerErrorText.setText("First name cannot exceed " + maxCharLimit + " characters.");
+            registerErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else if (enteredLastName.isEmpty())
         {
             registerErrorText.setText("Enter a last name.");
+            registerErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else if (enteredLastName.length() > maxCharLimit)
         {
             registerErrorText.setText(" cannot exceed " + maxCharLimit + " characters.");
+            registerErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else if (enteredUsername.isEmpty())
         {
             registerErrorText.setText("Enter a username.");
+            registerErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else if (enteredUsername.length() > maxCharLimit)
         {
             registerErrorText.setText(" cannot exceed " + maxCharLimit + " characters.");
+            registerErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else if (enteredEmail.isEmpty())
         {
             registerErrorText.setText("Enter an email.");
+            registerErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else if (enteredPassword.isEmpty() && enteredPasswordConfirm.isEmpty())
         {
             registerErrorText.setText("Enter a password.");
+            registerErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else
@@ -140,22 +150,25 @@ public class MainController {
             if (usernames.contains(enteredUsername))
             {
                 registerErrorText.setText("Username taken, try another.");
+                registerErrorText.getStyleClass().add("error-label");  // Apply error styling
                 return;
             }
             else if (emails.contains(enteredEmail)) // Same email
             {
                 registerErrorText.setText("Email taken, try another.");
-                System.out.println("Email taken, try another.");
+                registerErrorText.getStyleClass().add("error-label");  // Apply error styling
                 return;
             }
             else if (!isAValidEmail(enteredEmail))
             {
                 registerErrorText.setText("Enter a valid email address.");
+                registerErrorText.getStyleClass().add("error-label");  // Apply error styling
                 return;
             }
             else if (!enteredPassword.equals(enteredPasswordConfirm))
             {
                 registerErrorText.setText("Passwords do not match.");
+                registerErrorText.getStyleClass().add("error-label");  // Apply error styling
                 return;
             }
             else
@@ -163,6 +176,10 @@ public class MainController {
                 UserAccount newAccount = new UserAccount(enteredUsername, enteredFirstName, enteredLastName, enteredEmail, enteredPassword);
                 userAccountDAO.registerAccount(newAccount);
                 Session.getInstance().setLoggedInUser(newAccount);
+
+                // Clear error message and style if login succeeds
+                ErrorText.setText("");
+                registerErrorText.getStyleClass().remove("error-label");
 
                 try
                 {
@@ -189,14 +206,19 @@ public class MainController {
 
         UserAccountDAO userAccountDAO = new UserAccountDAO();
 
+        // Clear any previous error styling before validating
+        ErrorText.getStyleClass().remove("error-label");
+
         if (enteredUsername.isEmpty())
         {
             ErrorText.setText("Please enter a username.");
+            ErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else if (enteredPassword.isEmpty())
         {
             ErrorText.setText("Please enter a password");
+            ErrorText.getStyleClass().add("error-label");  // Apply error styling
             return;
         }
         else
@@ -209,6 +231,10 @@ public class MainController {
             {
                 UserAccount loggedInUser = userAccountDAO.getByUsername(enteredUsername);
                 Session.getInstance().setLoggedInUser(loggedInUser);
+
+                // Clear error message and style if login succeeds
+                ErrorText.setText("");
+                ErrorText.getStyleClass().remove("error-label");
 
                 try
                 {
@@ -223,6 +249,7 @@ public class MainController {
             }
             else {
                 ErrorText.setText("Username or password not found. Try again.");
+                ErrorText.getStyleClass().add("error-label");  // Apply error styling
                 passwordField.clear();
             }
         }
