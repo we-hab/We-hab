@@ -4,41 +4,35 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.MainController">
-   <center>
-      <Pane prefHeight="276.0" prefWidth="457.0" BorderPane.alignment="CENTER">
+<HBox prefHeight="800.0" prefWidth="1280.0" styleClass="main-content-container" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.MainController">
+   <children>
+      <VBox prefHeight="800.0" prefWidth="640.0" styleClass="login-ui">
          <children>
-            <VBox layoutX="93.0" prefHeight="400.0" prefWidth="414.0">
-               <children>
-                  <Label alignment="BOTTOM_CENTER" prefHeight="56.0" prefWidth="414.0" text="Welcome " />
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="433.0" text="Login" />
-                  <HBox prefHeight="28.0" prefWidth="414.0">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="Username:" />
-                        <TextField fx:id="usernameField" prefHeight="200.0" prefWidth="200.0" promptText="username123..." />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="28.0" prefWidth="414.0">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="Password:" />
-                        <PasswordField fx:id="passwordField" prefHeight="26.0" prefWidth="200.0" promptText="password..." />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="28.0" prefWidth="414.0">
-                     <children>
-                        <Button onAction="#onLoginClick" text="Login" />
-                        <Button text="Register Account" onAction="#onGoToRegisterScreen"/>
-                        <Label fx:id="ErrorText" alignment="BOTTOM_RIGHT" textFill="red" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
+            <Label styleClass="heading" stylesheets="@MainStyleSheet.css" text="LOGIN" />
+            <Label text="Start tracking your recovery" />
+            <TextField fx:id="usernameField" prefHeight="40.0" prefWidth="335.0" promptText="Username" styleClass="login-ui-entry" stylesheets="@MainStyleSheet.css" />
+            <PasswordField fx:id="passwordField" prefHeight="40.0" prefWidth="335.0" promptText="Password" styleClass="login-ui-entry" stylesheets="@MainStyleSheet.css" />
+            <Label fx:id="ErrorText" styleClass="error-label" stylesheets="@MainStyleSheet.css" />
+            <Button mnemonicParsing="false" onAction="#onLoginClick" prefHeight="27.0" prefWidth="200.0" styleClass="login-ui-button" stylesheets="@MainStyleSheet.css" text="Login" />
+            <Label />
+            <Label text="First time? Create an account to get started!" />
+            <Label />
+            <Button mnemonicParsing="false" onAction="#onGoToRegisterScreen" prefHeight="27.0" prefWidth="200.0" styleClass="login-ui-button" text="Register" />
          </children>
-      </Pane>
-   </center>
-</BorderPane>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="800.0" prefWidth="640.0">
+         <children>
+            <ImageView fx:id="loginPicture" fitHeight="600.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" styleClass="login-ui-picture">
+               <image>
+                  <Image url="@images/We-Hab-Login-Graphic-rounded.png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+   </children>
+</HBox>
