@@ -17,32 +17,43 @@ import java.util.Objects;
 public class MainApplication extends Application {
 
     private static Stage primaryStage;
+    private static String activeStyleSheet = "MainStyleSheet.css";  // Default stylesheet
 
     @Override
     public void start(Stage stage) throws IOException {
-        // Change this line to sandbox your build
         primaryStage = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("Login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
-        scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
-        stage.setTitle("We-Hab");
-        stage.setScene(scene);
-        stage.show();
+        switchScene("Login.fxml"); // Start with the login page
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Connection connection = DatabaseConnection.getInstance(); // Connects to the database
         DatabaseConnection.createTable();
         UserAccountDAO userAccountDAO = new UserAccountDAO();
         launch();
     }
 
-    public static void switchScene(String fxmlFile) throws IOException{
+    public static void switchScene(String fxmlFile) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(fxmlFile));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
-        scene.getStylesheets().add(MainApplication.class.getResource("MainStyleSheet.css").toExternalForm());
+
+        // Apply the currently active stylesheet
+        scene.getStylesheets().add(MainApplication.class.getResource(activeStyleSheet).toExternalForm());
+
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public static String getActiveStyleSheet() {
+        return activeStyleSheet;
+    }
+
+    // Method to change the active stylesheet globally
+    public static void setActiveStyleSheet(String styleSheet) {
+        activeStyleSheet = styleSheet;
+
+        // Apply the new stylesheet to the current scene
+        Scene currentScene = primaryStage.getScene();
+        currentScene.getStylesheets().clear();
+        currentScene.getStylesheets().add(MainApplication.class.getResource(activeStyleSheet).toExternalForm());
     }
 }
