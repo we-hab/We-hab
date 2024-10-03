@@ -48,6 +48,22 @@ public class MainController {
         return matcher.matches();
     }
 
+    @FXML
+    public void initialize()
+    {
+        passwordField.setOnKeyPressed(event ->
+        {
+            switch (event.getCode())
+            {
+                case ENTER:
+                    onLoginClick();
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
     // If the user clicks the "Create account" button on the Login screen, change to the register screen.
     @FXML
     protected void onGoToRegisterScreen() {
