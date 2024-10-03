@@ -160,13 +160,13 @@
 .heading {
   -fx-base: -fx-heading;
   -fx-font-weight: bold;
-  -fx-font-size: 20px;
+  -fx-font-size: 36px;
   -fx-font-family: "Inter";
 }
 
 .label {
  -fx-text-fill: black;
- -fx-font-size: 16px;
+ -fx-font-size: 20px;
 }
 
 /*Settings Page*/

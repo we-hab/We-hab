@@ -59,6 +59,26 @@ public class SettingsController implements Initializable {
         largeText.setToggleGroup(textToggleGroup);
         extraText.setToggleGroup(textToggleGroup);
 
+        // Dynamically select the text size toggle button based on the active text size stylesheet
+        String currentTextSize = MainApplication.getActiveTextSizeSheet();
+        switch (currentTextSize) {
+            case "MainStyleSheet.css":
+            case "accessible.css":
+                defaultText.setSelected(true);
+                break;
+            case "MainStyleSheet_large.css":
+            case "accessible_large.css":
+                largeText.setSelected(true);
+                break;
+            case "MainStyleSheet_extraLarge.css":
+            case "accessible_extraLarge.css":
+                extraText.setSelected(true);
+                break;
+            default:
+                defaultText.setSelected(true);  // Default to regular text size
+                break;
+        }
+
         ButtonController.initialiseButtons(dashboardButton, workoutButton, medicationButton, null, signOutButton);
 
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
@@ -70,24 +90,42 @@ public class SettingsController implements Initializable {
             loggedInUserLabel.setText("Error");
         }
 
-        URL defaultStyleURL = getClass().getResource("/edu/qut/cab302/wehab/MainStyleSheet.css");
-        URL accessibleStyleURL = getClass().getResource("/edu/qut/cab302/wehab/accessible.css");
-
-
-        // Set up action for Default Style button
+        // Handle the selection of style (theme)
         defaultStyle.setOnAction(event -> {
-            if (defaultStyleURL != null) {
-                MainApplication.setActiveStyleSheet("MainStyleSheet.css"); // Apply default style globally
-            }
+            MainApplication.setActiveStyleSheet("MainStyleSheet.css");
+            applyTextSizeBasedOnSelection();
         });
 
-        // Set up action for Accessible Style button
         accessibleStyle.setOnAction(event -> {
-            if (accessibleStyleURL != null) {
-                MainApplication.setActiveStyleSheet("accessible.css"); // Apply accessible style globally
-            }
+            MainApplication.setActiveStyleSheet("accessible.css");
+            applyTextSizeBasedOnSelection();
         });
+
+        // Handle the selection of text size
+        defaultText.setOnAction(event -> applyTextSizeBasedOnSelection());
+        largeText.setOnAction(event -> applyTextSizeBasedOnSelection());
+        extraText.setOnAction(event -> applyTextSizeBasedOnSelection());
     }
 
+    // Helper method to apply text size based on the selected style and size
+    private void applyTextSizeBasedOnSelection() {
+        if (defaultStyle.isSelected()) {
+            if (defaultText.isSelected()) {
+                MainApplication.setActiveTextSize("MainStyleSheet.css");
+            } else if (largeText.isSelected()) {
+                MainApplication.setActiveTextSize("MainStyleSheet_large.css");
+            } else if (extraText.isSelected()) {
+                MainApplication.setActiveTextSize("MainStyleSheet_extraLarge.css");
+            }
+        } else if (accessibleStyle.isSelected()) {
+            if (defaultText.isSelected()) {
+                MainApplication.setActiveTextSize("accessible.css");
+            } else if (largeText.isSelected()) {
+                MainApplication.setActiveTextSize("accessible_large.css");
+            } else if (extraText.isSelected()) {
+                MainApplication.setActiveTextSize("accessible_extraLarge.css");
+            }
+        }
+    }
 
 }

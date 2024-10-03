@@ -91,13 +91,25 @@
                      </children>
                   </HBox>
                   <Label text="Account" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <Label text="To update your password, enter your old password and a new password" />
+                  <VBox prefHeight="87.0" prefWidth="1083.0">
                      <children>
-                        <Label text="Update Password" />
-                        <TextField styleClass="login-ui-entry" />
+                        <HBox prefHeight="33.0" prefWidth="1083.0">
+                           <children>
+                              <Label text="Old" />
+                              <TextField styleClass="login-ui-entry" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="1083.0">
+                           <children>
+                              <Label text="New" />
+                              <TextField styleClass="login-ui-entry" />
+                           </children>
+                        </HBox>
                         <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" styleClass="primary-button" text="Update" />
                      </children>
-                  </HBox>
+                  </VBox>
+                  <HBox prefHeight="50.0" prefWidth="1083.0" />
                   <Button mnemonicParsing="false" styleClass="delete-button" text="Delete Account" />
                </children>
             </VBox>
