@@ -213,4 +213,53 @@ public class UserAccountDAO
 
         return userAccount;
     }
+
+    // Method to verify the old password
+    public boolean validatePassword(String username, String inputPassword) {
+        String storedHashedPassword = getStoredHashedPassword(username);
+
+        if (storedHashedPassword != null) {
+            // Verify input password against the stored hash
+            BCrypt.Result result = BCrypt.verifyer().verify(inputPassword.toCharArray(), storedHashedPassword);
+            return result.verified;
+        }
+        return false;
+    }
+
+    // Method to get the stored hashed password from the database
+    private String getStoredHashedPassword(String username) {
+        String query = "SELECT password FROM UserAccounts WHERE username = ?";
+        try (Connection connection = DatabaseConnection.getInstance();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("password");  // Return the stored hashed password
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Method to update the password
+    public boolean updatePassword(String username, String newPassword) {
+        String hashedPassword = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
+        String updateQuery = "UPDATE userAccounts SET password = ? WHERE username = ?";
+
+        try (Connection connection = DatabaseConnection.getInstance();
+             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+
+            statement.setString(1, hashedPassword);  // Set the new hashed password
+            statement.setString(2, username);
+
+            int rowsUpdated = statement.executeUpdate();
+            return rowsUpdated > 0;  // Return true if the password was updated successfully
+
+        } catch (SQLException e) {
+            System.err.println("Error updating password: " + e.getMessage());
+        }
+        return false;
+    }
 }

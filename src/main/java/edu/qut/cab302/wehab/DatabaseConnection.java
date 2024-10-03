@@ -39,7 +39,14 @@ public class DatabaseConnection
 
     public static Connection getInstance()
     {
-        if (instance == null) { new DatabaseConnection(); } return instance;
+        try {
+            if (instance == null || instance.isClosed()) {
+                new DatabaseConnection();  // Recreate the instance if it's closed or null
+            }
+        } catch (SQLException sqlEx) {
+            System.err.println("Error checking database connection: " + sqlEx.getMessage());
+        }
+        return instance;
     }
 }
 

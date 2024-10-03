@@ -6,10 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +34,14 @@ public class SettingsController implements Initializable {
     private ToggleButton largeText;
     @FXML
     private ToggleButton extraText;
+    @FXML
+    private PasswordField oldPassword;
+    @FXML
+    private PasswordField newPassword;
+    @FXML
+    private Label passwordChangeError;
+    @FXML
+    private Button updatePasswordButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -105,6 +110,15 @@ public class SettingsController implements Initializable {
         defaultText.setOnAction(event -> applyTextSizeBasedOnSelection());
         largeText.setOnAction(event -> applyTextSizeBasedOnSelection());
         extraText.setOnAction(event -> applyTextSizeBasedOnSelection());
+
+        // Set action for the password change button
+        updatePasswordButton.setOnAction(event -> {
+            try {
+                changePassword();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     // Helper method to apply text size based on the selected style and size
@@ -126,6 +140,37 @@ public class SettingsController implements Initializable {
                 MainApplication.setActiveTextSize("accessible_extraLarge.css");
             }
         }
+    }
+
+    private void changePassword() throws IOException {
+        String currentPassword = oldPassword.getText();
+        String newPass = newPassword.getText();
+
+        UserAccount loggedInUser = Session.getInstance().getLoggedInUser(); // Assuming session stores the logged-in user
+
+        if (loggedInUser != null) {
+            UserAccountDAO userAccountDAO = new UserAccountDAO();
+
+            // Validate the old password
+            if (userAccountDAO.validatePassword(loggedInUser.getUsername(), currentPassword)) {
+                // Update the password
+                boolean updateSuccess = userAccountDAO.updatePassword(loggedInUser.getUsername(), newPass);
+                if (updateSuccess) {
+                    showAlert("Password Change", "Password successfully updated!");
+                } else {
+                    showAlert("Password Change", "Failed to update password.");
+                }
+            } else {
+                showAlert("Password Change", "Old password is incorrect.");
+            }
+        }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }
