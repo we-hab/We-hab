@@ -29,6 +29,7 @@ public class MainApplication extends Application {
     public static void main(String[] args) {
         Connection connection = DatabaseConnection.getInstance(); // Connects to the database
         DatabaseConnection.createTable();
+        moodRating.createMoodTable();
         UserAccountDAO userAccountDAO = new UserAccountDAO();
         launch();
     }

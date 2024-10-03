@@ -118,52 +118,52 @@
                                     <Label styleClass="heading" text="Daily Mood Rating" />
                                     <HBox alignment="CENTER" prefHeight="31.0" prefWidth="232.0">
                                        <children>
-                                          <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
+                                          <RadioButton fx:id="moodButton1" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
+                                                  <padding>
+                                                     <Insets left="5.0" />
+                                                  </padding>
+                                          </RadioButton>
+                                          <RadioButton fx:id="moodButton2" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
+                                          <RadioButton fx:id="moodButton3" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
+                                          <RadioButton fx:id="moodButton4" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
+                                          <RadioButton fx:id="moodButton5" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
+                                          <RadioButton fx:id="moodButton6" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
+                                          <RadioButton fx:id="moodButton7" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
+                                          <RadioButton fx:id="moodButton8" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
+                                          <RadioButton fx:id="moodButton9" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
-                                             <padding>
-                                                <Insets left="5.0" />
-                                             </padding>
-                                          </RadioButton>
-                                          <RadioButton mnemonicParsing="false">
+                                          <RadioButton fx:id="moodButton10" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
@@ -227,6 +227,7 @@
                                           </Label>
                                        </children>
                                     </HBox>
+                                    <Button fx:id="moodRatingSubmission" text="Submit Mood Rating" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
@@ -235,7 +236,7 @@
                               <VBox alignment="TOP_CENTER" prefHeight="276.0" prefWidth="532.0">
                                  <children>
                                     <Label styleClass="heading" text="Mood over 7 days" />
-                                    <LineChart prefHeight="265.0" prefWidth="532.0">
+                                    <LineChart fx:id="moodChart" prefHeight="265.0" prefWidth="532.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />
                                       </xAxis>
