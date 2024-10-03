@@ -18,6 +18,7 @@ public class MainApplication extends Application {
 
     private static Stage primaryStage;
     private static String activeStyleSheet = "MainStyleSheet.css";  // Default stylesheet
+    private static String activeTextSizeSheet = "MainStyleSheet.css";  // Default text size
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -36,8 +37,9 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(fxmlFile));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
 
-        // Apply the currently active stylesheet
+        // Apply both the active base stylesheet and the text size stylesheet
         scene.getStylesheets().add(MainApplication.class.getResource(activeStyleSheet).toExternalForm());
+        scene.getStylesheets().add(MainApplication.class.getResource(activeTextSizeSheet).toExternalForm());
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -47,13 +49,27 @@ public class MainApplication extends Application {
         return activeStyleSheet;
     }
 
-    // Method to change the active stylesheet globally
+    public static String getActiveTextSizeSheet() {
+        return activeTextSizeSheet;
+    }
+
+    // Method to change the base theme globally
     public static void setActiveStyleSheet(String styleSheet) {
         activeStyleSheet = styleSheet;
+        updateCurrentSceneStyles();
+    }
 
-        // Apply the new stylesheet to the current scene
+    // Method to change the active text size globally
+    public static void setActiveTextSize(String textSizeSheet) {
+        activeTextSizeSheet = textSizeSheet;
+        updateCurrentSceneStyles();
+    }
+
+    // Utility method to reapply stylesheets to the current scene
+    private static void updateCurrentSceneStyles() {
         Scene currentScene = primaryStage.getScene();
         currentScene.getStylesheets().clear();
         currentScene.getStylesheets().add(MainApplication.class.getResource(activeStyleSheet).toExternalForm());
+        currentScene.getStylesheets().add(MainApplication.class.getResource(activeTextSizeSheet).toExternalForm());
     }
 }

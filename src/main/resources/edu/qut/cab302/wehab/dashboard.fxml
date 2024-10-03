@@ -9,8 +9,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -66,21 +64,15 @@
                <children>
                   <HBox prefHeight="723.0" prefWidth="1083.0" styleClass="main-content-container">
                      <children>
-                        <VBox prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox">
+                        <VBox alignment="TOP_CENTER" prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox">
                            <children>
-                              <TableView prefHeight="200.0" prefWidth="200.0">
-                                <columns>
-                                  <TableColumn prefWidth="510.0" text="7 Day Schedule" />
-                                </columns>
-                                 <VBox.margin>
-                                    <Insets left="10.0" right="10.0" top="10.0" />
-                                 </VBox.margin>
-                              </TableView>
+                              <Label styleClass="heading" text="Schedule" />
+                              <ListView prefHeight="189.0" prefWidth="531.0" />
                               <VBox alignment="TOP_CENTER" prefHeight="295.0" prefWidth="531.0">
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="230.0">
                                        <children>
-                                          <Label text="Targets" />
+                                          <Label styleClass="heading" text="Targets" />
                                           <ChoiceBox prefHeight="25.0" prefWidth="87.0" />
                                        </children>
                                        <VBox.margin>
@@ -110,8 +102,8 @@
                            <children>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label text="Reminders" />
-                                    <ListView prefHeight="200.0" prefWidth="200.0">
+                                    <Label styleClass="heading" text="Reminders" />
+                                    <ListView prefHeight="185.0" prefWidth="532.0">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
@@ -123,7 +115,7 @@
                               </VBox>
                               <VBox alignment="TOP_CENTER" prefHeight="76.0" prefWidth="232.0">
                                  <children>
-                                    <Label text="Daily Mood Rating" />
+                                    <Label styleClass="heading" text="Daily Mood Rating" />
                                     <HBox alignment="CENTER" prefHeight="31.0" prefWidth="232.0">
                                        <children>
                                           <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0">
@@ -242,7 +234,7 @@
                               </VBox>
                               <VBox alignment="TOP_CENTER" prefHeight="276.0" prefWidth="532.0">
                                  <children>
-                                    <Label text="Mood over 7 days" />
+                                    <Label styleClass="heading" text="Mood over 7 days" />
                                     <LineChart prefHeight="265.0" prefWidth="532.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />
