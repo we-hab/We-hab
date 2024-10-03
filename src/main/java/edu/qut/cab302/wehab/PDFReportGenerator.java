@@ -5,6 +5,8 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import java.util.List;
 
@@ -17,8 +19,11 @@ public class PDFReportGenerator
             PdfWriter writer = new PdfWriter(filePath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
+            LocalDate today = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String formattedDate = today.format(formatter);
 
-            document.add(new Paragraph("Report test"));
+            document.add(new Paragraph("Comprehensive Report for " + "generated "));
 
             Table table = new Table(2);
             table.addCell("Date");
@@ -37,6 +42,9 @@ public class PDFReportGenerator
         } catch (Exception error) { System.err.println("Error pdf mate" + error.getMessage()); }
     }
 
-
+    LocalDate today = LocalDate.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    String formattedDate = today.format(formatter);
+    String filePath = "Report for " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName() + " " + formattedDate +  ".pdf";
 
 }
