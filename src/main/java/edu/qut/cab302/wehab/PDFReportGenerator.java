@@ -42,9 +42,4 @@ public class PDFReportGenerator
         } catch (Exception error) { System.err.println("Error pdf mate" + error.getMessage()); }
     }
 
-    LocalDate today = LocalDate.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    String formattedDate = today.format(formatter);
-    String filePath = "Report for " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName() + " " + formattedDate +  ".pdf";
-
 }
