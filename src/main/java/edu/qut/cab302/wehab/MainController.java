@@ -238,13 +238,8 @@ public class MainController {
 
                 try
                 {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard.fxml"));
-                    Parent root = loader.load();
-
-                    Stage stage = (Stage) usernameField.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-
-                    stage.show();
+                    // Use the switchScene method to apply the active stylesheet
+                    MainApplication.switchScene("dashboard.fxml");
                 } catch( Exception error) { error.printStackTrace(); }
             }
             else {

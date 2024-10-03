@@ -14,7 +14,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.medication.MedicationSearchController">
    <children>
-      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header" stylesheets="@../MainStyleSheet.css">
+      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
          <children>
             <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -38,21 +38,21 @@
                   <Image url="@../images/Wehab_banner-removebg.png" />
                </image>
             </ImageView>
-            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
+            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" styleClass="primary-button" text="Sign Out">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
          </children>
       </HBox>
-      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" stylesheets="@../MainStyleSheet.css">
+      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="702.0" prefWidth="182.0" styleClass="main-nav-pane" stylesheets="@../MainStyleSheet.css">
+            <VBox alignment="TOP_CENTER" prefHeight="702.0" prefWidth="182.0" styleClass="main-nav-pane">
                <children>
-                  <Button fx:id="dashboardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@../MainStyleSheet.css" text="Dashboard" />
-                  <Button fx:id="workoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@../MainStyleSheet.css" text="Workouts" />
+                  <Button fx:id="dashboardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Dashboard" />
+                  <Button fx:id="workoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Workouts" />
                   <Button fx:id="medicationButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Medication" />
-                  <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" stylesheets="@../MainStyleSheet.css" text="Settings" />
+                  <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Settings" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -72,7 +72,7 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <VBox prefHeight="628.0" prefWidth="1078.0" styleClass="main-content-container-vbox" stylesheets="@../MainStyleSheet.css">
+                  <VBox prefHeight="628.0" prefWidth="1078.0" styleClass="main-content-container-vbox">
                      <children>
                         <ScrollPane fx:id="resultsScrollPane" prefHeight="634.0" prefWidth="1084.0" fitToWidth="true">
                           <content>
