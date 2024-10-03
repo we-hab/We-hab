@@ -9,8 +9,14 @@ import javafx.scene.control.*;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -51,6 +57,9 @@ public class DashboardController implements Initializable {
     @FXML
     private NumberAxis yVertical;
 
+    @FXML
+    private Button generatePdfBtn;
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -81,6 +90,7 @@ public class DashboardController implements Initializable {
                 {
                     moodRating.insertMoodRating(selectedRating, loggedInUser.getUsername());
                     disableMoodButtons();
+                    loadMoodData(loggedInUser.getUsername());
                 }
             });
 
@@ -95,6 +105,19 @@ public class DashboardController implements Initializable {
 
         ButtonController.initialiseButtons(null, workoutButton, medicationButton, settingsButton, signOutButton);
         moodChart.setLegendVisible(false);
+
+        generatePdfBtn.setOnAction(event ->
+        {
+            if (loggedInUser != null)
+            {
+                List<moodRating> moodRatings = moodRating.getLast7Days(loggedInUser.getUsername());
+                LocalDate today = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                String formattedDate = today.format(formatter);
+                String filePath = "Report for " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName() + " " + formattedDate +  ".pdf";
+                PDFReportGenerator.generateReport(moodRatings, filePath);
+            }
+        });
     }
 
     private void loadMoodData(String username)
@@ -164,3 +187,4 @@ public class DashboardController implements Initializable {
     }
 
 }
+

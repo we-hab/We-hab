@@ -253,7 +253,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="170.0" styleClass="primary-button" text="Generate Report">
+                  <Button fx:id="generatePdfBtn" mnemonicParsing="false" prefHeight="39.0" prefWidth="170.0" styleClass="primary-button" text="Generate Report">
                      <VBox.margin>
                         <Insets bottom="10.0" top="20.0" />
                      </VBox.margin>

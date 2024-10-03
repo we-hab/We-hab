@@ -5,6 +5,8 @@ module edu.qut.cab302.wehab {
     requires bcrypt;
     requires java.desktop;
     requires org.json;
+    requires kernel;
+    requires layout;
 
 
     opens edu.qut.cab302.wehab to javafx.fxml;
