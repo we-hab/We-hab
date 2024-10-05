@@ -9,7 +9,6 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.SpinnerValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -22,7 +21,6 @@
 
 <VBox fx:controller="edu.qut.cab302.wehab.workout.WorkoutController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <!-- Header Section -->
         <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
             <children>
                 <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
@@ -48,11 +46,8 @@
                 </Button>
             </children>
         </HBox>
-
-        <!-- Main Container Section -->
         <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container">
             <children>
-                <!-- Navigation Pane -->
                 <VBox alignment="TOP_CENTER" prefHeight="693.0" prefWidth="174.0" styleClass="main-nav-pane">
                     <children>
                         <Button fx:id="dashboardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Dashboard" />
@@ -61,13 +56,10 @@
                         <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="65.0" prefWidth="140.0" styleClass="navigation-button" text="Settings" />
                     </children>
                 </VBox>
-
-                <!-- Main Content Area -->
                 <HBox prefHeight="693.0" prefWidth="1070.0" styleClass="main-content-container">
                     <children>
                         <VBox alignment="TOP_CENTER" prefHeight="727.0" prefWidth="541.0" styleClass="main-content-container-vbox">
                             <children>
-                                <!-- Month Overview Section -->
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Month Overview">
                                     <font>
                                         <Font size="20.0" />
@@ -106,8 +98,6 @@
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                     </VBox.margin>
                                 </ScatterChart>
-
-                                <!-- Workout Section -->
                                 <HBox alignment="TOP_CENTER" prefHeight="167.0" prefWidth="541.0">
                                     <children>
                                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="270.0" style="-fx-spacing: 10;">
@@ -117,25 +107,15 @@
                                                         <Font size="20.0" />
                                                     </font>
                                                 </Text>
-                                                <!-- Workout Type ComboBox -->
                                                 <ComboBox fx:id="workoutTypeComboBox" prefHeight="30.0" prefWidth="120.0" />
-
-                                                <!-- Date Picker for Date -->
                                                 <DatePicker fx:id="datePicker" prefHeight="30.0" prefWidth="120.0" />
-
-                                                <!-- Spinner for Duration -->
                                                 <Spinner fx:id="durationSpinner" prefHeight="30.0" prefWidth="120.0" />
-
-                                                <!-- ComboBox for Effort -->
                                                 <ComboBox fx:id="effortComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Effort" />
-
-                                                <!-- Confirm Button -->
                                                 <Button fx:id="confirmButton" mnemonicParsing="false" styleClass="primary-button" text="Confirm" />
                                             </children>
                                         </VBox>
                                     </children>
                                 </HBox>
-                                <!-- Workout Section End -->
                             </children>
                         </VBox>
                     </children>
