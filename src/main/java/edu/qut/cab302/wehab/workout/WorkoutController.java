@@ -116,6 +116,19 @@ public class WorkoutController {
         updateMinutesPerDayChart();
     }
 
+    // Method to retrieve methods
+
+    /**
+     * This method loads workouts from the database on initialisation
+     * */
+    private void loadWorkoutsFromDatabase(String username) {
+        List<Workout> savedWorkouts = WorkoutReturnModel.getWorkouts(username);
+        workoutList.addAll(savedWorkouts);
+        updateMonthOverview();
+        updateMinutesPerDayChart();
+    }
+
+
     // Method to update the Month Overview grid
     private void updateMonthOverview() {
         // Clear the existing content
