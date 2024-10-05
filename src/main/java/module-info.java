@@ -13,4 +13,6 @@ module edu.qut.cab302.wehab {
     exports edu.qut.cab302.wehab;
     exports edu.qut.cab302.wehab.medication;
     opens edu.qut.cab302.wehab.medication to javafx.fxml;
+    exports edu.qut.cab302.wehab.workout;
+    opens edu.qut.cab302.wehab.workout to javafx.fxml;
 }

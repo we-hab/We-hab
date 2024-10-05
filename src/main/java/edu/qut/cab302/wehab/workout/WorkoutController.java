@@ -1,5 +1,8 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.workout;
 
+import edu.qut.cab302.wehab.ButtonController;
+import edu.qut.cab302.wehab.Session;
+import edu.qut.cab302.wehab.UserAccount;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,31 +16,25 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class WorkoutController {
 
-    // UI elements
-
+    // FXML UI elements
     @FXML
     private Button dashboardButton;
-
     @FXML
     private Button medicationButton;
-
     @FXML
     private Button settingsButton;
-
     @FXML
     private Button signOutButton;
-
     @FXML
     private Label loggedInUserLabel;
-
     @FXML
     private ComboBox<String> workoutTypeComboBox;
     @FXML
@@ -53,21 +50,29 @@ public class WorkoutController {
     @FXML
     private ScatterChart<String, Number> minutesPerDayChart;
 
-    // List to store workout data
+    private String username;
+    /**
+     * Used to store data retrieved from the DB in state to parse to the charts and grids.
+     * */
     private ObservableList<Workout> workoutList = FXCollections.observableArrayList();
 
+
+    /**
+     * This method initilaises the state for the workouts page by retrieving the logged-in user and populating the
+     * workout information.
+     */
     @FXML
     public void initialize() {
-
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
 
         if (loggedInUser != null)
         {
             String fullname = loggedInUser.getFirstName();
+            username = loggedInUser.getUsername();
             loggedInUserLabel.setText(fullname);
         } else
         {
-            loggedInUserLabel.setText("Error");
+            loggedInUserLabel.setText("Error: No logged in user.");
         }
 
         ButtonController.initialiseButtons(dashboardButton, null, medicationButton, settingsButton, signOutButton);
@@ -78,50 +83,39 @@ public class WorkoutController {
         // Set up the Spinner for workout duration (1 to 300 minutes)
         durationSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 300, 30)); // Default value 30
 
-        // Initialize the effort levels in the ComboBox (1-5)
+        // Initialise the effort levels in the ComboBox (1-5)
         effortComboBox.getItems().addAll(1, 2, 3, 4, 5);
 
         // Set up the Confirm button event handler
         confirmButton.setOnAction(event -> handleAddWorkout());
     }
 
-    // Method to add a workout and update visualizations
+    /**
+     * This method is used to add a workout to the database based on the users inputs.
+     * If the values are populated correctly this creates a new workout object, adds
+     * it to the database and refreshes the UI to display new results.
+     * */
     private void handleAddWorkout() {
-        // Get the selected workout type
+        // Retrieve the workout details
         String workoutType = workoutTypeComboBox.getValue();
-
-        // Get the selected date
         LocalDate date = datePicker.getValue();
-
-        // Get the effort level from the ComboBox (use Integer wrapper class)
         Integer effort = effortComboBox.getValue();
-
-        // Get the duration from the Spinner (default to 0 if it's null)
         int duration = durationSpinner.getValue();
 
-        // Check for null values to prevent NullPointerException
         if (workoutType == null || date == null || effort == null) {
             System.out.println("Please fill in all the workout details.");
-            return;
+        } else {
+            Workout workout = new Workout(workoutType, date, duration, effort);
+            WorkoutReturnModel.addWorkout(workout, username);
+            loadWorkouts(username);
         }
-
-        // Create a new Workout object
-        Workout workout = new Workout(workoutType, date, duration, effort);
-
-        // Add the workout to the list
-        workoutList.add(workout);
-
-        // Update visual elements
-        updateMonthOverview();
-        updateMinutesPerDayChart();
     }
 
-    // Method to retrieve methods
-
     /**
-     * This method loads workouts from the database on initialisation
+     * This method loads workouts from the database on initialisation to update the UI.
      * */
-    private void loadWorkoutsFromDatabase(String username) {
+    private void loadWorkouts(String username) {
+        workoutList.clear();
         List<Workout> savedWorkouts = WorkoutReturnModel.getWorkouts(username);
         workoutList.addAll(savedWorkouts);
         updateMonthOverview();
