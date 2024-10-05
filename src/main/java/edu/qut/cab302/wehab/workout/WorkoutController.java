@@ -70,6 +70,7 @@ public class WorkoutController {
             String fullname = loggedInUser.getFirstName();
             username = loggedInUser.getUsername();
             loggedInUserLabel.setText(fullname);
+            loadWorkouts(username);
         } else
         {
             loggedInUserLabel.setText("Error: No logged in user.");

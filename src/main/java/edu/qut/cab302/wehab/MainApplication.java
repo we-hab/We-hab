@@ -1,5 +1,6 @@
 package edu.qut.cab302.wehab;
 
+import edu.qut.cab302.wehab.workout.WorkoutReturnModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -30,6 +31,7 @@ public class MainApplication extends Application {
         Connection connection = DatabaseConnection.getInstance(); // Connects to the database
         DatabaseConnection.createTable();
         moodRating.createMoodTable();
+        WorkoutReturnModel.createWorkoutTable();
         UserAccountDAO userAccountDAO = new UserAccountDAO();
         launch();
     }

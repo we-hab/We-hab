@@ -22,7 +22,7 @@ public class WorkoutReturnModel {
      * Create the Workout table in database using the username as the primary key.
      * This table stores workout records detailing workout type, date, duration, and effort.
      */
-    private static void createWorkoutTable() throws SQLException {
+    public static void createWorkoutTable() {
         Statement createWorkoutTable;
 
         // PK = ID, FK = username
@@ -35,10 +35,14 @@ public class WorkoutReturnModel {
                 "effort INTEGER NOT NULL, " +
                 "FOREIGN KEY (username) REFERENCES userAccounts(username) ON DELETE CASCADE" +
                 ")";
+        try {
 
         createWorkoutTable = connection.createStatement();
         createWorkoutTable.execute(createWorkoutTableSQL);
         createWorkoutTable.close();
+        } catch (SQLException error) {
+            System.err.println(error.getMessage());
+        }
     }
 
     /** Method to add workout to database.
