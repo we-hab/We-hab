@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -48,12 +49,13 @@ public class WorkoutController {
     @FXML
     private GridPane monthOverviewGrid;
     @FXML
-//    private ScatterChart<String, Number> minutesPerDayChart;
-    private BarChart<String, Number> minutesPerDayChart;
+    private BarChart<Number, String> minutesPerDayChart;
+    @FXML
+    private CategoryAxis workoutTypeAxis;
 
     private String username;
     /**
-     * Used to store data retrieved from the DB in state to parse to the charts and grids.
+     * Used to store data retrieved from the DB in state to parse to the chart and grid.
      * */
     private ObservableList<Workout> workoutList = FXCollections.observableArrayList();
 
@@ -121,10 +123,15 @@ public class WorkoutController {
         workoutList.clear();
         List<Workout> savedWorkouts = WorkoutReturnModel.getWorkouts(username);
         workoutList.addAll(savedWorkouts);
-        updateMonthOverview();
-        updateMinutesPerDayChart();
-    }
 
+        // Checking async retrieval
+        if (workoutList.isEmpty()) {
+            System.out.println("No workouts found for user.");
+        } else {
+            updateMonthOverview();
+            updateMinutesPerDayChart();
+        }
+    }
 
     /**
      * This method updates the Month Overview Heatmap.
@@ -133,6 +140,7 @@ public class WorkoutController {
         monthOverviewGrid.setGridLinesVisible(false);
         monthOverviewGrid.setGridLinesVisible(true);
         TreeMap<LocalDate, Integer> monthlyMinutes = WorkoutReturnModel.getMonthlyMinutes(username);
+
 
         for (Map.Entry<LocalDate, Integer> entry : monthlyMinutes.entrySet()) {
             LocalDate date = entry.getKey();
@@ -171,6 +179,8 @@ public class WorkoutController {
             int column = (dayOfMonth - 1) % 7;
             monthOverviewGrid.add(workoutLabel, column, row);
         }
+
+        // Initialise labels to provide a border on startup.
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 7; col++) {
                 Label placeholder = new Label();
@@ -181,32 +191,32 @@ public class WorkoutController {
     }
 
     /**
+     * Method to update the Minutes per Day BarChart
      * Bar chart to be updated to change query to retrieve the minutes against the activity type.
-     * The logic should also be updated to include different colours for each excercise.
-     * Comments and suspicious code should also be removed.
+     * The logic should also be updated to include different labels for each excercise.
      */
-
-
-    // Method to update the Minutes per Day Bar Chart
     private void updateMinutesPerDayChart() {
-        minutesPerDayChart.getData().clear();
+        // Set up
+        workoutTypeAxis.setCategories(workoutTypeComboBox.getItems());
+        XYChart.Series<Number, String> workoutTypeData = new XYChart.Series<>();
 
-        // Prepare data series for the scatter chart
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Workout Minutes");
-
-        // Aggregate workout duration per day
-        Map<LocalDate, Integer> dailyMinutes = new HashMap<>();
+        // Add minutes by workout type
+        Map<String, Integer> workoutMinutesByType = new HashMap<>();
         for (Workout workout : workoutList) {
-            dailyMinutes.put(workout.getDate(), dailyMinutes.getOrDefault(workout.getDate(), 0) + workout.getDuration());
+            String workoutType = workout.getWorkoutType();
+            workoutMinutesByType.put(workoutType, workoutMinutesByType.getOrDefault(workoutType, 0) + workout.getDuration());
         }
 
-        // Add data points to the series
-        for (Map.Entry<LocalDate, Integer> entry : dailyMinutes.entrySet()) {
-            String formattedDate = entry.getKey().toString();
-            series.getData().add(new XYChart.Data<>(formattedDate, entry.getValue()));
+        // Collect data - total minutes per workout type
+        for (Map.Entry<String, Integer> entry : workoutMinutesByType.entrySet()) {
+            String workoutType = entry.getKey();
+            Integer totalMinutes = entry.getValue();
+
+            if (totalMinutes > 0) {
+                workoutTypeData.getData().add(new XYChart.Data<>(totalMinutes, workoutType));
+            }
         }
 
-        minutesPerDayChart.getData().add(series);
+        minutesPerDayChart.getData().add(workoutTypeData);
     }
 }
