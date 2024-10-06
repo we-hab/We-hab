@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.TreeMap;
 import java.time.*;
 
 
@@ -88,5 +89,33 @@ public class WorkoutReturnModel {
         }
         return workouts;
 
+    }
+
+    /** Method to retrieve aggregated workout minutes from the database for a given user to display in the heatmap.
+     * */
+    public static TreeMap<LocalDate, Integer> getMonthlyMinutes(String username) {
+        // Initialise auto sorting storage.
+        TreeMap<LocalDate, Integer> monthlyMinutes = new TreeMap<>();
+
+        // Talk to the DB and handle errors.
+        String querySQL = "SELECT date, duration FROM workouts WHERE username = ?";
+        try (PreparedStatement statement = connection.prepareStatement(querySQL)) {
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Extract and add the total minutes for the current month.
+            while (resultSet.next()) {
+                LocalDate date = LocalDate.parse(resultSet.getString("date"));
+                int duration = resultSet.getInt("duration");
+                if (date.getMonth() == LocalDate.now().getMonth()) {
+                    monthlyMinutes.put(date, monthlyMinutes.getOrDefault(date, 0) + duration);
+                }
+            }
+        } catch (SQLException error) {
+            System.err.println(error.getMessage());
+        }
+
+        // Sort result by date.
+        return monthlyMinutes;
     }
 }

@@ -6,7 +6,7 @@ import edu.qut.cab302.wehab.UserAccount;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -14,11 +14,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Map;
 import java.util.List;
 
@@ -48,7 +48,8 @@ public class WorkoutController {
     @FXML
     private GridPane monthOverviewGrid;
     @FXML
-    private ScatterChart<String, Number> minutesPerDayChart;
+//    private ScatterChart<String, Number> minutesPerDayChart;
+    private BarChart<String, Number> minutesPerDayChart;
 
     private String username;
     /**
@@ -58,7 +59,7 @@ public class WorkoutController {
 
 
     /**
-     * This method initilaises the state for the workouts page by retrieving the logged-in user and populating the
+     * This method initialises state for the workouts page by retrieving the logged-in user and populating the
      * workout information.
      */
     @FXML
@@ -103,6 +104,7 @@ public class WorkoutController {
         Integer effort = effortComboBox.getValue();
         int duration = durationSpinner.getValue();
 
+        // Process the input
         if (workoutType == null || date == null || effort == null) {
             System.out.println("Please fill in all the workout details.");
         } else {
@@ -124,35 +126,69 @@ public class WorkoutController {
     }
 
 
-    // Method to update the Month Overview grid
+    /**
+     * This method updates the Month Overview Heatmap.
+     * */
     private void updateMonthOverview() {
-        // Clear the existing content
-        monthOverviewGrid.getChildren().clear();
+        monthOverviewGrid.setGridLinesVisible(false);
+        monthOverviewGrid.setGridLinesVisible(true);
+        TreeMap<LocalDate, Integer> monthlyMinutes = WorkoutReturnModel.getMonthlyMinutes(username);
 
-        // Display workout data for the current month
-        for (Workout workout : workoutList) {
-            if (workout.getDate().getMonth() == LocalDate.now().getMonth()) {
-                // Create a label to represent the workout and add it to the grid
-                Label workoutLabel = new Label(workout.getWorkoutType() + " " + workout.getDuration() + " mins");
+        for (Map.Entry<LocalDate, Integer> entry : monthlyMinutes.entrySet()) {
+            LocalDate date = entry.getKey();
+            int dayOfMonth = date.getDayOfMonth();
+            int totalMinutes = entry.getValue();
 
-                // Set the width to avoid cut off and enable text wrapping
-                workoutLabel.setMaxWidth(100); // Adjust width as needed
-                workoutLabel.setWrapText(true); // Enable text wrapping
+            // Label for the total minutes / day
+            Label workoutLabel = new Label(totalMinutes + " mins");
+            workoutLabel.setMaxWidth(Double.MAX_VALUE);
+            workoutLabel.setMaxHeight(Double.MAX_VALUE);
+            String labelColour;
+            switch (totalMinutes / 30){
+                case 0:
+                    labelColour = "rgb(150, 255, 150)";
+                    break;
+                case 1:
+                    labelColour = "rgb(255, 230, 200)";
+                    break;
+                case 2:
+                    labelColour = "rgb(255, 180, 150)";
+                    break;
+                case 3:
+                    labelColour = "rgb(255, 130, 100)";
+                    break;
+                case 4:
+                    labelColour = "rgb(255, 80, 50)";
+                    break;
+                default:
+                    labelColour = "rgb(200, 0, 200)";
+                    break;
+            }
+            workoutLabel.setStyle("-fx-alignment: center; -fx-background-color: " + labelColour + "; -fx-border-width: 0.5px;");
 
-                // Add a tooltip for detailed view
-                Tooltip tooltip = new Tooltip(workout.getWorkoutType() + ": " + workout.getDuration() + " mins, Effort: " + workout.getEffort());
-                Tooltip.install(workoutLabel, tooltip);
-
-                int row = workout.getDate().getDayOfMonth() / 7; // Example row calculation
-                int column = workout.getDate().getDayOfMonth() % 7; // Example column calculation
-                monthOverviewGrid.add(workoutLabel, column, row);
+            // Add the label to the grid.
+            int row = (dayOfMonth - 1) / 7;
+            int column = (dayOfMonth - 1) % 7;
+            monthOverviewGrid.add(workoutLabel, column, row);
+        }
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 7; col++) {
+                Label placeholder = new Label();
+                placeholder.setStyle("-fx-alignment: center; -fx-border-width: 0.5px;");
+                monthOverviewGrid.add(placeholder, col, row);
             }
         }
     }
 
-    // Method to update the Minutes per Day scatter chart
+    /**
+     * Bar chart to be updated to change query to retrieve the minutes against the activity type.
+     * The logic should also be updated to include different colours for each excercise.
+     * Comments and suspicious code should also be removed.
+     */
+
+
+    // Method to update the Minutes per Day Bar Chart
     private void updateMinutesPerDayChart() {
-        // Clear previous data
         minutesPerDayChart.getData().clear();
 
         // Prepare data series for the scatter chart
@@ -171,10 +207,6 @@ public class WorkoutController {
             series.getData().add(new XYChart.Data<>(formattedDate, entry.getValue()));
         }
 
-        // Rotate X-Axis labels
-        minutesPerDayChart.getXAxis().setTickLabelRotation(45); // Rotate labels for better readability
-
-        // Add series to the scatter chart
         minutesPerDayChart.getData().add(series);
     }
 }
