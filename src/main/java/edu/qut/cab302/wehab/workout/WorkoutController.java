@@ -79,13 +79,13 @@ public class WorkoutController {
 
         ButtonController.initialiseButtons(dashboardButton, null, medicationButton, settingsButton, signOutButton);
 
-        // Initialize the workout types in the ComboBox
+        // Initialise the workout types in the ComboBox
         workoutTypeComboBox.getItems().addAll("Walk", "Jog", "Run", "Yoga", "Cycling", "Other");
 
-        // Set up the Spinner for workout duration (1 to 300 minutes)
-        durationSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 300, 30)); // Default value 30
+        // Set up the Spinner for workout duration (1 : 300 minutes, default 30)
+        durationSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 300, 30));
 
-        // Initialise the effort levels in the ComboBox (1-5)
+        // Initialise the effort levels in the ComboBox (1 : 5)
         effortComboBox.getItems().addAll(1, 2, 3, 4, 5);
 
         // Set up the Confirm button event handler
