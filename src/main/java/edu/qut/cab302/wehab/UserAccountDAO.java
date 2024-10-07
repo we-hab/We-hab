@@ -91,15 +91,19 @@ public class UserAccountDAO
         } catch (SQLException error) { System.err.println(error); }
     }
 
-    public void delete(String username)
-    {
-        try
-        {
-            PreparedStatement deleteUser = connection.prepareStatement("DELETE FROM userAccounts WHERE username = ?");
-            deleteUser.setString(1, username);
-            deleteUser.execute();
+    public boolean deleteAccount(String username) {
+        String deleteQuery = "DELETE FROM UserAccounts WHERE username = ?";
+        try (Connection connection = DatabaseConnection.getInstance();
+             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
 
-        } catch (SQLException error) { System.err.println(error); }
+            statement.setString(1, username);
+
+            int rowsDeleted = statement.executeUpdate();
+            return rowsDeleted > 0;  // If rowsDeleted > 0, account was successfully deleted
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public List<UserAccount> getAll()

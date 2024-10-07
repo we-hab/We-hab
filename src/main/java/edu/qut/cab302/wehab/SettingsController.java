@@ -39,9 +39,9 @@ public class SettingsController implements Initializable {
     @FXML
     private PasswordField newPassword;
     @FXML
-    private Label passwordChangeError;
-    @FXML
     private Button updatePasswordButton;
+    @FXML
+    private Button deleteAccountButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -119,6 +119,11 @@ public class SettingsController implements Initializable {
                 e.printStackTrace();
             }
         });
+
+        // Set action for delete account button
+        deleteAccountButton.setOnAction(event -> {
+            showDeleteAccountConfirmation();
+        });
     }
 
     // Helper method to apply text size based on the selected style and size
@@ -146,7 +151,7 @@ public class SettingsController implements Initializable {
         String currentPassword = oldPassword.getText();
         String newPass = newPassword.getText();
 
-        UserAccount loggedInUser = Session.getInstance().getLoggedInUser(); // Assuming session stores the logged-in user
+        UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
 
         if (loggedInUser != null) {
             UserAccountDAO userAccountDAO = new UserAccountDAO();
@@ -171,6 +176,49 @@ public class SettingsController implements Initializable {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void showDeleteAccountConfirmation() {
+        // Create confirmation alert
+        ButtonType deleteButtonType = new ButtonType("Delete", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION, "This action cannot be undone.", deleteButtonType, cancelButtonType);
+        confirmationAlert.setTitle("Delete Account");
+        confirmationAlert.setHeaderText("Are you sure you want to delete your account?");
+
+        // Wait for the user’s response
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == deleteButtonType) {
+                // User confirmed, proceed with account deletion
+                try {
+                    deleteAccount();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                // User canceled, do nothing
+                confirmationAlert.close();
+            }
+        });
+    }
+
+    private void deleteAccount() throws IOException {
+        UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
+
+        if (loggedInUser != null) {
+            UserAccountDAO userAccountDAO = new UserAccountDAO();
+            boolean isDeleted = userAccountDAO.deleteAccount(loggedInUser.getUsername());
+
+            if (isDeleted) {
+                showAlert("Account Deletion", "Your account has been successfully deleted.");
+                // log out the user and redirect to the login page
+                Session.getInstance().clearLoggedInUser();
+                MainApplication.switchScene("Login.fxml");
+            } else {
+                showAlert("Account Deletion", "Failed to delete your account. Please try again.");
+            }
+        }
     }
 
 }
