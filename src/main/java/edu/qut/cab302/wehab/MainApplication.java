@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.sql.SQLException;
 
 /**
  * Main entry point for the application.
@@ -22,9 +22,14 @@ public class MainApplication extends Application {
     private static String activeTextSizeSheet = "MainStyleSheet.css";  // Default text size
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException  {
         primaryStage = stage;
-        switchScene("Login.fxml"); // Start with the login page
+        UserAccountDAO userAccountDAO = new UserAccountDAO();
+
+//        Change this to your username to skip the login screen when testing
+//        UserAccount loggedInUser = userAccountDAO.getByUsername("test");
+//        Session.getInstance().setLoggedInUser(loggedInUser);
+        switchScene("Login.fxml");
     }
 
     public static void main(String[] args) {

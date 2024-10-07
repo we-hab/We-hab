@@ -20,13 +20,17 @@ import java.time.LocalDate;
  */
 public class FDAApiService {
 
-    /** Message containing the result of the HTTP request, used for UI output and error handling. */
+    /**
+     * Message containing the result of the HTTP request, used for UI output and error handling.
+     */
     private String resultsMessage;
 
     /**
      * @return string containing the result message or error details.
      */
-    public String getResultsMessage() { return resultsMessage; }
+    public String getResultsMessage() {
+        return resultsMessage;
+    }
 
     /**
      * Opens an HTTP connection to the given URL.
@@ -86,7 +90,7 @@ public class FDAApiService {
             }
             InputStream inputStream;
 
-            if(status == 200) {
+            if (status == 200) {
                 System.out.println("Brand name search successful.");
                 inputStream = connection.getInputStream();
 
@@ -98,7 +102,7 @@ public class FDAApiService {
                 connection.setRequestMethod("GET");
                 status = connection.getResponseCode();
 
-                if(status == 200) {
+                if (status == 200) {
                     System.out.println("Generic search successful.");
                     inputStream = connection.getInputStream();
                 } else if (status == 404) {
@@ -125,7 +129,7 @@ public class FDAApiService {
                 System.out.println(resultsMessage);
                 inputStream = connection.getErrorStream();
             }
-            
+
             // Read the API response from the InputStream.
             if (inputStream != null) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -148,6 +152,50 @@ public class FDAApiService {
         } catch (Exception e) {
             resultsMessage = e.getMessage();
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String queryAPIById(String id) throws IOException {
+
+        String results;
+
+        String encodedMedicationId = URLEncoder.encode(id, StandardCharsets.UTF_8.toString());
+        String apiUrlString = "https://api.fda.gov/drug/label.json?search=openfda.id=%22" + encodedMedicationId + "%22&limit=1";
+
+        System.out.println("Querying API with ID: " + encodedMedicationId + "\nUsing URL: " + (apiUrlString));
+
+        URL url = createUrlObject(apiUrlString);
+        HttpURLConnection connection = openConnection(url);
+        connection.setRequestMethod("GET");
+
+        int status = 0;
+        try {
+            status = connection.getResponseCode();
+        } catch (UnknownHostException e) {
+            return null;
+        }
+        InputStream inputStream;
+
+        if (status == 200) {
+            inputStream = connection.getInputStream();
+        } else {
+            inputStream = connection.getErrorStream();
+        }
+
+        // Read the API response from the InputStream.
+        if (inputStream != null) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            StringBuilder content = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+            }
+            reader.close();
+            connection.disconnect();
+
+            return content.toString();
+        } else {
             return null;
         }
     }

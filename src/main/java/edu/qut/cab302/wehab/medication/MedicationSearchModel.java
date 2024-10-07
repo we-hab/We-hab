@@ -2,10 +2,12 @@ package edu.qut.cab302.wehab.medication;
 
 import edu.qut.cab302.wehab.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+
+import edu.qut.cab302.wehab.Session;
 
 /**
  * This class provides methods for interacting with the medication-related tables in the database.
@@ -30,7 +32,8 @@ public class MedicationSearchModel {
         Statement createMedicationsTable;
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS medications (" +
-                "medicationID VARCHAR(255) PRIMARY KEY" +
+                "medicationID VARCHAR(255) PRIMARY KEY," +
+                "displayName VARCHAR(255) NOT NULL" +
                 ")";
 
         createMedicationsTable = connection.createStatement();
@@ -49,14 +52,75 @@ public class MedicationSearchModel {
         Statement createJunctionTable;
 
         String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS userMedications (" +
-                "username VARCHAR(255) NOT NULL," +
-                "medicationID VARCHAR(255) NOT NULL," +
-                "PRIMARY KEY (username, medicationID)" +
+                "username TEXT NOT NULL," +
+                "medicationID TEXT NOT NULL," +
+                "dosageAmount REAL NOT NULL, -- E.g., 500 (for mg)\n" +
+                "dosageUnit TEXT NOT NULL, -- E.g., 'mg', 'mL', `capsules'\n" +
+                "dosageTime TEXT NOT NULL," +
+                "dosageDate TEXT NOT NULL, -- YYYY-MM-DD format\n" +
+                "PRIMARY KEY (username, medicationID)," +
+                "FOREIGN KEY (username) REFERENCES userAccounts(username)," +
+                "FOREIGN KEY (medicationID) REFERENCES medications(medicationID)" +
                 ")";
 
         createJunctionTable = connection.createStatement();
 
         createJunctionTable.execute(createJunctionTableSQL);
+    }
+
+    public static ArrayList<PrescribedMedicationDose> getCurrentDayMedications() throws SQLException {
+
+        ResultSet currentDayMedications = queryCurrentDayMedications();
+
+        ArrayList<PrescribedMedicationDose> doses = new ArrayList<>();
+
+        while (currentDayMedications.next()) {
+            doses.add(parseMedicationDoseFromResultSet(currentDayMedications));
+        }
+
+        return doses;
+    }
+
+    private static PrescribedMedicationDose parseMedicationDoseFromResultSet(ResultSet rs) throws SQLException {
+
+        String username = rs.getString("username");
+        String medicationID = rs.getString("medicationID");
+        String displayName = getDisplayNameById(medicationID).getString("displayName");
+        double dosageAmount = rs.getDouble("dosageAmount");
+        String dosageUnit = rs.getString("dosageUnit");
+        LocalDate dosageDate = LocalDate.parse(rs.getString("dosageDate"));
+        LocalTime dosageTime = LocalTime.parse(rs.getString("dosageTime"));
+
+        return new PrescribedMedicationDose(username, medicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime);
+    }
+
+    private static ResultSet queryCurrentDayMedications() throws SQLException {
+
+        String sqlCommand = "SELECT * FROM userMedications " +
+                "WHERE username = ? " +
+                "AND dosageDate = ? " +
+                "ORDER BY dosageTime ASC";
+
+        PreparedStatement queryTodaysMedications = connection.prepareStatement(sqlCommand);
+        queryTodaysMedications.setString(1, Session.getInstance().getLoggedInUser().getUsername());
+        queryTodaysMedications.setString(2, LocalDate.now().toString());
+
+        ResultSet results = queryTodaysMedications.executeQuery();
+
+        return results;
+    }
+
+    private static ResultSet getDisplayNameById(String id) throws SQLException {
+
+        String sqlCommand = "SELECT displayName FROM medications " +
+                "WHERE medicationId = ?";
+
+        PreparedStatement getDisplayNameById = connection.prepareStatement(sqlCommand);
+        getDisplayNameById.setString(1, id);
+
+        ResultSet results = getDisplayNameById.executeQuery();
+
+        return results;
     }
 
     /**
@@ -124,9 +188,9 @@ public class MedicationSearchModel {
      * @param medicationID The ID of the medication to be saved.
      * @throws SQLException if an error occurs while executing the SQL insert statement.
      */
-    protected static void saveMedication(String medicationID) throws SQLException {
+    protected static void saveMedication(String medicationID, String displayName) throws SQLException {
         PreparedStatement insertMedication;
-        String insertMedicationSQL = "INSERT OR IGNORE INTO medications (medicationID) VALUES (?)";
+        String insertMedicationSQL = "INSERT OR IGNORE INTO medications (medicationID, displayName) VALUES (?, ?)";
 
         insertMedication = connection.prepareStatement(insertMedicationSQL);
         insertMedication.setString(1, medicationID);

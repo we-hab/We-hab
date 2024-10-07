@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 public class Medication {
 
     private String id;
+    private String displayName;
     private LocalDate lastUpdated;
     private String brandName;
     private String genericName;
@@ -35,6 +36,12 @@ public class Medication {
      * @return The FDA ID of the medication.
      */
     public String getID() { return id; }
+
+
+    /**
+     * @return The display name (brand name if not null else generic name) of the medication.
+     */
+    public String getDisplayName() { return displayName; }
 
     /**
      * @return The last updated date for the medication information.
@@ -112,6 +119,8 @@ public class Medication {
         brandName = openfda.optJSONArray("brand_name").optString(0) + " (" + manufacturer + ")";
 
         genericName = openfda.optJSONArray("generic_name").optString(0);
+
+        displayName = (brandName != null) ? brandName : genericName;
 
         if(openfda.has("substance_name")) {
             activeIngredients = openfda.optJSONArray("substance_name");
