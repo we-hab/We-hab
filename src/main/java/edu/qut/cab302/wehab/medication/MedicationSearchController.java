@@ -4,6 +4,8 @@ import edu.qut.cab302.wehab.ButtonController;
 import edu.qut.cab302.wehab.Session;
 import edu.qut.cab302.wehab.UserAccount;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -19,7 +21,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
@@ -32,6 +37,25 @@ import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
  * with the database to store medication-related data.
  */
 public class MedicationSearchController {
+
+    private static Stage medicationOverviewModal = new Stage();
+    private static String medicationOverviewModalMainSceneTitle;
+    protected static Scene mainMedicationModalScene;
+
+    public static void returnModalToMainScreen() {
+        changeMedicationOverviewModalScene(mainMedicationModalScene, medicationOverviewModalMainSceneTitle);
+    }
+
+    public static void changeMedicationOverviewModalScene(Scene scene, String title) {
+
+        medicationOverviewModal.setTitle(title);
+        medicationOverviewModal.setScene(scene);
+        if (!medicationOverviewModal.isShowing()) {
+            medicationOverviewModal.showAndWait();
+        } else {
+            medicationOverviewModal.show();
+        }
+    }
 
     /**
      * The TextField control where the user enters the medication search query.
@@ -99,7 +123,11 @@ public class MedicationSearchController {
 
         apiClient = new OpenFDAClient();
 
+        resultsPane.setSpacing(30);
         resultsPane.setPadding(new Insets(20, 20, 20, 20));
+
+        medicationOverviewModal.initModality(Modality.APPLICATION_MODAL);
+        medicationOverviewModal.setResizable(false);
     }
 
     /**
@@ -150,7 +178,7 @@ public class MedicationSearchController {
 
         Label lastUpdated = new Label("Last Updated: " + medication.getLastUpdated().toString());
 
-        Label brandName = new Label((medication.hasBrandName()) ? medication.getBrandName() : medication.getGenericName());
+        Label brandName = new Label(medication.getDisplayName());
 
         Label genericName = new Label("Generic Name: " + ((medication.hasBrandName()) ? medication.getGenericName() : null));
 
@@ -201,25 +229,38 @@ public class MedicationSearchController {
         viewButton.setLayoutY(76);
         viewButton.setPrefSize(81, 25);
         viewButton.setStyle("-fx-background-color: #00FF7F; -fx-border-color: #000000;");
+        viewButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                MedicationInfoPage medicationInfoPage = new MedicationInfoPage(medication.getID());
+                Scene scene = medicationInfoPage.getMedicationInfoPage();
+
+                changeMedicationOverviewModalScene(scene, medication.getDisplayName());
+            }
+        });
+
 
         Button logDoseButton = new Button("Add to List");
         logDoseButton.setLayoutX(844);
         logDoseButton.setLayoutY(40);
         logDoseButton.setPrefSize(81, 25);
         logDoseButton.setStyle("-fx-background-color: #00FF7F; -fx-border-color: #000000;");
+
         logDoseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("medication-overview.fxml"));
+                medicationOverviewModalMainSceneTitle = "Medication Overview: " + medication.getDisplayName();
+
                 try {
-                    saveMedication(medication.getID());
-                    System.out.println("Medication " + medication.getBrandName() + " (ID: " + medication.getID() + ") added to database.");
-                } catch (SQLException e) {
+                    mainMedicationModalScene = new Scene(fxmlLoader.load(), 640, 400);
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                // Will require a PreparedStatement to insert the username/medicationID combination into the junction table.
-                // Add this once logic for username retrieval has been created.
 
+                changeMedicationOverviewModalScene(mainMedicationModalScene, medicationOverviewModalMainSceneTitle);
             }
         });
 
