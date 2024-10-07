@@ -92,18 +92,47 @@ public class UserAccountDAO
     }
 
     public boolean deleteAccount(String username) {
-        String deleteQuery = "DELETE FROM UserAccounts WHERE username = ?";
-        try (Connection connection = DatabaseConnection.getInstance();
-             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+        // Queries for deleting from each relevant table
+        String deleteWorkoutsQuery = "DELETE FROM workouts WHERE username = ?";
+        String deleteDailyMoodRating = "DELETE FROM dailyMoodRatings WHERE username = ?";
+        String deleteUserMedications = "DELETE FROM userMedications WHERE username = ?";
+        String deleteUserAccountQuery = "DELETE FROM UserAccounts WHERE username = ?";
 
-            statement.setString(1, username);
+        // Using a transaction to ensure all or nothing
+        try (Connection connection = DatabaseConnection.getInstance()) {
+            connection.setAutoCommit(false);  // Begin transaction
 
-            int rowsDeleted = statement.executeUpdate();
-            return rowsDeleted > 0;  // If rowsDeleted > 0, account was successfully deleted
+            try (PreparedStatement workoutStmt = connection.prepareStatement(deleteWorkoutsQuery);
+                 PreparedStatement dailyMoodStmt = connection.prepareStatement(deleteDailyMoodRating);
+                 PreparedStatement userMedicationStmt = connection.prepareStatement(deleteUserMedications);
+                 PreparedStatement accountStmt = connection.prepareStatement(deleteUserAccountQuery)) {
+
+                // Set username for all statements
+                workoutStmt.setString(1, username);
+                dailyMoodStmt.setString(1, username);
+                userMedicationStmt.setString(1, username);
+                accountStmt.setString(1, username);
+
+                // Execute all delete statements
+                workoutStmt.executeUpdate();
+                dailyMoodStmt.executeUpdate();
+                userMedicationStmt.executeUpdate();
+                int rowsDeleted = accountStmt.executeUpdate();  // Delete from UserAccounts
+
+                connection.commit();  // Commit transaction if all succeeded
+
+                return rowsDeleted > 0;  // If the user account was deleted, return true
+
+            } catch (SQLException e) {
+                connection.rollback();  // Rollback transaction in case of failure
+                e.printStackTrace();
+            } finally {
+                connection.setAutoCommit(true);  // Restore default commit behavior
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return false;  // If any exception occurred or user account was not deleted
     }
 
     public List<UserAccount> getAll()
