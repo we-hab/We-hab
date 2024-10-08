@@ -1,5 +1,10 @@
 package edu.qut.cab302.wehab;
 
+import edu.qut.cab302.wehab.medication.Medication;
+import edu.qut.cab302.wehab.medication.MedicationSearchModel;
+import edu.qut.cab302.wehab.medication.PrescribedMedicationDose;
+import edu.qut.cab302.wehab.workout.Workout;
+import edu.qut.cab302.wehab.workout.WorkoutReturnModel;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -15,6 +20,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -110,12 +116,16 @@ public class DashboardController implements Initializable {
         {
             if (loggedInUser != null)
             {
-                List<moodRating> moodRatings = moodRating.getLast7Days(loggedInUser.getUsername());
-                LocalDate today = LocalDate.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                String formattedDate = today.format(formatter);
-                String filePath = "Report for " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName() + " " + formattedDate +  ".pdf";
-                PDFReportGenerator.generateReport(moodRatings, filePath);
+                try {
+                    List<moodRating> moodRatings = moodRating.getLast7Days(loggedInUser.getUsername());
+                    List<Workout> workouts = WorkoutReturnModel.getWorkouts(loggedInUser.getUsername());
+                    List<PrescribedMedicationDose> medications = MedicationSearchModel.getCurrentDayMedications();
+                    LocalDate today = LocalDate.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    String formattedDate = today.format(formatter);
+                    String filePath = "Report for " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName() + " " + formattedDate + ".pdf";
+                    PDFReportGenerator.generateReport(moodRatings, workouts, medications, filePath);
+                } catch (SQLException error) { System.err.println(error); }
             }
         });
     }
