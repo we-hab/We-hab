@@ -38,7 +38,7 @@
                   <Image url="@../images/Wehab_banner-removebg.png" />
                </image>
             </ImageView>
-            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" styleClass="primary-button" text="Sign Out">
+            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -74,7 +74,7 @@
                   </HBox>
                   <VBox prefHeight="628.0" prefWidth="1078.0" styleClass="main-content-container-vbox">
                      <children>
-                        <ScrollPane fx:id="resultsScrollPane" prefHeight="634.0" prefWidth="1084.0" fitToWidth="true">
+                        <ScrollPane fx:id="resultsScrollPane" fitToWidth="true" prefHeight="634.0" prefWidth="1084.0">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2550.0" prefWidth="1063.0">
                                  <children>

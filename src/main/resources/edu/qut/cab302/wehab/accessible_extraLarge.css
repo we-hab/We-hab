@@ -1,3 +1,12 @@
+/* Style for focused controls */
+:focused {
+    -fx-border-color: #000000;      /* Change border color */
+    -fx-border-width: 3px;          /* Thicker border for emphasis */
+    -fx-background-color: #f0f0f0;  /* Light background color */
+    -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0); /* Shadow effect */
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
 
 /* Nav*/
 
@@ -126,6 +135,15 @@
   -fx-text-fill: #000000;
 }
 
+.main-header Button:hover {
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
+}
+
+.main-header Button:pressed {
+    -fx-background-color: #0F0F0F;
+}
+
 .primary-button {
   -fx-base: -fx-primary-button;
   -fx-background-color: #000000;
@@ -136,6 +154,15 @@
   -fx-text-fill: #ffffff;
 }
 
+.primary-button:hover {
+    -fx-scale-y: 1.2;
+    -fx-scale-x: 1.2;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #0F0F0F;
+}
+
 .secondary-button {
   -fx-base: -fx-secondary-button;
   -fx-background-color: #00ff7f;
@@ -143,6 +170,70 @@
   -fx-background-radius: 15px;
   -fx-border-radius: 15px;
   -fx-text-fill: #000000;
+}
+
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-radius: 5px;
+    -fx-padding: 1px;
+}
+
+.combo-box .label {
+    -fx-text-fill: black;            /* Text color of the selected item */
+    -fx-font-size: 6px;                /* Font size of the selected item */
+}
+
+.combo-box .arrow {
+    -fx-background-color: #000000;     /* Background color of the arrow button */
+    -fx-padding: 5px;                   /* Padding inside the arrow button */
+}
+
+.radio-hbox {
+    -fx-spacing: 10px;
+    -fx-alignment: center;              /* Center the text inside the button */
+    -fx-text-alignment: center;
+    -fx-content-display: center;
+}
+
+.radio-vbox {
+    -fx-spacing: 10px;
+    -fx-alignment: center;              /* Center the text inside the button */
+    -fx-text-alignment: center;
+    -fx-content-display: center;
+}
+
+
+.radio-button {
+    -fx-font-size: 14px;                /* Text size */
+    -fx-text-fill: black;               /* Text color */
+    -fx-background-color: #ffffff;      /* Background color */
+    -fx-background-radius: 50%;         /* Make it circular */
+    -fx-padding: 0px;                   /* No padding */
+    -fx-pref-width: 40px;               /* Set the button width */
+    -fx-pref-height: 40px;              /* Set the button height */
+    -fx-border-color: #000000;          /* Optional border for the circle */
+    -fx-border-radius: 50%;             /* Border matches the circle shape */
+    -fx-border-width: 1px;              /* Border thickness */
+    -fx-content-display: center;        /* Center the content */
+    -fx-alignment: center;              /* Center the text */
+}
+
+/* Selected state for radio button */
+.radio-button:selected {
+    -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0); /* Shadow effect */
+    -fx-border-width: 2px;
+    -fx-background-color: #000000;      /* Change background when selected */
+}
+
+.radio-button:focused {
+    -fx-background-color: #000000;      /* Change background when selected */
+    -fx-border-width: 2px;
+}
+
+/* Hide the default radio button indicator */
+.radio-button .radio {
+    -fx-opacity: 0;                      /* Hide the default radio button indicator */
 }
 
 .rounded-button {
