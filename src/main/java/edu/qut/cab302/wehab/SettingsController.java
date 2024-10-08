@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 
 import java.io.IOException;
 import java.net.URL;
@@ -100,16 +101,23 @@ public class SettingsController implements Initializable {
             MainApplication.setActiveStyleSheet("MainStyleSheet.css");
             applyTextSizeBasedOnSelection();
         });
+        addEnterKeyHandler(defaultStyle);
 
         accessibleStyle.setOnAction(event -> {
             MainApplication.setActiveStyleSheet("accessible.css");
             applyTextSizeBasedOnSelection();
         });
+        addEnterKeyHandler(accessibleStyle);
 
         // Handle the selection of text size
         defaultText.setOnAction(event -> applyTextSizeBasedOnSelection());
+        addEnterKeyHandler(defaultText);
+
         largeText.setOnAction(event -> applyTextSizeBasedOnSelection());
+        addEnterKeyHandler(largeText);
+
         extraText.setOnAction(event -> applyTextSizeBasedOnSelection());
+        addEnterKeyHandler(extraText);
 
         // Set action for the password change button
         updatePasswordButton.setOnAction(event -> {
@@ -219,6 +227,14 @@ public class SettingsController implements Initializable {
                 showAlert("Account Deletion", "Failed to delete your account. Please try again.");
             }
         }
+    }
+
+    private void addEnterKeyHandler(ToggleButton toggleButton) {
+        toggleButton.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                toggleButton.fire(); // Simulates the action of clicking the button
+            }
+        });
     }
 
 }

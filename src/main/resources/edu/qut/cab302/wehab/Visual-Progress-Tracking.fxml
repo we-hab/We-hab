@@ -16,10 +16,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@MainStyleSheet.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.workout.WorkoutController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.workout.WorkoutController">
     <children>
         <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
             <children>
@@ -39,7 +37,7 @@
                         <Image url="@images/Wehab_banner-removebg.png" />
                     </image>
                 </ImageView>
-                <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" styleClass="primary-button" text="Sign Out">
+                <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
@@ -91,11 +89,11 @@
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                 </Label>
-                                <BarChart fx:id="minutesPerDayChart" prefHeight="216.0" prefWidth="422.0" style="-fx-border-color: #000000; -fx-background-color: #FFFFFF;" barGap="2" categoryGap="5">                                    <xAxis>
-                                        <NumberAxis side="BOTTOM" label="Minutes" />
+                                <BarChart fx:id="minutesPerDayChart" barGap="2" categoryGap="5" prefHeight="216.0" prefWidth="422.0" style="-fx-border-color: #000000; -fx-background-color: #FFFFFF;">                                    <xAxis>
+                                        <NumberAxis label="Minutes" side="BOTTOM" />
                                     </xAxis>
                                     <yAxis>
-                                        <CategoryAxis fx:id="workoutTypeAxis" side="LEFT" label="Workout Type" />
+                                        <CategoryAxis fx:id="workoutTypeAxis" label="Workout Type" side="LEFT" />
                                     </yAxis>
                                     <legendVisible>false</legendVisible>
                                     <VBox.margin>
