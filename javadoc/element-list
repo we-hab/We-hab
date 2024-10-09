@@ -1,4 +1,11 @@
 module:edu.qut.cab302.wehab
 edu.qut.cab302.wehab
+edu.qut.cab302.wehab.dashboard
+edu.qut.cab302.wehab.database
 edu.qut.cab302.wehab.medication
+edu.qut.cab302.wehab.mood_ratings
+edu.qut.cab302.wehab.pdf_report
+edu.qut.cab302.wehab.reminders
+edu.qut.cab302.wehab.settings
+edu.qut.cab302.wehab.user_account
 edu.qut.cab302.wehab.workout
