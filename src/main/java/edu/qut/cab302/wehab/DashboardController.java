@@ -36,8 +36,10 @@ import edu.qut.cab302.wehab.MainApplication;
 public class DashboardController implements Initializable {
 
     @FXML
-    private Button workoutButton, medicationButton, settingsButton, signOutButton, loggedInUserLabel, moodRatingSubmission;
+    private Button workoutButton, medicationButton, settingsButton, signOutButton, moodRatingSubmission;
 
+    @FXML
+    private Label loggedInUserLabel;
     @FXML
     private RadioButton moodButton1, moodButton2, moodButton3, moodButton4, moodButton5,
                         moodButton6, moodButton7, moodButton8, moodButton9, moodButton10;
