@@ -6,6 +6,7 @@ import edu.qut.cab302.wehab.user_account.UserAccountDAO;
 import edu.qut.cab302.wehab.workout.WorkoutReturnModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.sql.Connection;
@@ -32,6 +33,12 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException  {
         primaryStage = stage;
+        primaryStage.setTitle("We-Hab"); // Set the title here
+
+        // Set the minimum width and height for the application window
+        primaryStage.setMinWidth(1280); // Set minimum width
+        primaryStage.setMinHeight(800);  // Set minimum height
+
         UserAccountDAO userAccountDAO = new UserAccountDAO();
         switchScene("/edu/qut/cab302/wehab/user_account/Login.fxml");
     }
@@ -58,14 +65,26 @@ public class MainApplication extends Application {
      */
     public static void switchScene(String fxmlFile) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(fxmlFile));
-        Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
 
         // Apply both the active base stylesheet and the text size stylesheet
         scene.getStylesheets().add(MainApplication.class.getResource(activeStyleSheet).toExternalForm());
         scene.getStylesheets().add(MainApplication.class.getResource(activeTextSizeSheet).toExternalForm());
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        Stage stage = primaryStage; // Assuming primaryStage is accessible here
+
+        // Preserve the current size of the stage
+        double currentWidth = stage.getWidth();
+        double currentHeight = stage.getHeight();
+
+        stage.setScene(scene);
+
+        // Set the stage size to the previous size
+        stage.setWidth(currentWidth);
+        stage.setHeight(currentHeight);
+
+        stage.show();
     }
 
     /**

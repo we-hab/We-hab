@@ -24,7 +24,7 @@
   -fx-background-color: #F2FBEF;
   -fx-padding: 150px;
   -fx-spacing: 10px;
-  -fx-alignment: TOP-CENTER;
+  -fx-alignment: CENTER;
 }
 
     /*Text-field*/
@@ -112,7 +112,7 @@
   -fx-font-family: "Inter";
   -fx-padding: 10px;
   -fx-spacing: 30px;
-  -fx-alignment: CENTER;
+  //-fx-alignment: CENTER;
 }
 
 .main-header VBox {

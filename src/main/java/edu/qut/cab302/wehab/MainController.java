@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -39,6 +40,8 @@ public class MainController {
     private PasswordField passwordField;
     @FXML
     private PasswordField passwordFieldConfirm;
+    @FXML
+    private Button registerBackButton;
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
@@ -62,6 +65,8 @@ public class MainController {
     @FXML
     public void initialize()
     {
+
+
         passwordField.setOnKeyPressed(event ->
         {
             switch (event.getCode())
@@ -84,8 +89,16 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/qut/cab302/wehab/user_account/create-account.fxml"));
             Parent root = loader.load();
 
+            // Get the controller of the newly loaded FXML
+            MainController controller = loader.getController();
+
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(root));
+
+            // Request focus on the back button after the scene is set
+            if (controller.registerBackButton != null) {
+                controller.registerBackButton.requestFocus();
+            }
 
             stage.show();
         } catch (Exception error) {
