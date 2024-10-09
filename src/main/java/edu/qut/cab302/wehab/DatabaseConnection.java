@@ -13,6 +13,10 @@ public class DatabaseConnection
 {
     private static Connection instance = null;
 
+    /**
+     * Private constructor to establish the database connection and create necessary tables.
+     * Uses SQLite to connect to a local database file.
+     */
     private DatabaseConnection()
     {
         String url = "jdbc:sqlite:db/database.db";
@@ -23,6 +27,10 @@ public class DatabaseConnection
         } catch (SQLException sqlEx) { System.err.println(sqlEx); }
     }
 
+    /**
+     * Creates the "userAccounts" table in the database if it doesn't already exist.
+     * The table includes columns for username, first name, last name, email, and password.
+     */
     public static void createTable()
     {
         String createTableSQL =
@@ -37,6 +45,12 @@ public class DatabaseConnection
         try (Statement createTable = instance.createStatement()) { createTable.execute(createTableSQL); } catch (SQLException error) { System.err.println(error); }
     }
 
+    /**
+     * Retrieves the singleton instance of the database connection.
+     * If the connection is closed or hasn't been initialized, it creates a new connection.
+     *
+     * @return the active connection to the database
+     */
     public static Connection getInstance()
     {
         try {

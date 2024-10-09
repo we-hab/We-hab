@@ -1,11 +1,7 @@
 package edu.qut.cab302.wehab;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 
@@ -44,6 +40,10 @@ public class SettingsController implements Initializable {
     @FXML
     private Button deleteAccountButton;
 
+    /**
+     * Initializes the settings controller. This method sets up toggle buttons for themes and text sizes,
+     * handles button actions, and displays the logged-in user's name.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -134,7 +134,10 @@ public class SettingsController implements Initializable {
         });
     }
 
-    // Helper method to apply text size based on the selected style and size
+    /**
+     * Applies the selected text size and theme (default or accessible) to the application.
+     * The method updates the stylesheet based on the current selection of the toggle buttons.
+     */
     private void applyTextSizeBasedOnSelection() {
         if (defaultStyle.isSelected()) {
             if (defaultText.isSelected()) {
@@ -154,7 +157,13 @@ public class SettingsController implements Initializable {
             }
         }
     }
-
+    /**
+     * Changes the user's password by verifying the old password and updating it with the new one.
+     * If successful, a confirmation dialog is shown. If the old password is incorrect or the update fails,
+     * an error message is displayed.
+     *
+     * @throws IOException If an I/O error occurs during password change.
+     */
     private void changePassword() throws IOException {
         String currentPassword = oldPassword.getText();
         String newPass = newPassword.getText();
@@ -179,6 +188,12 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Displays an alert dialog to the user with a given title and message.
+     *
+     * @param title   The title of the alert dialog.
+     * @param message The content message of the alert dialog.
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -186,6 +201,10 @@ public class SettingsController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Displays a confirmation dialog to the user before deleting the account. If confirmed,
+     * the account deletion is processed. Otherwise, the action is canceled.
+     */
     private void showDeleteAccountConfirmation() {
         // Create confirmation alert
         ButtonType deleteButtonType = new ButtonType("Delete", ButtonBar.ButtonData.OK_DONE);
@@ -211,6 +230,12 @@ public class SettingsController implements Initializable {
         });
     }
 
+    /**
+     * Deletes the user's account and logs them out of the application if the deletion is successful.
+     * After account deletion, the user is redirected to the login page.
+     *
+     * @throws IOException If an I/O error occurs during account deletion.
+     */
     private void deleteAccount() throws IOException {
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
 
@@ -229,10 +254,15 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Adds an event handler to the given toggle button that fires the button's action when the Enter key is pressed.
+     *
+     * @param toggleButton The toggle button to add the event handler to.
+     */
     private void addEnterKeyHandler(ToggleButton toggleButton) {
         toggleButton.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                toggleButton.fire(); // Simulates the action of clicking the button
+                toggleButton.fire(); // Simulates the action of clicking the button, enabling the user only needing to press enter once to change the focused setting
             }
         });
     }

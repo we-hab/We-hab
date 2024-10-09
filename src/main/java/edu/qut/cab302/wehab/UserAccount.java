@@ -18,11 +18,13 @@ public class UserAccount
     private String hashedPassword;
 
     /**
-     * Constructs a new UserAccount with the specified username and password.
+     * Constructs a new UserAccount with the specified details.
      *
-     * @param email the email address for the account.
-     * @param username The UNIQUE username for the account.
-     * @param password The password for the account.
+     * @param username the UNIQUE username for the account
+     * @param firstName the first name of the user
+     * @param lastName the last name of the user
+     * @param email the email address for the account
+     * @param password the password for the account
      */
 
     public UserAccount(String username, String firstName, String lastName, String email, String password)
@@ -34,32 +36,39 @@ public class UserAccount
         this.hashedPassword = hashedPassword(password);
     }
 
-    // Username - Primary Key
+    /**
+     * @return the username
+     */
     public String getUsername() { return username; }
-    public void getUsername(String username) { this.username = username; }
 
-    // First and Last Name
+    /**
+     * @return the first name
+     */
     public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    /**
+     * @return the last name
+     */
     public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
 
-    // Email
+    /**
+     * @return the email
+     */
     public String getEmail() { return email; }
-    public void setEmail( String email ) { this.email = email; }
 
+    /**
+     * @return the hashed password
+     */
+    public String getHashedPassword() { return hashedPassword; }
 
-    //Password
+    /**
+     * Hashes the given password using BCrypt.
+     *
+     * @param password the password to hash
+     * @return the hashed password
+     */
     private String hashedPassword(String password) { return BCrypt.withDefaults().hashToString(12, password.toCharArray()); }
 
-    public boolean checkPassword(String password)
-    {
-        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), this.hashedPassword);
-        return result.verified;
-    }
-
-    public String getHashedPassword() { return hashedPassword; }
-    public void getPassword(String password) { this.hashedPassword = hashedPassword(password); }
 
     @Override
     public String toString()
