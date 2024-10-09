@@ -44,7 +44,7 @@
                 </Button>
             </children>
         </HBox>
-        <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container">
+        <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" VBox.vgrow="ALWAYS">
             <children>
                 <VBox alignment="TOP_CENTER" prefHeight="693.0" prefWidth="174.0" styleClass="main-nav-pane">
                     <children>

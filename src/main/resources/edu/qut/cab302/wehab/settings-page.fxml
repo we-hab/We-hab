@@ -44,7 +44,7 @@
             </Button>
          </children>
       </HBox>
-      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container">
+      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" VBox.vgrow="ALWAYS">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="702.0" prefWidth="182.0" styleClass="main-nav-pane">
                <children>
@@ -57,7 +57,7 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="1083.0" styleClass="main-container">
+            <VBox prefHeight="200.0" prefWidth="1083.0" styleClass="main-container" HBox.hgrow="ALWAYS">
                <children>
                   <Label alignment="CENTER" text="Settings">
                      <font>

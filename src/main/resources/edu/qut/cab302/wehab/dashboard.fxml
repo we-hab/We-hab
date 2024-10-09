@@ -18,7 +18,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
          <children>
-            <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="SOMETIMES">
                <image>
                   <Image url="@images/user.png" />
                </image>
@@ -26,13 +26,13 @@
                   <Insets />
                </HBox.margin>
             </ImageView>
-            <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
+            <VBox alignment="CENTER" prefHeight="87.0" prefWidth="265.0" HBox.hgrow="SOMETIMES">
                <children>
-                  <Label text="Welcome!" />
-                  <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
+                  <Label prefHeight="20.0" prefWidth="336.0" text="Welcome!" />
+                  <Label fx:id="loggedInUserLabel" prefHeight="20.0" prefWidth="301.0" text="Firstname" wrapText="true" />
                </children>
             </VBox>
-            <ImageView fitHeight="65.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="65.0" fitWidth="912.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -40,14 +40,14 @@
                   <Image url="@images/Wehab_banner-removebg.png" />
                </image>
             </ImageView>
-            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
+            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
          </children>
       </HBox>
-      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container">
+      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" VBox.vgrow="ALWAYS">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="702.0" prefWidth="182.0" styleClass="main-nav-pane">
                <children>
@@ -60,13 +60,13 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1083.0">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1083.0" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox prefHeight="723.0" prefWidth="1083.0" styleClass="main-content-container">
+                  <HBox prefHeight="723.0" prefWidth="1083.0" styleClass="main-content-container" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox">
+                        <VBox alignment="TOP_CENTER" prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox" HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="heading" text="Schedule">
                                        <padding>
@@ -83,7 +83,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </VBox>
-                              <VBox alignment="TOP_CENTER" prefHeight="76.0" prefWidth="232.0">
+                              <VBox alignment="TOP_CENTER" prefHeight="76.0" prefWidth="232.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="heading" text="Message of the day:">
                                        <VBox.margin>
@@ -96,7 +96,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </VBox>
-                              <VBox alignment="TOP_CENTER" prefHeight="295.0" prefWidth="531.0">
+                              <VBox alignment="TOP_CENTER" prefHeight="295.0" prefWidth="531.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="230.0">
                                        <children>
@@ -129,9 +129,9 @@
                               <Insets />
                            </HBox.margin>
                         </VBox>
-                        <VBox prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox">
+                        <VBox prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox" HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="heading" text="Reminders">
                                        <padding>
@@ -147,7 +147,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </VBox>
-                              <VBox alignment="TOP_CENTER" prefHeight="131.0" prefWidth="523.0">
+                              <VBox alignment="TOP_CENTER" prefHeight="131.0" prefWidth="523.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="heading" text="Daily Mood Rating">
                                        <VBox.margin>
@@ -236,10 +236,10 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </VBox>
-                              <VBox alignment="TOP_CENTER" prefHeight="242.0" prefWidth="523.0">
+                              <VBox alignment="TOP_CENTER" prefHeight="242.0" prefWidth="523.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="heading" text="Mood over 7 days" />
-                                    <LineChart fx:id="moodChart" prefHeight="239.0" prefWidth="523.0">
+                                    <LineChart fx:id="moodChart" prefHeight="299.0" prefWidth="539.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />
                                       </xAxis>
@@ -256,7 +256,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Button fx:id="generatePdfBtn" mnemonicParsing="false" prefHeight="39.0" prefWidth="170.0" styleClass="primary-button" text="Generate Report">
+                  <Button fx:id="generatePdfBtn" mnemonicParsing="false" prefHeight="39.0" prefWidth="170.0" styleClass="primary-button" text="Generate Report" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="10.0" top="20.0" />
                      </VBox.margin>
