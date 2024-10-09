@@ -1,13 +1,13 @@
 package edu.qut.cab302.wehab.medication;
 
-import edu.qut.cab302.wehab.DatabaseConnection;
+import edu.qut.cab302.wehab.database.DatabaseConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import edu.qut.cab302.wehab.Session;
+import edu.qut.cab302.wehab.database.Session;
 
 /**
  * This class provides methods for interacting with the medication-related tables in the database.

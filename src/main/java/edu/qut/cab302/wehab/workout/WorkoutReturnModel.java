@@ -1,5 +1,5 @@
 package edu.qut.cab302.wehab.workout;
-import edu.qut.cab302.wehab.DatabaseConnection;
+import edu.qut.cab302.wehab.database.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

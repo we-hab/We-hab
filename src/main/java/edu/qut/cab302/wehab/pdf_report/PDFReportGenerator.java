@@ -1,4 +1,4 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.pdf_report;
 
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -9,7 +9,10 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
+import edu.qut.cab302.wehab.database.Session;
+import edu.qut.cab302.wehab.user_account.UserAccount;
 import edu.qut.cab302.wehab.medication.PrescribedMedicationDose;
+import edu.qut.cab302.wehab.mood_ratings.moodRating;
 import edu.qut.cab302.wehab.workout.Workout;
 
 import java.time.LocalDate;

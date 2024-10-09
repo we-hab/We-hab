@@ -1,5 +1,10 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.settings;
 
+import edu.qut.cab302.wehab.dashboard.ButtonController;
+import edu.qut.cab302.wehab.MainApplication;
+import edu.qut.cab302.wehab.database.Session;
+import edu.qut.cab302.wehab.user_account.UserAccount;
+import edu.qut.cab302.wehab.user_account.UserAccountDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -247,7 +252,7 @@ public class SettingsController implements Initializable {
                 showAlert("Account Deletion", "Your account has been successfully deleted.");
                 // log out the user and redirect to the login page
                 Session.getInstance().clearLoggedInUser();
-                MainApplication.switchScene("Login.fxml");
+                MainApplication.switchScene("/edu/qut/cab302/wehab/user_account/Login.fxml");
             } else {
                 showAlert("Account Deletion", "Failed to delete your account. Please try again.");
             }

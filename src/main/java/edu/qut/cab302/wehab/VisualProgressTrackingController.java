@@ -1,5 +1,6 @@
 package edu.qut.cab302.wehab;
 
+import edu.qut.cab302.wehab.dashboard.ButtonController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

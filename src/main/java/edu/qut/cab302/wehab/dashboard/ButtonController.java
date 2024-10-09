@@ -1,5 +1,7 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.dashboard;
 
+import edu.qut.cab302.wehab.MainApplication;
+import edu.qut.cab302.wehab.database.Session;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -89,7 +91,7 @@ public class ButtonController {
 
                 // Step 2: Navigate to the login screen
                 try {
-                    MainApplication.switchScene("Login.fxml");
+                    MainApplication.switchScene("/edu/qut/cab302/wehab/user_account/Login.fxml");
                 } catch (IOException e) {
                     System.out.println("Failed to load login page.\n" + e.getMessage());
                     throw new RuntimeException(e);

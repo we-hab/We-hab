@@ -1,8 +1,6 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.reminders;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 /**
  * Controller for managing reminders, such as viewing, editing, and deleting them.
