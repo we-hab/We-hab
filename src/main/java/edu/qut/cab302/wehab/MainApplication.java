@@ -1,7 +1,9 @@
 package edu.qut.cab302.wehab;
 
 import edu.qut.cab302.wehab.database.DatabaseConnection;
+import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.mood_ratings.moodRating;
+import edu.qut.cab302.wehab.user_account.UserAccount;
 import edu.qut.cab302.wehab.user_account.UserAccountDAO;
 import edu.qut.cab302.wehab.workout.WorkoutReturnModel;
 import javafx.application.Application;
@@ -40,7 +42,11 @@ public class MainApplication extends Application {
         primaryStage.setMinHeight(800);  // Set minimum height
 
         UserAccountDAO userAccountDAO = new UserAccountDAO();
-        switchScene("/edu/qut/cab302/wehab/user_account/Login.fxml");
+//        Change this to your username to skip the login screen when testing
+        UserAccount loggedInUser = userAccountDAO.getByUsername("test");
+        Session.getInstance().setLoggedInUser(loggedInUser);
+        switchScene("/edu/qut/cab302/wehab/medication/medication-overview.fxml");
+//        switchScene("/edu/qut/cab302/wehab/user_account/Login.fxml");
     }
 
     /**
