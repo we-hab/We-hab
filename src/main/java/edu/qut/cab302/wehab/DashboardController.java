@@ -1,5 +1,6 @@
 package edu.qut.cab302.wehab;
 
+import com.sun.source.tree.Tree;
 import edu.qut.cab302.wehab.medication.Medication;
 import edu.qut.cab302.wehab.medication.MedicationSearchModel;
 import edu.qut.cab302.wehab.medication.PrescribedMedicationDose;
@@ -27,48 +28,42 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.io.IOException;
+import java.util.TreeMap;
+
 import edu.qut.cab302.wehab.MainApplication;
 
 
 public class DashboardController implements Initializable {
 
     @FXML
-    private Button workoutButton;
-
-    @FXML
-    private Button medicationButton;
-
-    @FXML
-    private Button settingsButton;
-
-    @FXML
-    private Button signOutButton;
-
-    @FXML
-    private Label loggedInUserLabel;
-
-    @FXML
-    private Button moodRatingSubmission;
+    private Button workoutButton, medicationButton, settingsButton, signOutButton, loggedInUserLabel, moodRatingSubmission;
 
     @FXML
     private RadioButton moodButton1, moodButton2, moodButton3, moodButton4, moodButton5,
                         moodButton6, moodButton7, moodButton8, moodButton9, moodButton10;
 
-    private ToggleGroup moodToggleGroup;
+    private ToggleGroup moodToggleGroup; // Toggle group for mood rating buttons (So they can be greyed out all together)
 
     @FXML
-    LineChart<String, Number> moodChart;
+    LineChart<String, Number> moodChart; // Line chart to show mood ratings
     @FXML
-    private CategoryAxis xHorizontal;
+    private CategoryAxis xHorizontal; // Horizontal axis for the mood chart (left to right)
     @FXML
-    private NumberAxis yVertical;
+    private NumberAxis yVertical; // Vertical axis for the mood chart (up and down)
 
     @FXML
-    private Button generatePdfBtn;
+    private Button generatePdfBtn; // Button that generates the PDF report
 
+    /**
+     * Initializes the controller. This method is called when the scene is loaded.
+     * It sets up the UI elements, loads the mood data, and handles button actions.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        // Set up the toggle group for the mood buttons
         moodToggleGroup = new ToggleGroup();
         moodButton1.setToggleGroup(moodToggleGroup);
         moodButton2.setToggleGroup(moodToggleGroup);
@@ -81,76 +76,98 @@ public class DashboardController implements Initializable {
         moodButton9.setToggleGroup(moodToggleGroup);
         moodButton10.setToggleGroup(moodToggleGroup);
 
+        // Retrieve the logged-in user for the session and load their mood data from the table moodRatings
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
 
         if (loggedInUser != null)
         {
             String firstName = loggedInUser.getFirstName();
-            loggedInUserLabel.setText(firstName);
-            loadMoodData(loggedInUser.getUsername());
+            loggedInUserLabel.setText(firstName); // Displays the user's first name in the top left of the UI.
+            loadMoodData(loggedInUser.getUsername()); // Load the mood data for the user
 
+            //** Handles the mood rating submission button action **\\
             moodRatingSubmission.setOnAction(event ->
             {
-                int selectedRating = getSelectedRating();
-                if (selectedRating != -1)
+                int selectedRating = getSelectedRating(); // Get the selected mood rating that the user has selected
+                if (selectedRating != -1) // If the user has selected a radio button, then continue
                 {
+                    // Insert the mood rating data into the database
                     moodRating.insertMoodRating(selectedRating, loggedInUser.getUsername());
-                    disableMoodButtons();
-                    loadMoodData(loggedInUser.getUsername());
+                    disableMoodButtons(); // Disables the button after submission
+                    loadMoodData(loggedInUser.getUsername()); // Reload the mood data in the UI to show the new rating
                 }
             });
 
+            // Disable the radio buttons if the user has already rated their mood today
             if (moodRating.hasRatedToday(loggedInUser.getUsername()))
             {
                 disableMoodButtons();
             }
         } else
         {
-            loggedInUserLabel.setText("Error");
+            loggedInUserLabel.setText("Error"); // Error message if the user is not logged in.
         }
 
+        //*** Initialize button actions for the navigation tabs ***\\
         ButtonController.initialiseButtons(null, workoutButton, medicationButton, settingsButton, signOutButton);
-        moodChart.setLegendVisible(false);
+        moodChart.setLegendVisible(false); // Hide chart legend for mood ratings
 
+        //*** Handle the PDF generation button action ***\\
         generatePdfBtn.setOnAction(event ->
         {
             if (loggedInUser != null)
             {
                 try {
+                    // Retrieve the data for the PDF Report
                     List<moodRating> moodRatings = moodRating.getLast7Days(loggedInUser.getUsername());
                     List<Workout> workouts = WorkoutReturnModel.getWorkouts(loggedInUser.getUsername());
                     List<PrescribedMedicationDose> medications = MedicationSearchModel.getCurrentDayMedications();
+                    TreeMap<LocalDate, Integer> monthlyMinutes = WorkoutReturnModel.getMonthlyMinutes(loggedInUser.getUsername());
+
+                    // Format today's date for the file name in Australian date format
                     LocalDate today = LocalDate.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     String formattedDate = today.format(formatter);
                     String filePath = "Report for " + loggedInUser.getFirstName() + " " + loggedInUser.getLastName() + " " + formattedDate + ".pdf";
-                    PDFReportGenerator.generateReport(moodRatings, workouts, medications, filePath);
+
+                    // Generate the PDF report
+                    PDFReportGenerator.generateReport(moodRatings, workouts, medications, monthlyMinutes ,filePath);
                 } catch (SQLException error) { System.err.println(error); }
             }
         });
     }
 
+    /**
+     * Loads the mood data for the given username and updates the mood chart in the UI.
+     * @param username The username of the logged-in user
+     */
     private void loadMoodData(String username)
     {
-        moodChart.getData().clear();
+        moodChart.getData().clear(); // Clear any existing chart data to start fresh
 
-
+        // Retrieve the last 7 days of mood ratings
         List<moodRating> ratings = moodRating.getLast7Days(username);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        Collections.reverse(ratings);
+        Collections.reverse(ratings); // Reverse the order to show the latest date to the from right to left. (Latest date far right)
+
+        // Add dots into the chart for each mood rating
         for (moodRating rating : ratings)
         {
             series.getData().add(new XYChart.Data<>(rating.getRatingDate().toString(), rating.getMoodRating()));
         }
-
-        moodChart.getData().add(series);
+        moodChart.getData().add(series); // Update the chart with the new data
     }
 
+    /**
+     * Retrieve the selected mood rating from the radio buttons.
+     * @return The selected mood rating (1-10) or -1 if nothing is selected (for error handling).
+     */
     private int getSelectedRating()
     {
         RadioButton pressedButton = (RadioButton) moodToggleGroup.getSelectedToggle();
         if (pressedButton != null)
         {
+            // Return the rating based on the selected button
             if (pressedButton == moodButton1) { return 1; }
             else if (pressedButton == moodButton2) { return 2; }
             else if (pressedButton == moodButton3) { return 3; }
@@ -161,11 +178,13 @@ public class DashboardController implements Initializable {
             else if (pressedButton == moodButton8) { return 8; }
             else if (pressedButton == moodButton9) { return 9; }
             else if (pressedButton == moodButton10) { return 10; }
-            //return Integer.parseInt(pressedButton.getText());
         }
-        return -1;
+        return -1; // Return -1 if nothing is selected.
     }
 
+    /**
+     * Disables the mood rating buttons to prevent multiple selections.
+     */
     private void disableMoodButtons()
     {
         moodButton1.setDisable(true);
@@ -181,6 +200,9 @@ public class DashboardController implements Initializable {
         moodRatingSubmission.setDisable(true);
     }
 
+    /**
+     * Enables the mood rating buttons so the user can submit a rating.
+     */
     private void enableMoodButtons()
     {
         moodButton1.setDisable(false);

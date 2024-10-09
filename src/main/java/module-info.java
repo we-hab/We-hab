@@ -7,6 +7,7 @@ module edu.qut.cab302.wehab {
     requires org.json;
     requires kernel;
     requires layout;
+    requires jdk.compiler;
 
 
     opens edu.qut.cab302.wehab to javafx.fxml;
