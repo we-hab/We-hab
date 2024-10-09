@@ -9,14 +9,21 @@ import java.util.List;
 /**
  * Data Access Object (DAO) for interacting with UserAccount entities in the database.
  */
-
 public class UserAccountDAO
 {
     // Create a connection with the database, so we can edit it.
     private Connection connection;
+
+    /**
+     * Constructs a UserAccountDAO object and initializes the database connection.
+     */
     public UserAccountDAO() { connection = DatabaseConnection.getInstance(); }
 
-    // A class to register a new user into the database.
+    /**
+     * Registers a new user account in the database.
+     *
+     * @param userAccount The UserAccount object containing user information to be registered.
+     */
     public void registerAccount(UserAccount userAccount)
     {
         try
@@ -34,10 +41,10 @@ public class UserAccountDAO
 
 
     /**
-     * A class to login an existing user, will compare against the database for the entered username and password, and will return true or false if all correct.
+     * A class to log in an existing user, will compare against the database for the entered username and password, and will return true or false if all correct.
      * @param enteredUsername The username created by the user
      * @param enteredPassword The password created of the user
-     * @return
+     * @return True if the username and password match the stored values, false otherwise.
      */
     public boolean LoginToAccount(String enteredUsername, String enteredPassword)
     {
@@ -73,24 +80,12 @@ public class UserAccountDAO
         } catch (SQLException error) { System.err.println(error); return false; }
     }
 
-
-
-    public void update(UserAccount userAccount)
-    {
-        try
-        {
-            PreparedStatement updateAccount = connection.prepareStatement("UPDATE userAccounts SET username = ?, firstName = ?, lastName = ?, email = ?, password = ? WHERE username = ?");
-            updateAccount.setString(1, userAccount.getUsername());
-            updateAccount.setString(2, userAccount.getFirstName());
-            updateAccount.setString(3, userAccount.getLastName());
-            updateAccount.setString(4, userAccount.getEmail());
-            updateAccount.setString(5, userAccount.getHashedPassword());
-            updateAccount.setString(6, userAccount.getUsername());
-            updateAccount.execute();
-
-        } catch (SQLException error) { System.err.println(error); }
-    }
-
+    /**
+     * Deletes a user account from the database.
+     *
+     * @param username The username of the account to be deleted.
+     * @return True if the account was successfully deleted, false otherwise.
+     */
     public boolean deleteAccount(String username) {
         String deleteQuery = "DELETE FROM UserAccounts WHERE username = ?";
         try (Connection connection = DatabaseConnection.getInstance();
@@ -106,50 +101,11 @@ public class UserAccountDAO
         return false;
     }
 
-    public List<UserAccount> getAll()
-    {
-        List<UserAccount> users = new ArrayList<>();
-        try
-        {
-            Statement getAll = connection.createStatement();
-            ResultSet rs = getAll.executeQuery("SELECT * FROM userAccounts");
-            while (rs.next())
-            {
-                users.add(
-                        new UserAccount(
-                            rs.getString("username"),
-                            rs.getString("firstName"),
-                            rs.getString("lastName"),
-                            rs.getString("email"),
-                            rs.getString("password")
-                        )
-                );
-            }
-        } catch (SQLException error) { System.err.println(error); }
-        return users;
-    }
-
-    public UserAccount getById(int id)
-    {
-        try
-        {
-            PreparedStatement getUser = connection.prepareStatement("SELECT * FROM userAccounts WHERE username = ?");
-            getUser.setInt(1, id);
-            ResultSet rs = getUser.executeQuery();
-            if (rs.next())
-            {
-                return new UserAccount(
-                        rs.getString("username"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("email"),
-                        rs.getString("password")
-                );
-            }
-        } catch (SQLException error) { System.err.println(error); }
-        return null;
-    }
-
+    /**
+     * Retrieves a list of all usernames from the database.
+     *
+     * @return A list of all usernames as strings.
+     */
     public List<String> getAllusernames()
     {
         List<String> usernames = new ArrayList<>();
@@ -166,6 +122,11 @@ public class UserAccountDAO
         return usernames;
     }
 
+    /**
+     * Retrieves a list of all emails from the database.
+     *
+     * @return A list of all emails as strings.
+     */
     public List<String> getAllemails()
     {
         List<String> emails = new ArrayList<>();
@@ -182,15 +143,12 @@ public class UserAccountDAO
         return emails;
     }
 
-    private void close()
-    {
-        try
-        {
-            connection.close();
-        }
-        catch (SQLException error) { System.err.println(error); }
-    }
-
+    /**
+     * Retrieves a user account by its username.
+     *
+     * @param enteredUsername The username of the account to retrieve.
+     * @return A UserAccount object if found, or null if no account matches the username.
+     */
     public UserAccount getByUsername(String enteredUsername)
     {
         UserAccount userAccount = null;
@@ -218,7 +176,13 @@ public class UserAccountDAO
         return userAccount;
     }
 
-    // Method to verify the old password
+    /**
+     * Validates a user's password by comparing it to the stored hashed password in the database.
+     *
+     * @param username The username of the account to validate.
+     * @param inputPassword The plain-text password entered by the user.
+     * @return True if the password is valid, false otherwise.
+     */
     public boolean validatePassword(String username, String inputPassword) {
         String storedHashedPassword = getStoredHashedPassword(username);
 
@@ -230,7 +194,12 @@ public class UserAccountDAO
         return false;
     }
 
-    // Method to get the stored hashed password from the database
+    /**
+     * Retrieves the stored hashed password for a given username from the database.
+     *
+     * @param username The username for which to retrieve the password.
+     * @return The stored hashed password as a string, or null if no password is found.
+     */
     private String getStoredHashedPassword(String username) {
         String query = "SELECT password FROM UserAccounts WHERE username = ?";
         try (Connection connection = DatabaseConnection.getInstance();
@@ -247,7 +216,13 @@ public class UserAccountDAO
         return null;
     }
 
-    // Method to update the password
+    /**
+     * Updates a user's password in the database.
+     *
+     * @param username The username of the account to update.
+     * @param newPassword The new plain-text password to be hashed
+     * @return True if the password update was successful, false otherwise.
+     */
     public boolean updatePassword(String username, String newPassword) {
         String hashedPassword = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
         String updateQuery = "UPDATE userAccounts SET password = ? WHERE username = ?";

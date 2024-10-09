@@ -6,22 +6,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
+/**
+ * Represents mood ratings for users, allowing the creation, retrieval, and management of mood data.
+ */
 public class moodRating
 {
     private int moodRating;
     private LocalDate ratingDate;
 
+    /**
+     * Constructor for creating a moodRating object.
+     *
+     * @param moodRating the rating of the mood (e.g., from 1 to 10)
+     * @param ratingDate the date the mood rating was recorded
+     */
     public moodRating(int moodRating, LocalDate ratingDate)
     {
         this.moodRating = moodRating;
         this.ratingDate = ratingDate;
     }
 
+    /**
+     * @return the mood rating
+     */
     public int getMoodRating() { return moodRating; }
-    public LocalDate getRatingDate() { return ratingDate; }
-    public void setMoodRating(int moodRating) { this.moodRating = moodRating; }
-    public void setRatingDate(LocalDate ratingDate) { this.ratingDate = ratingDate; }
 
+    /**
+     * @return the date of the mood rating
+     */
+    public LocalDate getRatingDate() { return ratingDate; }
+
+    /**
+     * Creates the dailyMoodRatings table in the database if it does not exist.
+     */
     public static void createMoodTable()
     {
         String createMoodTable =
@@ -44,7 +61,12 @@ public class moodRating
         }
     }
 
-    // Method to insert a new mood rating
+    /**
+     * Inserts a new mood rating into the database for a specific user.
+     *
+     * @param moodRating the mood rating to insert
+     * @param username the username of the user providing the rating
+     */
     public static void insertMoodRating(int moodRating, String username)
     {
         String insertSQL = "INSERT INTO dailyMoodRatings (username, moodRating, ratingDate) VALUES (?, ?, date('now'))";
@@ -57,6 +79,12 @@ public class moodRating
         } catch (SQLException error) { System.err.println(error); }
     }
 
+    /**
+     * Retrieves the mood ratings for the last 7 days for a specific user.
+     *
+     * @param username the username of the user whose ratings are to be retrieved
+     * @return a list of moodRating objects for the last 7 days
+     */
     public static List<moodRating> getLast7Days(String username)
     {
         String query = "SELECT moodRating, ratingDate FROM dailyMoodRatings WHERE username = ? AND ratingDate >= date('now', '-7 days')";
@@ -76,6 +104,12 @@ public class moodRating
         return ratings;
     }
 
+    /**
+     * Checks if the user has rated their mood today.
+     *
+     * @param username the username of the user to check
+     * @return true if the user has rated today, false otherwise
+     */
     public static boolean hasRatedToday(String username)
     {
         String query = "SELECT COUNT(*) FROM dailyMoodRatings WHERE username = ? and ratingDate = date('now')";

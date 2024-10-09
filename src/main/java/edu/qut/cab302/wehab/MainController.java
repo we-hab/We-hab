@@ -1,16 +1,14 @@
 package edu.qut.cab302.wehab;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javax.sound.midi.SysexMessage;
+
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -41,6 +39,12 @@ public class MainController {
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
+    /**
+     * Validates the provided email against the predefined regex pattern.
+     *
+     * @param email The email address to validate.
+     * @return true if the email is valid; false otherwise.
+     */
     private boolean isAValidEmail(String email)
     {
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
@@ -48,6 +52,10 @@ public class MainController {
         return matcher.matches();
     }
 
+    /**
+     * Initializes the controller and sets up key event handling for the password field.
+     * Logs the user in when the ENTER key is pressed.
+     */
     @FXML
     public void initialize()
     {
@@ -64,7 +72,9 @@ public class MainController {
         });
     }
 
-    // If the user clicks the "Create account" button on the Login screen, change to the register screen.
+    /**
+     * Navigates to the registration screen when the user clicks the "Create account" button.
+     */
     @FXML
     protected void onGoToRegisterScreen() {
         try {
@@ -80,6 +90,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Navigates back to the login screen.
+     */
     @FXML
     protected void backToLoginScreen()
     {
@@ -95,6 +108,10 @@ public class MainController {
         } catch( Exception error) { error.printStackTrace(); }
     }
 
+    /**
+     * Handles user registration when the "Register" button is clicked.
+     * Validates input fields and creates a new user account if validation passes.
+     */
     @FXML
     protected void onRegisterClick()
     {
@@ -206,8 +223,10 @@ public class MainController {
         }
     }
 
-    // Login screen //
-    // When a user clicks the 'login' button, it'll run this code:
+    /**
+     * Handles user login when the "Login" button is clicked.
+     * Validates input fields and authenticates the user.
+     */
     @FXML
     protected void onLoginClick()
     {
@@ -220,17 +239,14 @@ public class MainController {
         // Clear any previous error styling before validating
         ErrorText.getStyleClass().remove("error-label");
 
+        // Validate input fields
         if (enteredUsername.isEmpty())
         {
             ErrorText.setText("Please enter a username.");
-            ErrorText.getStyleClass().add("error-label");  // Apply error styling
-            return;
         }
         else if (enteredPassword.isEmpty())
         {
             ErrorText.setText("Please enter a password");
-            ErrorText.getStyleClass().add("error-label");  // Apply error styling
-            return;
         }
         else
         {
@@ -259,6 +275,8 @@ public class MainController {
                 passwordField.clear();
             }
         }
+        // Apply error styling if any validation fails
+        ErrorText.getStyleClass().add("error-label");
     }
 }
 

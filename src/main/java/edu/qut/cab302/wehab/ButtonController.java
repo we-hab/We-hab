@@ -6,8 +6,22 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 
+/**
+ * Responsible for initializing button actions in the application.
+ * It assigns event handlers to various buttons for navigating between scenes.
+ */
 public class ButtonController {
 
+    /**
+     * Initializes the provided buttons by setting their event handlers for scene navigation.
+     * Each button will switch to a different scene when clicked, or sign out the user if signOut is clicked.
+     *
+     * @param dashboard  Button to navigate to the dashboard scene.
+     * @param workout    Button to navigate to the workout scene.
+     * @param medication Button to navigate to the medication search scene.
+     * @param settings   Button to navigate to the settings scene.
+     * @param signOut    Button to log out the user and navigate to the login screen.
+     */
     public static void initialiseButtons(Button dashboard, Button workout, Button medication, Button settings, Button signOut) {
 
         if (dashboard != null) {
@@ -75,7 +89,7 @@ public class ButtonController {
 
                 // Step 2: Navigate to the login screen
                 try {
-                    MainApplication.switchScene("Login.fxml");  // Adjust the path based on your structure
+                    MainApplication.switchScene("Login.fxml");
                 } catch (IOException e) {
                     System.out.println("Failed to load login page.\n" + e.getMessage());
                     throw new RuntimeException(e);
