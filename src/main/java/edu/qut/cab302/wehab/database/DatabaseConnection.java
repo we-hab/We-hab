@@ -1,4 +1,4 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

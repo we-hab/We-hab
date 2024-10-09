@@ -1,6 +1,4 @@
 package edu.qut.cab302.wehab.workout;
-import edu.qut.cab302.wehab.DatabaseConnection;
-import java.sql.Connection;
 import java.time.LocalDate;
 
 public class Workout {

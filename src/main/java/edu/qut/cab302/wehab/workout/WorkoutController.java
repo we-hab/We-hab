@@ -1,8 +1,8 @@
 package edu.qut.cab302.wehab.workout;
 
-import edu.qut.cab302.wehab.ButtonController;
-import edu.qut.cab302.wehab.Session;
-import edu.qut.cab302.wehab.UserAccount;
+import edu.qut.cab302.wehab.dashboard.ButtonController;
+import edu.qut.cab302.wehab.database.Session;
+import edu.qut.cab302.wehab.user_account.UserAccount;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

@@ -1,6 +1,7 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.user_account;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import edu.qut.cab302.wehab.database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;

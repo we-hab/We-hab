@@ -1,9 +1,11 @@
-package edu.qut.cab302.wehab;
+package edu.qut.cab302.wehab.dashboard;
 
-import com.sun.source.tree.Tree;
-import edu.qut.cab302.wehab.medication.Medication;
+import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.medication.MedicationSearchModel;
 import edu.qut.cab302.wehab.medication.PrescribedMedicationDose;
+import edu.qut.cab302.wehab.mood_ratings.moodRating;
+import edu.qut.cab302.wehab.pdf_report.PDFReportGenerator;
+import edu.qut.cab302.wehab.user_account.UserAccount;
 import edu.qut.cab302.wehab.workout.Workout;
 import edu.qut.cab302.wehab.workout.WorkoutReturnModel;
 import javafx.fxml.FXML;
@@ -12,14 +14,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -27,10 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.io.IOException;
 import java.util.TreeMap;
-
-import edu.qut.cab302.wehab.MainApplication;
 
 
 public class DashboardController implements Initializable {
