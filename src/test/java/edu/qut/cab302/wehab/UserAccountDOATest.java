@@ -1,5 +1,5 @@
-//import edu.qut.cab302.wehab.UserAccount;
-//import edu.qut.cab302.wehab.UserAccountDAO;
+//import edu.qut.cab302.wehab.user_account.UserAccount;
+//import edu.qut.cab302.wehab.user_account.UserAccountDAO;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //

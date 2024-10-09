@@ -1,5 +1,8 @@
 package edu.qut.cab302.wehab;
 
+import edu.qut.cab302.wehab.database.Session;
+import edu.qut.cab302.wehab.user_account.UserAccount;
+import edu.qut.cab302.wehab.user_account.UserAccountDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -83,7 +86,7 @@ public class MainController {
     @FXML
     protected void onGoToRegisterScreen() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-account.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/qut/cab302/wehab/user_account/create-account.fxml"));
             Parent root = loader.load();
 
             // Get the controller of the newly loaded FXML
@@ -111,7 +114,7 @@ public class MainController {
     {
         try
         {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/qut/cab302/wehab/user_account/Login.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) usernameField.getScene().getWindow();

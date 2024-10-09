@@ -1,8 +1,8 @@
 package edu.qut.cab302.wehab.medication;
 
-import edu.qut.cab302.wehab.ButtonController;
-import edu.qut.cab302.wehab.Session;
-import edu.qut.cab302.wehab.UserAccount;
+import edu.qut.cab302.wehab.dashboard.ButtonController;
+import edu.qut.cab302.wehab.database.Session;
+import edu.qut.cab302.wehab.user_account.UserAccount;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
