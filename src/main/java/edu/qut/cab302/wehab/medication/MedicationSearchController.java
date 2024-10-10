@@ -39,23 +39,6 @@ import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
 public class MedicationSearchController {
 
     private static Stage medicationOverviewModal = new Stage();
-    private static String medicationOverviewModalMainSceneTitle;
-    protected static Scene mainMedicationModalScene;
-
-    public static void returnModalToMainScreen() {
-        changeMedicationOverviewModalScene(mainMedicationModalScene, medicationOverviewModalMainSceneTitle);
-    }
-
-    public static void changeMedicationOverviewModalScene(Scene scene, String title) {
-
-        medicationOverviewModal.setTitle(title);
-        medicationOverviewModal.setScene(scene);
-        if (!medicationOverviewModal.isShowing()) {
-            medicationOverviewModal.showAndWait();
-        } else {
-            medicationOverviewModal.show();
-        }
-    }
 
     /**
      * The TextField control where the user enters the medication search query.
@@ -85,6 +68,8 @@ public class MedicationSearchController {
     @FXML
     private Button workoutButton;
     @FXML
+    private Button medicationButton;
+    @FXML
     private Button settingsButton;
     @FXML
     private Button signOutButton;
@@ -95,12 +80,12 @@ public class MedicationSearchController {
 
     /**
      * Initialises the controller class and its associated UI components. Sets up buttons, retrieves the
-     * logged-in user's information, initialises the medication tables in the database, and instantiates
+     * logged-in user's information, initialises the medicationvhjq                                                                                                                                                                                                                                 q tables in the database, and instantiates
      * the API client.
      */
     public void initialize() {
 
-        ButtonController.initialiseButtons(dashboardButton, workoutButton, null, settingsButton, signOutButton);
+        ButtonController.initialiseButtons(dashboardButton, workoutButton, medicationButton, settingsButton, signOutButton);
 
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
 
@@ -244,7 +229,8 @@ public class MedicationSearchController {
                 MedicationInfoPage medicationInfoPage = new MedicationInfoPage(medication.getID());
                 Scene scene = medicationInfoPage.getMedicationInfoPage();
 
-                changeMedicationOverviewModalScene(scene, medication.getDisplayName());
+                medicationOverviewModal.setScene(scene);
+                medicationOverviewModal.showAndWait();
             }
         });
 
@@ -258,8 +244,12 @@ public class MedicationSearchController {
         logDoseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                // Code to add medication to the medication overview list
+                try {
+                    MedicationSearchModel.addMedicationToUserList(medication);
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                    throw new RuntimeException(e);
+                }
             }
         });
 

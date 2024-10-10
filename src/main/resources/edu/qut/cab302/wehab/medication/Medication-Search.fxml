@@ -38,7 +38,7 @@
                   <Image url="@../images/Wehab_banner-removebg.png" />
                </image>
             </ImageView>
-            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
+            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" styleClass="primary-button" text="Sign Out">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -62,7 +62,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="1083.0">
                      <children>
-                        <TextField fx:id="searchField" minWidth="-Infinity" onAction="#search" prefHeight="44.0" prefWidth="420.0" promptText="Eg. Panadol...">
+                        <TextField fx:id="searchField" minWidth="-Infinity" onAction="#search" prefHeight="44.0" prefWidth="420.0" promptText="E.g., Panadol...">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
