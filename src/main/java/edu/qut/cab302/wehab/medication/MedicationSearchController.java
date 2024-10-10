@@ -108,8 +108,16 @@ public class MedicationSearchController {
 
         apiClient = new OpenFDAClient();
 
-        resultsPane.setSpacing(30);
+        resultsPane.setAlignment(Pos.TOP_LEFT); // Align items to the top left
+        resultsPane.setSpacing(50);
         resultsPane.setPadding(new Insets(20, 20, 20, 20));
+
+        // Set a preferred width for the resultsPane
+        resultsPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        resultsPane.setMaxWidth(Double.MAX_VALUE); // Allow it to stretch
+
+        resultsScrollPane.setFitToWidth(true); // Make the ScrollPane fit its content width
+        resultsScrollPane.setContent(resultsPane); // Ensure the content is set correctly
 
         medicationOverviewModal.initModality(Modality.APPLICATION_MODAL);
         medicationOverviewModal.setResizable(false);
@@ -152,7 +160,7 @@ public class MedicationSearchController {
     private HBox createMedicationListing(Medication medication) {
 
         HBox medicationListing = new HBox();
-        medicationListing.setAlignment(javafx.geometry.Pos.CENTER);
+        medicationListing.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         medicationListing.setPrefSize(1000, 200);
         medicationListing.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
