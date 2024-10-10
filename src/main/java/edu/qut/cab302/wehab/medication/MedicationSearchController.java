@@ -1,5 +1,6 @@
 package edu.qut.cab302.wehab.medication;
 
+import edu.qut.cab302.wehab.MainApplication;
 import edu.qut.cab302.wehab.dashboard.ButtonController;
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.user_account.UserAccount;
@@ -248,6 +249,11 @@ public class MedicationSearchController {
                     MedicationSearchModel.addMedicationToUserList(medication);
                 } catch (SQLException e) {
                     System.err.println(e.getMessage());
+                    throw new RuntimeException(e);
+                }
+                try {
+                    MainApplication.switchScene("medication/medication-overview.fxml");
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
