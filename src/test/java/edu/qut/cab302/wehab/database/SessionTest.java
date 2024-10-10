@@ -1,5 +1,5 @@
 package edu.qut.cab302.wehab.database;
-import edu.qut.cab302.wehab.user_account.UserAccount;
+import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,6 +1,6 @@
 package edu.qut.cab302.wehab.database;
 
-import edu.qut.cab302.wehab.user_account.UserAccount;
+import edu.qut.cab302.wehab.models.user_account.UserAccount;
 
 /**
  * Singleton class to manage the current user session in the application.
