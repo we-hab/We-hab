@@ -23,10 +23,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.TreeMap;
+import java.util.*;
 
 
 public class DashboardController implements Initializable {
@@ -227,25 +224,23 @@ public class DashboardController implements Initializable {
     public void loadMedications(String username)
     {
         try {
-            List<PrescribedMedicationDose> medications = MedicationSearchModel.getCurrentDayMedications();
-            ObservableList<String> medicationItems = FXCollections.observableArrayList(); // Holds the med details as strings
+            medicationListView.getItems().clear();
+            HashMap<String, String> userMedications = MedicationSearchModel.getUserSavedMedicationNames();
 
-            // Loop through all the medications and format their details into stringss
-            for (PrescribedMedicationDose med : medications)
-            {
-                if (med.getUsername().equals(username))
+            ObservableList<String> medicationNames = FXCollections.observableArrayList(userMedications.keySet());
+            medicationListView.setItems(medicationNames);
+
+            medicationListView.setOnMouseClicked(event -> {
+                String selectedMedication = medicationListView.getSelectionModel().getSelectedItem();
+                if (selectedMedication != null)
                 {
-                    if (med.toString() == "0") { System.err.println("No medications in the db"); }
-                    String medicationDetails = String.format("%s - %.2f %s at %s",
-                            med.getDisplayName(),
-                            med.getDosageAmount(),
-                            med.getDosageUnit(),
-                            med.getDosageTime().toString());
-
-                    medicationItems.add(medicationDetails); // Add the formatted medication details to the list
+                    System.out.println("Selected medication: " + selectedMedication);
                 }
-            }
-            medicationListView.setItems(medicationItems);
-        } catch (SQLException error) { System.err.println("Error loading medications: " + error.getMessage()); }
+            });
+
+        } catch (SQLException e)
+        {
+            System.err.println("Error loading medications: " + e.getMessage());
+        }
     }
 }
