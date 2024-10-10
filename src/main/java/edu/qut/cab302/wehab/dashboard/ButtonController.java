@@ -60,7 +60,7 @@ public class ButtonController {
                 @Override
                 public void handle(ActionEvent event) {
                     try {
-                        MainApplication.switchScene("medication/Medication-Search.fxml");
+                        MainApplication.switchScene("medication/medication-overview.fxml");
                     } catch (IOException e) {
                         System.out.println("Failed to load medication page.\n" + e.getMessage());
                         throw new RuntimeException(e);

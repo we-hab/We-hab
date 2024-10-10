@@ -259,16 +259,7 @@ public class MedicationSearchController {
             @Override
             public void handle(ActionEvent event) {
 
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("medication-overview.fxml"));
-                medicationOverviewModalMainSceneTitle = "Medication Overview: " + medication.getDisplayName();
-
-                try {
-                    mainMedicationModalScene = new Scene(fxmlLoader.load(), 640, 400);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-                changeMedicationOverviewModalScene(mainMedicationModalScene, medicationOverviewModalMainSceneTitle);
+                // Code to add medication to the medication overview list
             }
         });
 
