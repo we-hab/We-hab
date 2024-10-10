@@ -8,6 +8,8 @@ import edu.qut.cab302.wehab.pdf_report.PDFReportGenerator;
 import edu.qut.cab302.wehab.user_account.UserAccount;
 import edu.qut.cab302.wehab.workout.Workout;
 import edu.qut.cab302.wehab.workout.WorkoutReturnModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -19,11 +21,9 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.TreeMap;
+import java.util.*;
 
 
 public class DashboardController implements Initializable {
@@ -48,6 +48,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button generatePdfBtn; // Button that generates the PDF report
+
+    @FXML
+    private ListView<String> medicationListView;
 
     /**
      * Initializes the controller. This method is called when the scene is loaded.
@@ -79,6 +82,7 @@ public class DashboardController implements Initializable {
             String firstName = loggedInUser.getFirstName();
             loggedInUserLabel.setText(firstName); // Displays the user's first name in the top left of the UI.
             loadMoodData(loggedInUser.getUsername()); // Load the mood data for the user
+            loadMedications((loggedInUser.getUsername())); // Load the medication data for the user
 
             //** Handles the mood rating submission button action **\\
             moodRatingSubmission.setOnAction(event ->
@@ -213,5 +217,30 @@ public class DashboardController implements Initializable {
         moodRatingSubmission.setDisable(false);
     }
 
-}
+    /**
+     * Loads the prescribed medications for the logged in user and populates the ListView.
+     * @param username The username of the logged in user
+     */
+    public void loadMedications(String username)
+    {
+        try {
+            medicationListView.getItems().clear();
+            HashMap<String, String> userMedications = MedicationSearchModel.getUserSavedMedicationNames();
 
+            ObservableList<String> medicationNames = FXCollections.observableArrayList(userMedications.keySet());
+            medicationListView.setItems(medicationNames);
+
+            medicationListView.setOnMouseClicked(event -> {
+                String selectedMedication = medicationListView.getSelectionModel().getSelectedItem();
+                if (selectedMedication != null)
+                {
+                    System.out.println("Selected medication: " + selectedMedication);
+                }
+            });
+
+        } catch (SQLException e)
+        {
+            System.err.println("Error loading medications: " + e.getMessage());
+        }
+    }
+}
