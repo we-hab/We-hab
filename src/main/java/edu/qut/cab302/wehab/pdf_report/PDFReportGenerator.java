@@ -23,11 +23,6 @@ import java.util.TreeMap;
 public class PDFReportGenerator
 {
     /**
-     * Retrieve the currently logged in user from the session.
-     */
-    static UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
-
-    /**
      * Generates a PDF Report that includes mood ratings, completed workouts, medication reminders and monthly workout minutes.
      * @param moodRatings The list of mood ratings within the last 7 days in the report.
      * @param workoutsCompleted The list of completed workouts in the month.
@@ -39,6 +34,9 @@ public class PDFReportGenerator
     {
         try
         {
+            // Retrieve the currently logged in user from the session
+            UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
+
             // Initialize the PDF writer and document
             PdfWriter writer = new PdfWriter(filePath);
             PdfDocument pdf = new PdfDocument(writer);

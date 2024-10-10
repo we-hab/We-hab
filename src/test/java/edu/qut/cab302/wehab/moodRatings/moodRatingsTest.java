@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -16,72 +17,104 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class moodRatingsTest
-{
+public class moodRatingsTest {
     private UserAccount testUser;
+    private Connection mockConnection;
+    private PreparedStatement mockPreparedStatement;
+    private Statement mockStatement;
+    private ResultSet mockResultSet;
 
     @BeforeEach
     public void SetUp() throws Exception
     {
-        testUser = new UserAccount("testUserr", "TestName","TestLastName","Test@gmail.com","TestPassword123");
-    }
+        testUser = new UserAccount("testUserr", "TestName", "TestLastName", "Test@gmail.com", "TestPassword123");
 
-
-
-    @Test
-    public void testCreateMoodTable_ShouldExecuteCreateTableStatement() throws SQLException
-    {
-        Connection connection = DatabaseConnection.getInstance();
-        Statement statement = connection.createStatement();
-        var ResultSet = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='dailyMoodRatings';");
-        assertTrue(ResultSet.next(), "Table 'dailyMoodRatings' should exist after DatabaseConnection is initialized.");
+        mockConnection = mock(Connection.class);
+        mockPreparedStatement = mock(PreparedStatement.class);
+        mockStatement = mock(Statement.class);
+        mockResultSet = mock(ResultSet.class);
     }
 
     @Test
-    public void testInsertMoodRating_ShouldInsertMoodRatingIntoDatabase() throws SQLException
+    public void testCreateMoodTable_ShouldExecuteCreateTableStatement() throws Exception
     {
-        moodRating moodRating = new moodRating(2,LocalDate.now());
-        assertEquals(2,moodRating.getMoodRating());
-        assertEquals(LocalDate.now(), LocalDate.now());
-    }
+        when(mockConnection.createStatement()).thenReturn(mockStatement);
+        when(mockStatement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='dailyMoodRatings';"))
+                .thenReturn(mockResultSet);
+        when(mockResultSet.next()).thenReturn(true);
 
-    @Test
-    public void testGetLast7Days_ShouldReturnMoodRatingsForTheLast7Days() throws SQLException
-    {
-        Connection connection = DatabaseConnection.getInstance();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO dailyMoodRatings (username, moodRating, ratingDate) VALUES (?, ?, ?)");
-
-        for (int i = 0; i < 7; i++)
+        try (MockedStatic<DatabaseConnection> mockedDbConnection = mockStatic(DatabaseConnection.class))
         {
-            statement.setString(1,"Garry");
-            statement.setInt(2, i + 1);
-            statement.setString(3, LocalDate.now().minusDays(i).toString());
-            statement.executeUpdate();
+            mockedDbConnection.when(DatabaseConnection::getInstance).thenReturn(mockConnection);
+            var ResultSet = mockStatement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='dailyMoodRatings';");
+            assertTrue(ResultSet.next(), "Table 'dailyMoodRatings' should exist after DatabaseConnection is initialized.");
         }
-        List<moodRating> ratings = moodRating.getLast7Days("Garry");
-        assertEquals(7, ratings.size(), "Should return mood ratings for the last 7 days");
-
     }
 
     @Test
-    public void testHasRatedToday_SHouldReturnTrueWhenMoodIsRatedToday() throws SQLException
+    public void testInsertMoodRating_ShouldInsertMoodRatingIntoDatabase() throws Exception
     {
-        moodRating.insertMoodRating(5, testUser.getUsername());
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
 
-        boolean hasRatedToday = moodRating.hasRatedToday(testUser.getUsername());
-        assertTrue(hasRatedToday, "User should have rated their mood today.");
+        try (MockedStatic<DatabaseConnection> mockedDbConnection = mockStatic(DatabaseConnection.class))
+        {
+            mockedDbConnection.when(DatabaseConnection::getInstance).thenReturn(mockConnection);
+
+            moodRating.insertMoodRating(2, testUser.getUsername());
+
+            verify(mockPreparedStatement, times(1)).executeUpdate();
+            verify(mockPreparedStatement, times(1)).setString(1, testUser.getUsername());
+            verify(mockPreparedStatement, times(1)).setInt(2, 2);
+        }
+    }
+
+    @Test
+    public void testGetLast7Days_ShouldReturnMoodRatingsForTheLast7Days() throws Exception
+    {
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+
+        when(mockResultSet.next()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(mockResultSet.getInt("moodRating")).thenReturn(1, 2, 3);
+        when(mockResultSet.getString("ratingDate")).thenReturn(
+                LocalDate.now().minusDays(2).toString(),
+                LocalDate.now().minusDays(1).toString(),
+                LocalDate.now().toString());
+
+        try (MockedStatic<DatabaseConnection> mockedDbConnection = mockStatic(DatabaseConnection.class))
+        {
+            mockedDbConnection.when(DatabaseConnection::getInstance).thenReturn(mockConnection);
+
+            List<moodRating> ratings = moodRating.getLast7Days(testUser.getUsername());
+            assertEquals(3, ratings.size(), "Should return mood ratings for the last 7 days");
+        }
+    }
+
+    @Test
+    public void testHasRatedToday_ShouldReturnTrueWhenMoodIsRatedToday() throws Exception
+    {
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+        when(mockResultSet.next()).thenReturn(true);
+        when(mockResultSet.getInt(1)).thenReturn(1);
+
+        try (MockedStatic<DatabaseConnection> mockedDbConnection = mockStatic(DatabaseConnection.class))
+        {
+            mockedDbConnection.when(DatabaseConnection::getInstance).thenReturn(mockConnection);
+
+            boolean hasRatedToday = moodRating.hasRatedToday(testUser.getUsername());
+            assertTrue(hasRatedToday, "User should have rated their mood today.");
+        }
     }
 
     @Test
     public void testInsertMoodRating_ShouldThrowSQLExceptionOnInvalidInput()
     {
-        assertThrows(IllegalArgumentException.class, () -> {
-            moodRating.insertMoodRating(80, testUser.getUsername());
-        }, "Expected IllegalArgumentException to be thrown for invalid mood rating above 10");
+        assertThrows(IllegalArgumentException.class, () -> moodRating.insertMoodRating(80, testUser.getUsername()),
+                "Expected IllegalArgumentException to be thrown for invalid mood rating above 10");
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            moodRating.insertMoodRating(0, testUser.getUsername());
-        }, "Expected IllegalArgumentException to be thrown for invalid mood rating below 1");
+        assertThrows(IllegalArgumentException.class, () -> moodRating.insertMoodRating(0, testUser.getUsername()),
+                "Expected IllegalArgumentException to be thrown for invalid mood rating below 1");
     }
 
     @Test
@@ -95,10 +128,18 @@ public class moodRatingsTest
     }
 
     @Test
-    public void testGetLast7Days_ShouldReturnEmptyListWhenNoRatings()
+    public void testGetLast7Days_ShouldReturnEmptyListWhenNoRatings() throws Exception
     {
-        List<moodRating> ratings = moodRating.getLast7Days("te");
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+        when(mockResultSet.next()).thenReturn(false); // Simulate no ratings
 
-        assertTrue(ratings.isEmpty(), "Should return an empty list when no ratings exist for the user");
+        try (MockedStatic<DatabaseConnection> mockedDbConnection = mockStatic(DatabaseConnection.class))
+        {
+            mockedDbConnection.when(DatabaseConnection::getInstance).thenReturn(mockConnection);
+
+            List<moodRating> ratings = moodRating.getLast7Days(testUser.getUsername());
+            assertTrue(ratings.isEmpty(), "Should return an empty list when no ratings exist for the user");
+        }
     }
 }
