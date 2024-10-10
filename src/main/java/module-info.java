@@ -8,6 +8,8 @@ module edu.qut.cab302.wehab {
     requires kernel;
     requires layout;
     requires jdk.compiler;
+    requires java.xml.crypto;
+    requires java.xml;
 
 
     opens edu.qut.cab302.wehab to javafx.fxml;

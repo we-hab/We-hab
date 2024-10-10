@@ -39,23 +39,6 @@ import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
 public class MedicationSearchController {
 
     private static Stage medicationOverviewModal = new Stage();
-    private static String medicationOverviewModalMainSceneTitle;
-    protected static Scene mainMedicationModalScene;
-
-    public static void returnModalToMainScreen() {
-        changeMedicationOverviewModalScene(mainMedicationModalScene, medicationOverviewModalMainSceneTitle);
-    }
-
-    public static void changeMedicationOverviewModalScene(Scene scene, String title) {
-
-        medicationOverviewModal.setTitle(title);
-        medicationOverviewModal.setScene(scene);
-        if (!medicationOverviewModal.isShowing()) {
-            medicationOverviewModal.showAndWait();
-        } else {
-            medicationOverviewModal.show();
-        }
-    }
 
     /**
      * The TextField control where the user enters the medication search query.
@@ -85,6 +68,8 @@ public class MedicationSearchController {
     @FXML
     private Button workoutButton;
     @FXML
+    private Button medicationButton;
+    @FXML
     private Button settingsButton;
     @FXML
     private Button signOutButton;
@@ -95,12 +80,12 @@ public class MedicationSearchController {
 
     /**
      * Initialises the controller class and its associated UI components. Sets up buttons, retrieves the
-     * logged-in user's information, initialises the medication tables in the database, and instantiates
+     * logged-in user's information, initialises the medicationvhjq                                                                                                                                                                                                                                 q tables in the database, and instantiates
      * the API client.
      */
     public void initialize() {
 
-        ButtonController.initialiseButtons(dashboardButton, workoutButton, null, settingsButton, signOutButton);
+        ButtonController.initialiseButtons(dashboardButton, workoutButton, medicationButton, settingsButton, signOutButton);
 
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
 
@@ -123,16 +108,8 @@ public class MedicationSearchController {
 
         apiClient = new OpenFDAClient();
 
-        resultsPane.setAlignment(Pos.TOP_LEFT); // Align items to the top left
-        resultsPane.setSpacing(50);
+        resultsPane.setSpacing(30);
         resultsPane.setPadding(new Insets(20, 20, 20, 20));
-
-        // Set a preferred width for the resultsPane
-        resultsPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        resultsPane.setMaxWidth(Double.MAX_VALUE); // Allow it to stretch
-
-        resultsScrollPane.setFitToWidth(true); // Make the ScrollPane fit its content width
-        resultsScrollPane.setContent(resultsPane); // Ensure the content is set correctly
 
         medicationOverviewModal.initModality(Modality.APPLICATION_MODAL);
         medicationOverviewModal.setResizable(false);
@@ -175,7 +152,7 @@ public class MedicationSearchController {
     private HBox createMedicationListing(Medication medication) {
 
         HBox medicationListing = new HBox();
-        medicationListing.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        medicationListing.setAlignment(javafx.geometry.Pos.CENTER);
         medicationListing.setPrefSize(1000, 200);
         medicationListing.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
@@ -244,7 +221,8 @@ public class MedicationSearchController {
                 MedicationInfoPage medicationInfoPage = new MedicationInfoPage(medication.getID());
                 Scene scene = medicationInfoPage.getMedicationInfoPage();
 
-                changeMedicationOverviewModalScene(scene, medication.getDisplayName());
+                medicationOverviewModal.setScene(scene);
+                medicationOverviewModal.showAndWait();
             }
         });
 
@@ -258,17 +236,12 @@ public class MedicationSearchController {
         logDoseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("medication-overview.fxml"));
-                medicationOverviewModalMainSceneTitle = "Medication Overview: " + medication.getDisplayName();
-
                 try {
-                    mainMedicationModalScene = new Scene(fxmlLoader.load(), 640, 400);
-                } catch (IOException e) {
+                    MedicationSearchModel.addMedicationToUserList(medication);
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
                     throw new RuntimeException(e);
                 }
-
-                changeMedicationOverviewModalScene(mainMedicationModalScene, medicationOverviewModalMainSceneTitle);
             }
         });
 

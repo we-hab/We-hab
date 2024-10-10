@@ -1,7 +1,9 @@
 package edu.qut.cab302.wehab;
 
 import edu.qut.cab302.wehab.database.DatabaseConnection;
+import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.mood_ratings.moodRating;
+import edu.qut.cab302.wehab.user_account.UserAccount;
 import edu.qut.cab302.wehab.user_account.UserAccountDAO;
 import edu.qut.cab302.wehab.workout.WorkoutReturnModel;
 import javafx.application.Application;

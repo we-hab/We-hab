@@ -66,11 +66,16 @@ public class moodRating
     /**
      * Inserts a new mood rating into the database for a specific user.
      *
-     * @param moodRating the mood rating to insert
+     * @param moodRating the mood rating to insert (must be between 1 and 10)
      * @param username the username of the user providing the rating
      */
     public static void insertMoodRating(int moodRating, String username)
     {
+        if (moodRating < 1 || moodRating > 10)
+        {
+            throw new IllegalArgumentException("Mood Rating must be between 1 and 10");
+        }
+
         String insertSQL = "INSERT INTO dailyMoodRatings (username, moodRating, ratingDate) VALUES (?, ?, date('now'))";
 
         try (PreparedStatement statement = DatabaseConnection.getInstance().prepareStatement(insertSQL))
@@ -78,7 +83,7 @@ public class moodRating
             statement.setString(1, username);
             statement.setInt(2, moodRating);
             statement.executeUpdate();
-        } catch (SQLException error) { System.err.println(error); }
+        } catch (SQLException error) { System.err.println("Error inserting mood rating: " + error.getMessage()); }
     }
 
     /**

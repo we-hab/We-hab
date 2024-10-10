@@ -14,7 +14,7 @@ public class CreateReminderController {
     public void initialize() {
         backButton.setOnAction(new EventHandler<ActionEvent>() {
            public void handle(ActionEvent event) {
-               MedicationSearchController.returnModalToMainScreen();
+//               MedicationSearchController.mainMedicationModalScene;
            }
         });
     }
