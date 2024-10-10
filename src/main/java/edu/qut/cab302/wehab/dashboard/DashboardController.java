@@ -8,6 +8,8 @@ import edu.qut.cab302.wehab.pdf_report.PDFReportGenerator;
 import edu.qut.cab302.wehab.user_account.UserAccount;
 import edu.qut.cab302.wehab.workout.Workout;
 import edu.qut.cab302.wehab.workout.WorkoutReturnModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -19,6 +21,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +51,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button generatePdfBtn; // Button that generates the PDF report
+
+    @FXML
+    private ListView<String> medicationListView;
 
     /**
      * Initializes the controller. This method is called when the scene is loaded.
@@ -79,6 +85,7 @@ public class DashboardController implements Initializable {
             String firstName = loggedInUser.getFirstName();
             loggedInUserLabel.setText(firstName); // Displays the user's first name in the top left of the UI.
             loadMoodData(loggedInUser.getUsername()); // Load the mood data for the user
+            loadMedications((loggedInUser.getUsername())); // Load the medication data for the user
 
             //** Handles the mood rating submission button action **\\
             moodRatingSubmission.setOnAction(event ->
@@ -213,5 +220,32 @@ public class DashboardController implements Initializable {
         moodRatingSubmission.setDisable(false);
     }
 
-}
+    /**
+     * Loads the prescribed medications for the logged in user and populates the ListView.
+     * @param username The username of the logged in user
+     */
+    public void loadMedications(String username)
+    {
+        try {
+            List<PrescribedMedicationDose> medications = MedicationSearchModel.getCurrentDayMedications();
+            ObservableList<String> medicationItems = FXCollections.observableArrayList(); // Holds the med details as strings
 
+            // Loop through all the medications and format their details into stringss
+            for (PrescribedMedicationDose med : medications)
+            {
+                if (med.getUsername().equals(username))
+                {
+                    if (med.toString() == "0") { System.err.println("No medications in the db"); }
+                    String medicationDetails = String.format("%s - %.2f %s at %s",
+                            med.getDisplayName(),
+                            med.getDosageAmount(),
+                            med.getDosageUnit(),
+                            med.getDosageTime().toString());
+
+                    medicationItems.add(medicationDetails); // Add the formatted medication details to the list
+                }
+            }
+            medicationListView.setItems(medicationItems);
+        } catch (SQLException error) { System.err.println("Error loading medications: " + error.getMessage()); }
+    }
+}
