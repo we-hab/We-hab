@@ -42,11 +42,7 @@ public class MainApplication extends Application {
         primaryStage.setMinHeight(800);  // Set minimum height
 
         UserAccountDAO userAccountDAO = new UserAccountDAO();
-//        Change this to your username to skip the login screen when testing
-        UserAccount loggedInUser = userAccountDAO.getByUsername("test");
-        Session.getInstance().setLoggedInUser(loggedInUser);
-        switchScene("/edu/qut/cab302/wehab/medication/medication-overview.fxml");
-//        switchScene("/edu/qut/cab302/wehab/user_account/Login.fxml");
+        switchScene("/edu/qut/cab302/wehab/user_account/Login.fxml");
     }
 
     /**
