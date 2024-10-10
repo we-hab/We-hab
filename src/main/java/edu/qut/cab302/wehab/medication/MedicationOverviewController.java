@@ -27,7 +27,6 @@ import static edu.qut.cab302.wehab.medication.MedicationSearchModel.createMedica
 public class MedicationOverviewController {
 
     private static Stage medicationOverviewModal = new Stage();
-    private static Stage notificationPopupModal = new Stage();
 
     @FXML
     private Label selectedMedicationLabel;
@@ -131,6 +130,7 @@ public class MedicationOverviewController {
             }
         });
 
+        Stage notificationPopupModal = new Stage();
         notificationPopupModal.initModality(Modality.APPLICATION_MODAL);
         notificationPopupModal.setResizable(false);
         createReminderButton.setOnAction(new EventHandler<ActionEvent>() {
