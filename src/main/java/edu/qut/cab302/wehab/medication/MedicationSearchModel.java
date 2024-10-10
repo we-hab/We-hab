@@ -41,6 +41,8 @@ public class MedicationSearchModel {
         createMedicationsTable.execute(createTableSQL);
     }
 
+
+
     /**
      * Creates the user-medication junction table in the database if it does not already exist.
      * This table establishes a many-to-many relationship between users and medications,
