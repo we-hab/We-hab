@@ -39,8 +39,6 @@ import static edu.qut.cab302.wehab.medication.MedicationSearchModel.*;
 public class MedicationSearchController {
 
     private static Stage medicationOverviewModal = new Stage();
-    private static String medicationOverviewModalMainSceneTitle;
-    protected static Scene mainMedicationModalScene;
 
     /**
      * The TextField control where the user enters the medication search query.

@@ -7,8 +7,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.qut.cab302.wehab.database.Session;
+import javafx.scene.Scene;
 
 /**
  * This class provides methods for interacting with the medication-related tables in the database.
@@ -57,13 +59,21 @@ public class MedicationSearchModel {
         System.out.println(addMedication.executeUpdate());
     }
 
-    protected static ArrayList<String> getUserSavedMedicationNames() throws SQLException {
+    protected static HashMap<String, String> getUserSavedMedicationNames() throws SQLException {
         ResultSet resultSet = queryUserSavedMedications();
-        ArrayList<String> userSavedMedicationNames = new ArrayList<>();
+        HashMap<String, String> userSavedMedications = new HashMap<>();
         while (resultSet.next()) {
-            userSavedMedicationNames.add(resultSet.getString("displayName"));
+            userSavedMedications.put(resultSet.getString("displayName"), resultSet.getString("medicationID"));
         }
-        return userSavedMedicationNames;
+        return userSavedMedications;
+    }
+
+    protected static void deleteUserSavedMedication(String medicationID) throws SQLException {
+        String deleteMedicationSql = "DELETE FROM medications WHERE username = ? AND medicationID = ?";
+        PreparedStatement deleteMedication = connection.prepareStatement(deleteMedicationSql);
+        deleteMedication.setString(1, username);
+        deleteMedication.setString(2, medicationID);
+        deleteMedication.executeUpdate();
     }
 
     private static ResultSet queryUserSavedMedications() throws SQLException {
@@ -88,13 +98,13 @@ public class MedicationSearchModel {
         Statement createUserMedicationRemindersTable;
 
         String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS userMedicationReminders (" +
+                "reminderID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "username TEXT NOT NULL," +
                 "medicationID TEXT NOT NULL," +
                 "dosageAmount REAL NOT NULL, -- E.g., 500 (for mg)\n" +
                 "dosageUnit TEXT NOT NULL, -- E.g., 'mg', 'mL', `capsules'\n" +
                 "dosageTime TEXT NOT NULL," +
                 "dosageDate TEXT NOT NULL, -- YYYY-MM-DD format\n" +
-                "PRIMARY KEY (username, medicationID)," +
                 "FOREIGN KEY (username) REFERENCES userAccounts(username)," +
                 "FOREIGN KEY (medicationID) REFERENCES medications(medicationID)" +
                 ")";
@@ -102,6 +112,27 @@ public class MedicationSearchModel {
         createUserMedicationRemindersTable = connection.createStatement();
 
         createUserMedicationRemindersTable.execute(createJunctionTableSQL);
+    }
+
+    public static void addReminder(String medicationID, String dosageAmount, String dosageUnit, String dosageTime, String dosageDate) throws SQLException {
+        String sql = "INSERT INTO userMedicationReminders(username, medicationID, dosageAmount, dosageUnit, dosageTime, dosageDate) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement addReminderStmt = connection.prepareStatement(sql);
+        addReminderStmt.setString(1, username);
+        addReminderStmt.setString(2, medicationID);
+        addReminderStmt.setString(3, dosageAmount);
+        addReminderStmt.setString(4, dosageUnit);
+        addReminderStmt.setString(5, dosageTime);
+        addReminderStmt.setString(6, dosageDate);
+        System.out.println("Adding reminder with the following fields:");
+        System.out.println("ID: " + medicationID);
+        System.out.println("Dosage Amount: " + dosageAmount);
+        System.out.println("Dosage Unit: " + dosageUnit);
+        System.out.println("Dosage Time: " + dosageTime);
+        System.out.println("Dosage Date: " + dosageDate);
+        System.out.println(addReminderStmt.executeUpdate());
+        System.out.println("Reminder added.");
     }
 
     public static ArrayList<PrescribedMedicationDose> getCurrentDayMedications() throws SQLException {
