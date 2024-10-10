@@ -4,10 +4,13 @@ import edu.qut.cab302.wehab.database.DatabaseConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.qut.cab302.wehab.database.Session;
+import javafx.scene.Scene;
 
 /**
  * This class provides methods for interacting with the medication-related tables in the database.
@@ -21,6 +24,8 @@ public class MedicationSearchModel {
      */
     private static Connection connection = DatabaseConnection.getInstance();
 
+    private static String username = Session.getInstance().getLoggedInUser().getUsername();
+
     /**
      * Creates the medications table in the database if it does not already exist.
      * The medications table contains a primary key field for storing medication IDs.
@@ -32,16 +37,55 @@ public class MedicationSearchModel {
         Statement createMedicationsTable;
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS medications (" +
-                "medicationID VARCHAR(255) PRIMARY KEY," +
-                "displayName VARCHAR(255) NOT NULL" +
+                "medicationID TEXT NOT NULL," +
+                "username TEXT NOT NULL," +
+                "displayName TEXT NOT NULL," +
+                "addedDateTime TEXT NOT NULL," +
+                "PRIMARY KEY (medicationID, username)," +
+                "FOREIGN KEY (username) REFERENCES userAccounts(username) ON DELETE CASCADE" +
                 ")";
 
         createMedicationsTable = connection.createStatement();
-
         createMedicationsTable.execute(createTableSQL);
     }
 
+    public static void addMedicationToUserList(Medication medication) throws SQLException {
+        String addMedicationSql = "INSERT INTO medications (medicationID, username, displayName, addedDateTime) VALUES (?, ?, ?, ?)";
+        PreparedStatement addMedication = connection.prepareStatement(addMedicationSql);
+        addMedication.setString(1, medication.getID());
+        addMedication.setString(2, username);
+        addMedication.setString(3, medication.getDisplayName());
+        addMedication.setString(4, String.valueOf(LocalDateTime.now()));
+        System.out.println(addMedication.executeUpdate());
+    }
 
+    protected static HashMap<String, String> getUserSavedMedicationNames() throws SQLException {
+        ResultSet resultSet = queryUserSavedMedications();
+        HashMap<String, String> userSavedMedications = new HashMap<>();
+        while (resultSet.next()) {
+            userSavedMedications.put(resultSet.getString("displayName"), resultSet.getString("medicationID"));
+        }
+        return userSavedMedications;
+    }
+
+    protected static void deleteUserSavedMedication(String medicationID) throws SQLException {
+        String deleteMedicationSql = "DELETE FROM medications WHERE username = ? AND medicationID = ?";
+        PreparedStatement deleteMedication = connection.prepareStatement(deleteMedicationSql);
+        deleteMedication.setString(1, username);
+        deleteMedication.setString(2, medicationID);
+        deleteMedication.executeUpdate();
+    }
+
+    private static ResultSet queryUserSavedMedications() throws SQLException {
+
+        String sqlCommand = "SELECT * FROM medications " +
+                "WHERE username = ? " +
+                "ORDER BY addedDateTime ASC";
+        PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM medications WHERE username = ?");
+
+        sqlStatement.setString(1, username);
+        return sqlStatement.executeQuery();
+    }
 
     /**
      * Creates the user-medication junction table in the database if it does not already exist.
@@ -50,24 +94,45 @@ public class MedicationSearchModel {
      *
      * @throws SQLException if an error occurs while executing the SQL statement.
      */
-    private static void createJunctionTable() throws SQLException {
-        Statement createJunctionTable;
+    private static void createUserMedicationRemindersTable() throws SQLException {
+        Statement createUserMedicationRemindersTable;
 
-        String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS userMedications (" +
+        String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS userMedicationReminders (" +
+                "reminderID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "username TEXT NOT NULL," +
                 "medicationID TEXT NOT NULL," +
                 "dosageAmount REAL NOT NULL, -- E.g., 500 (for mg)\n" +
                 "dosageUnit TEXT NOT NULL, -- E.g., 'mg', 'mL', `capsules'\n" +
                 "dosageTime TEXT NOT NULL," +
                 "dosageDate TEXT NOT NULL, -- YYYY-MM-DD format\n" +
-                "PRIMARY KEY (username, medicationID)," +
                 "FOREIGN KEY (username) REFERENCES userAccounts(username)," +
                 "FOREIGN KEY (medicationID) REFERENCES medications(medicationID)" +
                 ")";
 
-        createJunctionTable = connection.createStatement();
+        createUserMedicationRemindersTable = connection.createStatement();
 
-        createJunctionTable.execute(createJunctionTableSQL);
+        createUserMedicationRemindersTable.execute(createJunctionTableSQL);
+    }
+
+    public static void addReminder(String medicationID, String dosageAmount, String dosageUnit, String dosageTime, String dosageDate) throws SQLException {
+        String sql = "INSERT INTO userMedicationReminders(username, medicationID, dosageAmount, dosageUnit, dosageTime, dosageDate) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement addReminderStmt = connection.prepareStatement(sql);
+        addReminderStmt.setString(1, username);
+        addReminderStmt.setString(2, medicationID);
+        addReminderStmt.setString(3, dosageAmount);
+        addReminderStmt.setString(4, dosageUnit);
+        addReminderStmt.setString(5, dosageTime);
+        addReminderStmt.setString(6, dosageDate);
+        System.out.println("Adding reminder with the following fields:");
+        System.out.println("ID: " + medicationID);
+        System.out.println("Dosage Amount: " + dosageAmount);
+        System.out.println("Dosage Unit: " + dosageUnit);
+        System.out.println("Dosage Time: " + dosageTime);
+        System.out.println("Dosage Date: " + dosageDate);
+        System.out.println(addReminderStmt.executeUpdate());
+        System.out.println("Reminder added.");
     }
 
     public static ArrayList<PrescribedMedicationDose> getCurrentDayMedications() throws SQLException {
@@ -98,7 +163,7 @@ public class MedicationSearchModel {
 
     private static ResultSet queryCurrentDayMedications() throws SQLException {
 
-        String sqlCommand = "SELECT * FROM userMedications " +
+        String sqlCommand = "SELECT * FROM userMedicationReminders " +
                 "WHERE username = ? " +
                 "AND dosageDate = ? " +
                 "ORDER BY dosageTime ASC";
@@ -145,7 +210,7 @@ public class MedicationSearchModel {
      */
     private static void deleteJunctionTable() throws SQLException {
         Statement deleteJunctionTable;
-        String deleteJunctionTableSQL = "DROP TABLE IF EXISTS userMedications";
+        String deleteJunctionTableSQL = "DROP TABLE IF EXISTS userMedicationReminders";
         deleteJunctionTable = connection.createStatement();
         deleteJunctionTable.execute(deleteJunctionTableSQL);
     }
@@ -157,7 +222,7 @@ public class MedicationSearchModel {
      */
     protected static void createMedicationTables() throws SQLException {
         createMedicationsTable();
-        createJunctionTable();
+        createUserMedicationRemindersTable();
     }
 
     /**

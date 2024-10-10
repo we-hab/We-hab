@@ -38,14 +38,14 @@
                   <Image url="@../images/Wehab_banner-removebg.png" />
                </image>
             </ImageView>
-            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
+            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" styleClass="primary-button" text="Sign Out">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
          </children>
       </HBox>
-      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" VBox.vgrow="ALWAYS">
+      <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="702.0" prefWidth="182.0" styleClass="main-nav-pane">
                <children>
@@ -58,11 +58,11 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <VBox prefHeight="692.0" prefWidth="1084.0" HBox.hgrow="ALWAYS">
+            <VBox prefHeight="692.0" prefWidth="1084.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="1083.0">
                      <children>
-                        <TextField fx:id="searchField" minWidth="-Infinity" onAction="#search" prefHeight="44.0" prefWidth="420.0" promptText="Eg. Panadol...">
+                        <TextField fx:id="searchField" minWidth="-Infinity" onAction="#search" prefHeight="44.0" prefWidth="420.0" promptText="E.g., Panadol...">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
@@ -72,9 +72,9 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <VBox prefHeight="628.0" prefWidth="1078.0" styleClass="main-content-container-vbox" VBox.vgrow="ALWAYS">
+                  <VBox prefHeight="628.0" prefWidth="1078.0" styleClass="main-content-container-vbox">
                      <children>
-                        <ScrollPane fx:id="resultsScrollPane" fitToWidth="true" prefHeight="634.0" prefWidth="1084.0" VBox.vgrow="ALWAYS">
+                        <ScrollPane fx:id="resultsScrollPane" prefHeight="634.0" prefWidth="1084.0" fitToWidth="true">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2550.0" prefWidth="1063.0">
                                  <children>
