@@ -59,7 +59,7 @@ public class MedicationSearchModel {
         System.out.println(addMedication.executeUpdate());
     }
 
-    protected static HashMap<String, String> getUserSavedMedicationNames() throws SQLException {
+    public static HashMap<String, String> getUserSavedMedicationNames() throws SQLException {
         ResultSet resultSet = queryUserSavedMedications();
         HashMap<String, String> userSavedMedications = new HashMap<>();
         while (resultSet.next()) {
