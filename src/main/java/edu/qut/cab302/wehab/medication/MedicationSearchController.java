@@ -1,6 +1,5 @@
 package edu.qut.cab302.wehab.medication;
 
-import edu.qut.cab302.wehab.MainApplication;
 import edu.qut.cab302.wehab.dashboard.ButtonController;
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.user_account.UserAccount;
@@ -259,22 +258,8 @@ public class MedicationSearchController {
         logDoseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-<<<<<<< Updated upstream
 
                 // Code to add medication to the medication overview list
-=======
-                try {
-                    MedicationSearchModel.addMedicationToUserList(medication);
-                } catch (SQLException e) {
-                    System.err.println(e.getMessage());
-                    throw new RuntimeException(e);
-                }
-                try {
-                    MainApplication.switchScene("medication/medication-overview.fxml");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
->>>>>>> Stashed changes
             }
         });
 
