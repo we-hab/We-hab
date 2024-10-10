@@ -52,79 +52,127 @@ public class SettingsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Create a ToggleGroup for the buttons to ensure only one can be selected at a time
+        setupStyleToggleGroup();
+        setupTextToggleGroup();
+        initializeButtons();
+        displayLoggedInUser();
+        setupStyleButtonActions();
+        setupTextButtonActions();
+        setupAccountButtons();
+
+    }
+
+    /**
+     * Sets up the toggle group for the style selection buttons (default and accessible styles).
+     * This method initializes the toggle group and sets the selected button based on the
+     * current active stylesheet.
+     */
+    private void setupStyleToggleGroup() {
         ToggleGroup styleToggleGroup = new ToggleGroup();
         defaultStyle.setToggleGroup(styleToggleGroup);
         accessibleStyle.setToggleGroup(styleToggleGroup);
 
-        // Dynamically select the toggle button based on the currently applied stylesheet
         String currentStyle = MainApplication.getActiveStyleSheet();
-        if (currentStyle.equals("MainStyleSheet.css")) {
-            defaultStyle.setSelected(true);
-        } else if (currentStyle.equals("accessible.css")) {
-            accessibleStyle.setSelected(true);
-        }
+        defaultStyle.setSelected(currentStyle.equals("MainStyleSheet.css"));
+        accessibleStyle.setSelected(currentStyle.equals("accessible.css"));
+    }
 
+    /**
+     * Sets up the toggle group for the text size selection buttons (default, large, and extra-large text sizes).
+     * This method initializes the toggle group and updates the selection based on the current text size.
+     */
+    private void setupTextToggleGroup() {
         ToggleGroup textToggleGroup = new ToggleGroup();
         defaultText.setToggleGroup(textToggleGroup);
         largeText.setToggleGroup(textToggleGroup);
         extraText.setToggleGroup(textToggleGroup);
 
-        // Dynamically select the text size toggle button based on the active text size stylesheet
+        updateTextSizeSelection(); // Call to update the active selection
+    }
+
+    /**
+     * Updates the selection of text size toggle buttons based on the current active text size.
+     * This method checks the active text size stylesheet and selects the corresponding toggle button.
+     */
+    private void updateTextSizeSelection() {
         String currentTextSize = MainApplication.getActiveTextSizeSheet();
-        switch (currentTextSize) {
-            case "MainStyleSheet.css":
-            case "accessible.css":
-                defaultText.setSelected(true);
-                break;
-            case "MainStyleSheet_large.css":
-            case "accessible_large.css":
-                largeText.setSelected(true);
-                break;
-            case "MainStyleSheet_extraLarge.css":
-            case "accessible_extraLarge.css":
-                extraText.setSelected(true);
-                break;
-            default:
-                defaultText.setSelected(true);  // Default to regular text size
-                break;
-        }
+        defaultText.setSelected(currentTextSize.startsWith("MainStyleSheet") || currentTextSize.startsWith("accessible"));
+        largeText.setSelected(currentTextSize.endsWith("large.css"));
+        extraText.setSelected(currentTextSize.endsWith("extraLarge.css"));
+    }
 
+    /**
+     * Initializes the buttons in the settings interface by calling the
+     * ButtonController's initialization method, which sets up the functionality
+     * for the dashboard, workout, medication, and sign-out buttons.
+     */
+    private void initializeButtons() {
         ButtonController.initialiseButtons(dashboardButton, workoutButton, medicationButton, null, signOutButton);
+    }
 
+    /**
+     * Displays the logged-in user's name in the user interface.
+     * If no user is logged in, it displays "Error".
+     */
+    private void displayLoggedInUser() {
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
+        String fullname = (loggedInUser != null) ? loggedInUser.getFirstName() : "Error";
+        loggedInUserLabel.setText(fullname);
+    }
 
-        if (loggedInUser != null) {
-            String fullname = loggedInUser.getFirstName();
-            loggedInUserLabel.setText(fullname);
-        } else {
-            loggedInUserLabel.setText("Error");
-        }
+    /**
+     * Sets up actions for the style selection buttons (default and accessible styles).
+     * This method calls the setupButtonAction method to define the actions for
+     * each button when selected.
+     */
+    private void setupStyleButtonActions() {
+        setupButtonAction(defaultStyle, "MainStyleSheet.css");
+        setupButtonAction(accessibleStyle, "accessible.css");
+    }
 
-        // Handle the selection of style (theme)
-        defaultStyle.setOnAction(event -> {
-            MainApplication.setActiveStyleSheet("MainStyleSheet.css");
+    /**
+     * Sets up actions for the text size selection buttons (default, large, and extra-large text sizes).
+     * This method calls the setupButtonAction method for each button to define their actions.
+     */
+    private void setupTextButtonActions() {
+        setupButtonAction(defaultText);
+        setupButtonAction(largeText);
+        setupButtonAction(extraText);
+    }
+
+    /**
+     * Sets up an action for the specified toggle button that changes the active stylesheet
+     * when the button is selected. This method also adds an event handler for the Enter key
+     * to trigger the button action.
+     *
+     * @param button The toggle button to set up.
+     * @param style  The stylesheet to apply when this button is selected.
+     */
+    private void setupButtonAction(ToggleButton button, String style) {
+        button.setOnAction(event -> {
+            MainApplication.setActiveStyleSheet(style);
             applyTextSizeBasedOnSelection();
         });
-        addEnterKeyHandler(defaultStyle);
+        addEnterKeyHandler(button);
+    }
 
-        accessibleStyle.setOnAction(event -> {
-            MainApplication.setActiveStyleSheet("accessible.css");
-            applyTextSizeBasedOnSelection();
-        });
-        addEnterKeyHandler(accessibleStyle);
+    /**
+     * Sets up an action for the specified toggle button that applies the current text size
+     * based on the selection. This method also adds an event handler for the Enter key
+     * to trigger the button action.
+     *
+     * @param button The toggle button to set up.
+     */
+    private void setupButtonAction(ToggleButton button) {
+        button.setOnAction(event -> applyTextSizeBasedOnSelection());
+        addEnterKeyHandler(button);
+    }
 
-        // Handle the selection of text size
-        defaultText.setOnAction(event -> applyTextSizeBasedOnSelection());
-        addEnterKeyHandler(defaultText);
-
-        largeText.setOnAction(event -> applyTextSizeBasedOnSelection());
-        addEnterKeyHandler(largeText);
-
-        extraText.setOnAction(event -> applyTextSizeBasedOnSelection());
-        addEnterKeyHandler(extraText);
-
-        // Set action for the password change button
+    /**
+     * Sets up actions for account management buttons, including updating the password and
+     * deleting the account. This method defines the behavior when the buttons are pressed.
+     */
+    private void setupAccountButtons() {
         updatePasswordButton.setOnAction(event -> {
             try {
                 changePassword();
@@ -133,10 +181,7 @@ public class SettingsController implements Initializable {
             }
         });
 
-        // Set action for delete account button
-        deleteAccountButton.setOnAction(event -> {
-            showDeleteAccountConfirmation();
-        });
+        deleteAccountButton.setOnAction(event -> showDeleteAccountConfirmation());
     }
 
     /**
