@@ -35,7 +35,7 @@ public class PrescribedMedicationDose {
     public void setDosageTime(LocalTime dosageTime) { this.dosageTime = dosageTime; }
 
 
-    PrescribedMedicationDose(String username, String medicationID, String displayName, double dosageAmount, String dosageUnit, LocalDate dosageDate, LocalTime dosageTime) {
+    public PrescribedMedicationDose(String username, String medicationID, String displayName, double dosageAmount, String dosageUnit, LocalDate dosageDate, LocalTime dosageTime) {
         this.username = username;
         this.medicationID = medicationID;
         this.displayName = displayName;
