@@ -1,10 +1,12 @@
 package edu.qut.cab302.wehab.models.medication;
 
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class PrescribedMedicationDose {
+public class MedicationReminder {
 
+    private String reminderID;
     private String username;
     private String medicationID;
     private String displayName;
@@ -12,6 +14,9 @@ public class PrescribedMedicationDose {
     private String dosageUnit;
     private LocalDate dosageDate;
     private LocalTime dosageTime;
+    private String status;
+
+    public String getReminderID() { return reminderID; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
@@ -28,14 +33,20 @@ public class PrescribedMedicationDose {
     public String getDosageUnit() { return dosageUnit; }
     public void setDosageUnit(String dosageUnit) { this.dosageUnit = dosageUnit; }
 
+    public String getDosageString() { return dosageAmount + " " + dosageUnit;}
+
     public LocalDate getDosageDate() { return dosageDate; }
     public void setDosageDate(LocalDate dosageDate) { this.dosageDate = dosageDate; }
 
     public LocalTime getDosageTime() { return dosageTime; }
     public void setDosageTime(LocalTime dosageTime) { this.dosageTime = dosageTime; }
 
+    public void setStatus(String status) { this.status = status; }
+    public String getStatus() { return status; }
 
-    public PrescribedMedicationDose(String username, String medicationID, String displayName, double dosageAmount, String dosageUnit, LocalDate dosageDate, LocalTime dosageTime) {
+
+    public MedicationReminder(String reminderID, String username, String medicationID, String displayName, double dosageAmount, String dosageUnit, LocalDate dosageDate, LocalTime dosageTime) {
+        this.reminderID = reminderID;
         this.username = username;
         this.medicationID = medicationID;
         this.displayName = displayName;

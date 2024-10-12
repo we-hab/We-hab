@@ -1,8 +1,11 @@
 package edu.qut.cab302.wehab.main;
 
+import edu.qut.cab302.wehab.controllers.medication.MedicationOverviewController;
 import edu.qut.cab302.wehab.database.DatabaseConnection;
+import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.mood_ratings.moodRating;
 import edu.qut.cab302.wehab.models.dao.UserAccountDAO;
+import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import edu.qut.cab302.wehab.models.workout.WorkoutReturnModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -40,7 +43,9 @@ public class MainApplication extends Application {
         primaryStage.setMinHeight(800);  // Set minimum height
 
         UserAccountDAO userAccountDAO = new UserAccountDAO();
-        switchScene("/edu/qut/cab302/wehab/fxml/user_account/Login.fxml");
+        UserAccount loggedInUser = userAccountDAO.getByUsername("test");
+        Session.getInstance().setLoggedInUser(loggedInUser);
+        switchScene("/edu/qut/cab302/wehab/fxml/medication/medication-overview.fxml");
     }
 
     /**
@@ -65,6 +70,18 @@ public class MainApplication extends Application {
      */
     public static void switchScene(String fxmlFile) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(fxmlFile));
+
+        fxmlLoader.setControllerFactory(param -> {
+            if (param == MedicationOverviewController.class) {
+                return MedicationOverviewController.getInstance();
+            } else {
+                try {
+                    return param.getDeclaredConstructor().newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
 

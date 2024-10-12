@@ -1,7 +1,11 @@
-package edu.qut.cab302.wehab.models.medication;
+package edu.qut.cab302.wehab.models.dao;
 
 import edu.qut.cab302.wehab.database.DatabaseConnection;
 
+import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,14 +13,23 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static edu.qut.cab302.wehab.util.EncryptionUtility.encrypt;
+import static edu.qut.cab302.wehab.util.EncryptionUtility.decrypt;
+
 import edu.qut.cab302.wehab.database.Session;
+import edu.qut.cab302.wehab.models.medication.Medication;
+import edu.qut.cab302.wehab.models.medication.MedicationReminder;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * This class provides methods for interacting with the medication-related tables in the database.
  * It includes functionality for creating and deleting the medication and user-medication junction tables,
  * as well as saving medications and resetting the tables.
  */
-public class MedicationSearchModel {
+public class MedicationDAO {
 
     /**
      * The database connection instance to be used for executing SQL queries.
@@ -50,9 +63,17 @@ public class MedicationSearchModel {
 
     public static void addMedicationToUserList(Medication medication) throws SQLException {
 
+        String encryptedMedicationID;
+
+        try {
+            encryptedMedicationID = encrypt(medication.getID());
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException();
+        }
+
         String checkMedicationSql = "SELECT COUNT(*) FROM medications WHERE medicationID = ? AND username = ?";
         PreparedStatement checkMedication = connection.prepareStatement(checkMedicationSql);
-        checkMedication.setString(1, medication.getID());
+        checkMedication.setString(1, encryptedMedicationID);
         checkMedication.setString(2, username);
 
         ResultSet resultSet = checkMedication.executeQuery();
@@ -64,11 +85,18 @@ public class MedicationSearchModel {
             throw new SQLException("You have already added this medication.");
         }
 
+        String encryptedDisplayName;
+        try {
+            encryptedDisplayName = encrypt(medication.getDisplayName());
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+
         String addMedicationSql = "INSERT INTO medications (medicationID, username, displayName, addedDateTime) VALUES (?, ?, ?, ?)";
         PreparedStatement addMedication = connection.prepareStatement(addMedicationSql);
-        addMedication.setString(1, medication.getID());
+        addMedication.setString(1, encryptedMedicationID);
         addMedication.setString(2, username);
-        addMedication.setString(3, medication.getDisplayName());
+        addMedication.setString(3, encryptedDisplayName);
         addMedication.setString(4, String.valueOf(LocalDateTime.now()));
         System.out.println(addMedication.executeUpdate());
     }
@@ -77,7 +105,11 @@ public class MedicationSearchModel {
         ResultSet resultSet = queryUserSavedMedications();
         HashMap<String, String> userSavedMedications = new HashMap<>();
         while (resultSet.next()) {
-            userSavedMedications.put(resultSet.getString("displayName"), resultSet.getString("medicationID"));
+            try {
+                userSavedMedications.put(decrypt(resultSet.getString("displayName")), decrypt(resultSet.getString("medicationID")));
+            } catch (GeneralSecurityException e) {
+                throw new RuntimeException(e);
+            }
         }
         return userSavedMedications;
     }
@@ -108,10 +140,10 @@ public class MedicationSearchModel {
      *
      * @throws SQLException if an error occurs while executing the SQL statement.
      */
-    private static void createUserMedicationRemindersTable() throws SQLException {
-        Statement createUserMedicationRemindersTable;
+    private static void createMedicationRemindersTable() throws SQLException {
+        Statement createMedicationRemindersTable;
 
-        String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS userMedicationReminders (" +
+        String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS medicationReminders (" +
                 "reminderID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "username TEXT NOT NULL," +
                 "medicationID TEXT NOT NULL," +
@@ -119,22 +151,55 @@ public class MedicationSearchModel {
                 "dosageUnit TEXT NOT NULL, -- E.g., 'mg', 'mL', `capsules'\n" +
                 "dosageTime TEXT NOT NULL," +
                 "dosageDate TEXT NOT NULL, -- YYYY-MM-DD format\n" +
+                "status TEXT DEFAULT NULL," +
                 "FOREIGN KEY (username) REFERENCES userAccounts(username)," +
                 "FOREIGN KEY (medicationID) REFERENCES medications(medicationID)" +
                 ")";
 
-        createUserMedicationRemindersTable = connection.createStatement();
+        createMedicationRemindersTable = connection.createStatement();
 
-        createUserMedicationRemindersTable.execute(createJunctionTableSQL);
+        createMedicationRemindersTable.execute(createJunctionTableSQL);
+    }
+
+    public static void markMedicationAsTaken(String reminderID) throws SQLException {
+        String sql = "UPDATE medicationReminders SET status = 'taken' WHERE reminderID = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, reminderID);
+        preparedStatement.executeUpdate();
+    }
+
+    public static void markMedicationAsMissed(String reminderID) throws SQLException {
+        String sql = "UPDATE medicationReminders SET status = 'missed' WHERE reminderID = ? ";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, reminderID);
+        preparedStatement.executeUpdate();
+    }
+
+    public static void deleteMedicationReminder(String reminderID) throws SQLException {
+        String sql = "DELETE FROM medicationReminders WHERE reminderID = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, reminderID);
+        preparedStatement.executeUpdate();
     }
 
     public static void addReminder(String medicationID, String dosageAmount, String dosageUnit, String dosageTime, String dosageDate) throws SQLException {
-        String sql = "INSERT INTO userMedicationReminders(username, medicationID, dosageAmount, dosageUnit, dosageTime, dosageDate) " +
+        String sql = "INSERT INTO medicationReminders(username, medicationID, dosageAmount, dosageUnit, dosageDate, dosageTime) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
+
+        String encryptedMedicationID;
+
+        try {
+            encryptedMedicationID = encrypt(medicationID);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
 
         PreparedStatement addReminderStmt = connection.prepareStatement(sql);
         addReminderStmt.setString(1, username);
-        addReminderStmt.setString(2, medicationID);
+        addReminderStmt.setString(2, encryptedMedicationID);
         addReminderStmt.setString(3, dosageAmount);
         addReminderStmt.setString(4, dosageUnit);
         addReminderStmt.setString(5, dosageTime);
@@ -149,59 +214,132 @@ public class MedicationSearchModel {
         System.out.println("Reminder added.");
     }
 
-    public static ArrayList<PrescribedMedicationDose> getCurrentDayMedications() throws SQLException {
+    public static ArrayList<MedicationReminder> getDailyReminders() throws SQLException {
 
-        ResultSet currentDayMedications = queryCurrentDayMedications();
+        ResultSet currentDayMedicationsStream = queryCurrentDayReminders();
 
-        ArrayList<PrescribedMedicationDose> doses = new ArrayList<>();
+        ArrayList<MedicationReminder> reminders = new ArrayList<>();
 
-        while (currentDayMedications.next()) {
-            doses.add(parseMedicationDoseFromResultSet(currentDayMedications));
+        if (currentDayMedicationsStream != null) {
+            while (currentDayMedicationsStream.next()) {
+                reminders.add(getReminderFromDatabaseEntry(currentDayMedicationsStream));
+            }
         }
 
-        return doses;
+        return reminders;
     }
 
-    private static PrescribedMedicationDose parseMedicationDoseFromResultSet(ResultSet rs) throws SQLException {
+    public static ArrayList<MedicationReminder> getAllReminders() throws SQLException {
 
+        ResultSet currentDayMedicationsStream = queryActiveUsersReminders();
+
+        ArrayList<MedicationReminder> reminders = new ArrayList<>();
+
+        if (currentDayMedicationsStream != null) {
+            while (currentDayMedicationsStream.next()) {
+                reminders.add(getReminderFromDatabaseEntry(currentDayMedicationsStream));
+            }
+        }
+
+        return reminders;
+    }
+
+    private static MedicationReminder getReminderFromDatabaseEntry(ResultSet rs) throws SQLException {
+
+        String reminderID = rs.getString("reminderID");
         String username = rs.getString("username");
-        String medicationID = rs.getString("medicationID");
-        String displayName = getDisplayNameById(medicationID).getString("displayName");
+        String ciphertextMedicationID = rs.getString("medicationID");
+        String plaintextMedicationID;
+        try {
+            plaintextMedicationID = decrypt(ciphertextMedicationID);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+        String displayName;
+
+        displayName = getDisplayNameById(plaintextMedicationID);
         double dosageAmount = rs.getDouble("dosageAmount");
         String dosageUnit = rs.getString("dosageUnit");
         LocalDate dosageDate = LocalDate.parse(rs.getString("dosageDate"));
         LocalTime dosageTime = LocalTime.parse(rs.getString("dosageTime"));
 
-        return new PrescribedMedicationDose(username, medicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime);
+        System.out.println("Created object for reminder ID: " + reminderID);
+        System.out.println("\tUsername: " + username);
+        System.out.println("\tCiphertextMedicationID: " + ciphertextMedicationID);
+        System.out.println("\tPlaintextMedicationID: " + plaintextMedicationID);
+        return new MedicationReminder(reminderID, username, plaintextMedicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime);
     }
 
-    private static ResultSet queryCurrentDayMedications() throws SQLException {
+    private static ResultSet queryCurrentDayReminders() throws SQLException {
 
-        String sqlCommand = "SELECT * FROM userMedicationReminders " +
+        String sqlCommand = "SELECT * FROM medicationReminders " +
                 "WHERE username = ? " +
                 "AND dosageDate = ? " +
+                "AND status IS NULL " +
                 "ORDER BY dosageTime ASC";
 
         PreparedStatement queryTodaysMedications = connection.prepareStatement(sqlCommand);
         queryTodaysMedications.setString(1, Session.getInstance().getLoggedInUser().getUsername());
         queryTodaysMedications.setString(2, LocalDate.now().toString());
 
+        System.out.println("Querying medication reminders for " + LocalDate.now().toString());
+        System.out.println("User: " + Session.getInstance().getLoggedInUser().getUsername());
         ResultSet results = queryTodaysMedications.executeQuery();
+
+        if (!results.isBeforeFirst()) {
+            System.out.println("No medication reminders found for today.");
+            return null;
+        }
 
         return results;
     }
 
-    private static ResultSet getDisplayNameById(String id) throws SQLException {
+    private static ResultSet queryActiveUsersReminders() throws SQLException {
+
+        String sqlCommand = "SELECT * FROM medicationReminders " +
+                "WHERE username = ? " +
+                "AND status IS NULL " +
+                "ORDER BY dosageTime ASC";
+
+        PreparedStatement queryTodaysMedications = connection.prepareStatement(sqlCommand);
+        queryTodaysMedications.setString(1, Session.getInstance().getLoggedInUser().getUsername());
+
+        System.out.println("Querying medication reminders for " + LocalDate.now().toString());
+        System.out.println("User: " + Session.getInstance().getLoggedInUser().getUsername());
+        ResultSet results = queryTodaysMedications.executeQuery();
+
+        if (!results.isBeforeFirst()) {
+            System.out.println("No medication reminders found for today.");
+            return null;
+        }
+
+        return results;
+    }
+
+    private static String getDisplayNameById(String id) throws SQLException {
 
         String sqlCommand = "SELECT displayName FROM medications " +
                 "WHERE medicationId = ?";
 
+        String encryptedMedicationID;
+
+        try {
+            encryptedMedicationID = encrypt(id);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+
         PreparedStatement getDisplayNameById = connection.prepareStatement(sqlCommand);
-        getDisplayNameById.setString(1, id);
+        getDisplayNameById.setString(1, encryptedMedicationID);
 
         ResultSet results = getDisplayNameById.executeQuery();
+        String displayName = results.getString("displayName");
 
-        return results;
+        try {
+            return decrypt(displayName);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -224,7 +362,7 @@ public class MedicationSearchModel {
      */
     private static void deleteJunctionTable() throws SQLException {
         Statement deleteJunctionTable;
-        String deleteJunctionTableSQL = "DROP TABLE IF EXISTS userMedicationReminders";
+        String deleteJunctionTableSQL = "DROP TABLE IF EXISTS medicationReminders";
         deleteJunctionTable = connection.createStatement();
         deleteJunctionTable.execute(deleteJunctionTableSQL);
     }
@@ -236,7 +374,7 @@ public class MedicationSearchModel {
      */
     public static void createMedicationTables() throws SQLException {
         createMedicationsTable();
-        createUserMedicationRemindersTable();
+        createMedicationRemindersTable();
     }
 
     /**
@@ -260,21 +398,25 @@ public class MedicationSearchModel {
         createMedicationTables();
     }
 
+    public static void updateReminder(MedicationReminder reminder) throws SQLException {
 
-    /**
-     * Saves a medicationID into the medications table if it does not already exist.
-     * The method uses an "INSERT OR IGNORE" SQL statement to ensure no duplicate
-     * medicationID entries are inserted.
-     *
-     * @param medicationID The ID of the medication to be saved.
-     * @throws SQLException if an error occurs while executing the SQL insert statement.
-     */
-    protected static void saveMedication(String medicationID, String displayName) throws SQLException {
-        PreparedStatement insertMedication;
-        String insertMedicationSQL = "INSERT OR IGNORE INTO medications (medicationID, displayName) VALUES (?, ?)";
+        String sql = "UPDATE medicationReminders SET dosageAmount = ?, dosageUnit = ?, dosageTime = ?, dosageDate = ?  " +
+                "WHERE reminderID = ? ";
 
-        insertMedication = connection.prepareStatement(insertMedicationSQL);
-        insertMedication.setString(1, medicationID);
-        insertMedication.executeUpdate();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        String reminderID = reminder.getReminderID();
+        String dosageAmount = String.valueOf(reminder.getDosageAmount());
+        String dosageUnit = reminder.getDosageUnit();
+        String dosageTime = reminder.getDosageTime().toString();
+        String dosageDate = reminder.getDosageDate().toString();
+
+        preparedStatement.setString(1, dosageAmount);
+        preparedStatement.setString(2, dosageUnit);
+        preparedStatement.setString(3, dosageTime);
+        preparedStatement.setString(4, dosageDate);
+        preparedStatement.setString(5, reminderID);
+
+        preparedStatement.executeUpdate();
     }
 }

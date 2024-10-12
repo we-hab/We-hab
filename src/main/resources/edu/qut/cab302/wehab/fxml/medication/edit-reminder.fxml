@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+
+<?import javafx.collections.FXCollections?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.qut.cab302.wehab.controllers.medication.EditReminderController"
+      >
+
+    <children>
+        <VBox styleClass="main-content-container-vbox" spacing="10">
+            <padding>
+                <Insets topRightBottomLeft="10" />
+            </padding>
+            <children>
+                <Label fx:id="selectedReminderLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="medicationName" />
+                <GridPane hgap="10" vgap="10">
+                    <children>
+                        <Label text="Dosage" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="dosageTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Unit" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="unitComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="mcg" />
+                                    <String fx:value="mg" />
+                                    <String fx:value="mL" />
+                                    <String fx:value="g" />
+                                    <String fx:value="tablets" />
+                                    <String fx:value="capsules" />
+                                    <String fx:value="preloaded syringe" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <Label text="Date" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="Time" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Spinner fx:id="timeSpinner" prefWidth="160" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <Label text="Comments" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+
+                </GridPane>
+                <TextArea prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <HBox spacing="10">
+                    <Button fx:id="updateReminderButton" text="Update Reminder" />
+                    <Button fx:id="cancelButton" text="Cancel" />
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>
