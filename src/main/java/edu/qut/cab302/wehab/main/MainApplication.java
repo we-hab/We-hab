@@ -43,9 +43,7 @@ public class MainApplication extends Application {
         primaryStage.setMinHeight(800);  // Set minimum height
 
         UserAccountDAO userAccountDAO = new UserAccountDAO();
-        UserAccount loggedInUser = userAccountDAO.getByUsername("test");
-        Session.getInstance().setLoggedInUser(loggedInUser);
-        switchScene("/edu/qut/cab302/wehab/fxml/medication/medication-overview.fxml");
+        switchScene("/edu/qut/cab302/wehab/fxml/user_account/Login.fxml");
     }
 
     /**
