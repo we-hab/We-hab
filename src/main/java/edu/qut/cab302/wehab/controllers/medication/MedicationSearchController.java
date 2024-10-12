@@ -5,7 +5,7 @@ import edu.qut.cab302.wehab.controllers.dashboard.ButtonController;
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.medication.Medication;
 import edu.qut.cab302.wehab.models.medication.MedicationInfoPage;
-import edu.qut.cab302.wehab.models.medication.MedicationSearchModel;
+import edu.qut.cab302.wehab.models.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.medication.OpenFDAClient;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import javafx.fxml.FXML;
@@ -27,11 +27,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static edu.qut.cab302.wehab.models.medication.MedicationSearchModel.*;
+import static edu.qut.cab302.wehab.models.dao.MedicationDAO.*;
 
 /**
  * The MedicationSearchController class is responsible for linking the UI view with the
- * logic for handling the search functionality contained in the {@link MedicationSearchModel}.
+ * logic for handling the search functionality contained in the {@link MedicationDAO}.
  * It initialises UI components, passes user-entered search criteria to an {@link OpenFDAClient}
  * to search for medications, and displays search results in the view. This class also interacts
  * with the database to store medication-related data.
@@ -245,7 +245,7 @@ public class MedicationSearchController {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    MedicationSearchModel.addMedicationToUserList(medication);
+                    MedicationDAO.addMedicationToUserList(medication);
                 } catch (SQLException e) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Alert");

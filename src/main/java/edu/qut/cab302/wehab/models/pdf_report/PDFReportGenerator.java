@@ -11,7 +11,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
-import edu.qut.cab302.wehab.models.medication.PrescribedMedicationDose;
+import edu.qut.cab302.wehab.models.medication.MedicationReminder;
 import edu.qut.cab302.wehab.models.mood_ratings.moodRating;
 import edu.qut.cab302.wehab.models.workout.Workout;
 
@@ -30,7 +30,7 @@ public class PDFReportGenerator
      * @param monthlyMinutes The total of workout minutes by date for the entire month.
      * @param filePath The file path where the PDF will be saved.
      */
-    public static void generateReport(List<moodRating> moodRatings, List<Workout> workoutsCompleted, List<PrescribedMedicationDose> medications, TreeMap<LocalDate, Integer> monthlyMinutes, String filePath)
+    public static void generateReport(List<moodRating> moodRatings, List<Workout> workoutsCompleted, List<MedicationReminder> medications, TreeMap<LocalDate, Integer> monthlyMinutes, String filePath)
     {
         try
         {
@@ -128,7 +128,7 @@ public class PDFReportGenerator
             remindersTable.addCell("How many tablets").setBold(); // Column header: How many tablets
 
             // Populate the table
-            for (PrescribedMedicationDose medication : medications)
+            for (MedicationReminder medication : medications)
             {
                 remindersTable.addCell(medication.getDisplayName()); // Adds information into the 'Medication' cell
                 remindersTable.addCell(medication.getDosageTime().toString()); // Adds information into the 'When to take' cell

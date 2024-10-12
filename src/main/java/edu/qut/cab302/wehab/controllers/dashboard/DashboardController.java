@@ -1,8 +1,8 @@
 package edu.qut.cab302.wehab.controllers.dashboard;
 
 import edu.qut.cab302.wehab.database.Session;
-import edu.qut.cab302.wehab.models.medication.MedicationSearchModel;
-import edu.qut.cab302.wehab.models.medication.PrescribedMedicationDose;
+import edu.qut.cab302.wehab.models.dao.MedicationDAO;
+import edu.qut.cab302.wehab.models.medication.MedicationReminder;
 import edu.qut.cab302.wehab.models.mood_ratings.moodRating;
 import edu.qut.cab302.wehab.models.pdf_report.PDFReportGenerator;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
@@ -119,7 +119,7 @@ public class DashboardController implements Initializable {
                     // Retrieve the data for the PDF Report
                     List<moodRating> moodRatings = moodRating.getLast7Days(loggedInUser.getUsername());
                     List<Workout> workouts = WorkoutReturnModel.getWorkouts(loggedInUser.getUsername());
-                    List<PrescribedMedicationDose> medications = MedicationSearchModel.getCurrentDayMedications();
+                    List<MedicationReminder> medications = MedicationDAO.getDailyReminders();
                     TreeMap<LocalDate, Integer> monthlyMinutes = WorkoutReturnModel.getMonthlyMinutes(loggedInUser.getUsername());
 
                     // Format today's date for the file name in Australian date format
@@ -224,7 +224,7 @@ public class DashboardController implements Initializable {
     {
         try {
             medicationListView.getItems().clear();
-            HashMap<String, String> userMedications = MedicationSearchModel.getUserSavedMedicationNames();
+            HashMap<String, String> userMedications = MedicationDAO.getUserSavedMedicationNames();
 
             ObservableList<String> medicationNames = FXCollections.observableArrayList(userMedications.keySet());
             medicationListView.setItems(medicationNames);

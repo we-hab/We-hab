@@ -3,7 +3,7 @@ import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import edu.qut.cab302.wehab.models.mood_ratings.moodRating;
 import edu.qut.cab302.wehab.models.workout.Workout;
-import edu.qut.cab302.wehab.models.medication.PrescribedMedicationDose;
+import edu.qut.cab302.wehab.models.medication.MedicationReminder;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
@@ -23,7 +23,7 @@ public class pdfReportTest {
     private UserAccount testUser;
     private List<moodRating> testMoodRatings;
     private List<Workout> testWorkouts;
-    private List<PrescribedMedicationDose> testMedications;
+    private List<MedicationReminder> testMedications;
     private TreeMap<LocalDate, Integer> testMonthlyMinutes;
 
     public void SetUpTestData() {
@@ -37,7 +37,7 @@ public class pdfReportTest {
         testWorkouts.add(new Workout("Running", LocalDate.now(), 30, 4));
 
         testMedications = new ArrayList<>();
-        testMedications.add(new PrescribedMedicationDose(testUser.toString(), "1", "Paracetamol", 2, "tablets", LocalDate.now(), LocalTime.now()));
+        testMedications.add(new MedicationReminder(testUser.toString(), "1", "1", "Paracetamol", 2, "tablets", LocalDate.now(), LocalTime.now()));
 
         testMonthlyMinutes = new TreeMap<>();
         testMonthlyMinutes.put(LocalDate.now(), 90);
