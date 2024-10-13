@@ -55,7 +55,6 @@ public class moodRating
         try (Statement createTable = DatabaseConnection.getInstance().createStatement())
         {
             createTable.execute(createMoodTable);
-            System.out.println("table 'dailyMoodRatings' created successfully");
         }
         catch (SQLException error)
         {
