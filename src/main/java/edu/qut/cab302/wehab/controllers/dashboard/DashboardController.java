@@ -9,7 +9,10 @@ import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import edu.qut.cab302.wehab.models.workout.Workout;
 import edu.qut.cab302.wehab.models.workout.WorkoutReturnModel;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -49,7 +52,29 @@ public class DashboardController implements Initializable {
     private Button generatePdfBtn; // Button that generates the PDF report
 
     @FXML
-    private ListView<String> medicationListView;
+    private TableView<MedicationReminder> remindersTable = new TableView<>();
+    private ObservableList<MedicationReminder> medicationReminders = FXCollections.observableArrayList();
+
+    private HashMap<String, String> userSavedMedications;
+    private ArrayList<MedicationReminder> userSavedReminders;
+    @FXML
+    private Button reminderDoneButton;
+
+    private boolean showConfirmationDialog(String prompt)
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText(prompt);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
+
+    private void setDisableAllReminderButtons(boolean disable)
+    {
+        reminderDoneButton.setDisable(disable);
+    }
 
     /**
      * Initializes the controller. This method is called when the scene is loaded.
@@ -81,7 +106,11 @@ public class DashboardController implements Initializable {
             String firstName = loggedInUser.getFirstName();
             loggedInUserLabel.setText(firstName); // Displays the user's first name in the top left of the UI.
             loadMoodData(loggedInUser.getUsername()); // Load the mood data for the user
-            loadMedications((loggedInUser.getUsername())); // Load the medication data for the user
+            try {
+                refreshRemindersWindow(); // Load the medication data for the user
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
             //** Handles the mood rating submission button action **\\
             moodRatingSubmission.setOnAction(event ->
@@ -133,6 +162,57 @@ public class DashboardController implements Initializable {
                 } catch (SQLException error) { System.err.println(error); }
             }
         });
+
+        remindersTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        reminderDoneButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                boolean proceed = showConfirmationDialog("Mark medication as taken?");
+
+                if(proceed) {
+
+                    MedicationReminder reminder = remindersTable.getSelectionModel().getSelectedItem();
+                    String reminderIdToSearch = reminder.getReminderID();
+
+                    try {
+                        System.out.println("Marking medication: " + reminderIdToSearch + " as taken.");
+                        MedicationDAO.markMedicationAsTaken(reminderIdToSearch);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    try {
+                        refreshRemindersWindow();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
+        });
+
+        remindersTable.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue && remindersTable.getSelectionModel().getSelectedItem() == null) {
+                setDisableAllReminderButtons(true);
+            } else {
+                setDisableAllReminderButtons(false);
+            }
+        });
+
+        remindersTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                setDisableAllReminderButtons(false);
+            } else {
+                setDisableAllReminderButtons(true);
+            }
+        });
+
+        remindersTable.getItems().addListener((ListChangeListener<MedicationReminder>) change -> {
+            if (remindersTable.getItems().isEmpty()) {
+                setDisableAllReminderButtons(true);
+            }
+        });
+
     }
 
     /**
@@ -216,30 +296,15 @@ public class DashboardController implements Initializable {
         moodRatingSubmission.setDisable(false);
     }
 
-    /**
-     * Loads the prescribed medications for the logged in user and populates the ListView.
-     * @param username The username of the logged in user
-     */
-    public void loadMedications(String username)
-    {
-        try {
-            medicationListView.getItems().clear();
-            HashMap<String, String> userMedications = MedicationDAO.getUserSavedMedicationNames();
+    private void refreshRemindersWindow() throws SQLException {
+        remindersTable.getItems().clear();
+        userSavedReminders = MedicationDAO.getAllReminders();
+        System.out.println("Daily Reminders: " + userSavedReminders.size());
+        medicationReminders = FXCollections.observableArrayList(userSavedReminders);
+        remindersTable.setItems(medicationReminders);
+    }
 
-            ObservableList<String> medicationNames = FXCollections.observableArrayList(userMedications.keySet());
-            medicationListView.setItems(medicationNames);
-
-            medicationListView.setOnMouseClicked(event -> {
-                String selectedMedication = medicationListView.getSelectionModel().getSelectedItem();
-                if (selectedMedication != null)
-                {
-                    System.out.println("Selected medication: " + selectedMedication);
-                }
-            });
-
-        } catch (SQLException e)
-        {
-            System.err.println("Error loading medications: " + e.getMessage());
-        }
+    public MedicationReminder getSelectedReminder() {
+        return remindersTable.getSelectionModel().getSelectedItem();
     }
 }

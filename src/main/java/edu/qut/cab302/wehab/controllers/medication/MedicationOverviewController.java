@@ -30,6 +30,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public class MedicationOverviewController {
     private Spinner<LocalTime> timeSpinner;
 
     @FXML
-    private TableView<MedicationReminder> remindersTable;
+    private TableView<MedicationReminder> remindersTable = new TableView<>();
     private ObservableList<MedicationReminder> medicationReminders = FXCollections.observableArrayList();
 
     private HashMap<String, String> userSavedMedications;
@@ -130,6 +131,25 @@ public class MedicationOverviewController {
         System.out.println("Daily Reminders: " + userSavedReminders.size());
         medicationReminders = FXCollections.observableArrayList(userSavedReminders);
         remindersTable.setItems(medicationReminders);
+
+        remindersTable.setRowFactory(row -> new TableRow<MedicationReminder>() {
+
+            @Override
+            protected void updateItem(MedicationReminder reminder, boolean empty) {
+                super.updateItem(reminder, empty);
+
+                if(empty || reminder == null) {
+                    setStyle("");
+                } else {
+                    LocalDateTime reminderDue = LocalDateTime.of(reminder.getDosageDate(), reminder.getDosageTime());
+
+                    if(reminderDue.isBefore(LocalDateTime.now())) {
+                        System.out.println("Setting overdue reminder to red");
+                        setStyle("-fx-background-color: rgba(255,0,0,0.68); ");
+                    }
+                }
+            }
+        });
     }
 
     private boolean showConfirmationDialog(String prompt) {
