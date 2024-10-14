@@ -52,7 +52,7 @@ public class DashboardController implements Initializable {
     private Button generatePdfBtn; // Button that generates the PDF report
 
     @FXML
-    private TableView<MedicationReminder> remindersTable;
+    private TableView<MedicationReminder> remindersTable = new TableView<>();
     private ObservableList<MedicationReminder> medicationReminders = FXCollections.observableArrayList();
 
     private HashMap<String, String> userSavedMedications;

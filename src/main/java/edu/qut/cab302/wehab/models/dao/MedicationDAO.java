@@ -229,6 +229,38 @@ public class MedicationDAO {
         return reminders;
     }
 
+    public static ArrayList<MedicationReminder> getReminderLog(LocalDate startDate, LocalDate endDate) throws SQLException {
+
+        ArrayList<MedicationReminder> loggedReminders = new ArrayList<>();
+
+        ResultSet reminderLogStream = queryLoggedReminders(startDate.toString(), endDate.toString());
+        if (reminderLogStream != null) {
+            while (reminderLogStream.next()) {
+                loggedReminders.add(getReminderFromDatabaseEntry(reminderLogStream));
+            }
+        }
+        return loggedReminders;
+    }
+
+    private static ResultSet queryLoggedReminders(String startDate, String endDate) throws SQLException {
+
+        String sqlQuery = "SELECT * FROM medicationReminders WHERE STATUS IS NOT NULL AND dosageDate BETWEEN ? AND ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+        preparedStatement.setString(1, startDate.toString());
+        preparedStatement.setString(2, endDate.toString());
+
+        System.out.println("Querying medication reminders from " + startDate + " to " + endDate);
+        ResultSet results = preparedStatement.executeQuery();
+
+        if (!results.isBeforeFirst()) {
+            System.out.println("No medication reminders found for this period.");
+            return null;
+        }
+
+        return results;
+    }
+
     public static ArrayList<MedicationReminder> getAllReminders() throws SQLException {
 
         ResultSet currentDayMedicationsStream = queryActiveUsersReminders();
@@ -267,7 +299,10 @@ public class MedicationDAO {
         System.out.println("\tUsername: " + username);
         System.out.println("\tCiphertextMedicationID: " + ciphertextMedicationID);
         System.out.println("\tPlaintextMedicationID: " + plaintextMedicationID);
-        return new MedicationReminder(reminderID, username, plaintextMedicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime);
+
+        String status = rs.getString("status") != null ? rs.getString("status") : null;
+
+        return new MedicationReminder(reminderID, username, plaintextMedicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime, status);
     }
 
     private static ResultSet queryCurrentDayReminders() throws SQLException {

@@ -154,17 +154,17 @@
                                              <PropertyValueFactory property="displayName"/>
                                           </cellValueFactory>
                                        </TableColumn>
-                                       <TableColumn text="Dosage">
+                                       <TableColumn text="Dosage" prefWidth="140">
                                           <cellValueFactory>
                                              <PropertyValueFactory property="dosageString"/>
                                           </cellValueFactory>
                                        </TableColumn>
-                                       <TableColumn text="Date">
+                                       <TableColumn text="Date" prefWidth="140">
                                           <cellValueFactory>
                                              <PropertyValueFactory property="dosageDate"/>
                                           </cellValueFactory>
                                        </TableColumn>
-                                       <TableColumn text="Time">
+                                       <TableColumn text="Time" prefWidth="100">
                                           <cellValueFactory>
                                              <PropertyValueFactory property="dosageTime"/>
                                           </cellValueFactory>
