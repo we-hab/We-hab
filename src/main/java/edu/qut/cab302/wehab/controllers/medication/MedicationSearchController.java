@@ -112,15 +112,12 @@ public class MedicationSearchController {
         resultsPane.setSpacing(50);
         resultsPane.setPadding(new Insets(20, 20, 20, 20));
 
-        // Set a preferred width for the resultsPane
         resultsPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        resultsPane.setMaxWidth(Double.MAX_VALUE); // Allow it to stretch
+        resultsPane.setMaxWidth(Double.MAX_VALUE);
 
-        resultsScrollPane.setFitToWidth(true); // Make the ScrollPane fit its content width
-        resultsScrollPane.setContent(resultsPane); // Ensure the content is set correctly
+        resultsScrollPane.setFitToWidth(true);
+        resultsScrollPane.setContent(resultsPane);
 
-        medicationOverviewModal.initModality(Modality.APPLICATION_MODAL);
-        medicationOverviewModal.setResizable(false);
     }
 
     /**

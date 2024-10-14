@@ -44,8 +44,7 @@ public class MedicationReminder {
     public void setStatus(String status) { this.status = status; }
     public String getStatus() { return status; }
 
-
-    public MedicationReminder(String reminderID, String username, String medicationID, String displayName, double dosageAmount, String dosageUnit, LocalDate dosageDate, LocalTime dosageTime) {
+    public MedicationReminder(String reminderID, String username, String medicationID, String displayName, double dosageAmount, String dosageUnit, LocalDate dosageDate, LocalTime dosageTime, String status) {
         this.reminderID = reminderID;
         this.username = username;
         this.medicationID = medicationID;
@@ -54,6 +53,25 @@ public class MedicationReminder {
         this.dosageUnit = dosageUnit;
         this.dosageDate = dosageDate;
         this.dosageTime = dosageTime;
+
+        if(status != null) {
+            this.status = status;
+        }
+    }
+
+    public void printAllDetails() {
+        System.out.println("-------------------------------");
+        System.out.println("Details of Medication Reminder:");
+        System.out.println("Reminder ID: " + reminderID);
+        System.out.println("Username: " + username);
+        System.out.println("Medication ID: " + medicationID);
+        System.out.println("Display Name: " + displayName);
+        System.out.println("Dosage Amount: " + dosageAmount);
+        System.out.println("Dosage Unit: " + dosageUnit);
+        System.out.println("Dosage Date: " + dosageDate);
+        System.out.println("Dosage Time: " + dosageTime);
+        System.out.println("Status: " + status);
+        System.out.println("-------------------------------");
     }
 
 }
