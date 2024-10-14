@@ -144,7 +144,6 @@ public class MedicationOverviewController {
                     LocalDateTime reminderDue = LocalDateTime.of(reminder.getDosageDate(), reminder.getDosageTime());
 
                     if(reminderDue.isBefore(LocalDateTime.now())) {
-                        System.out.println("Setting overdue reminder to red");
                         setStyle("-fx-background-color: rgba(255,0,0,0.68); ");
                     }
                 }
