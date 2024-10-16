@@ -37,7 +37,7 @@ public class DashboardController implements Initializable {
     private Label loggedInUserLabel;
     @FXML
     private RadioButton moodButton1, moodButton2, moodButton3, moodButton4, moodButton5,
-                        moodButton6, moodButton7, moodButton8, moodButton9, moodButton10;
+            moodButton6, moodButton7, moodButton8, moodButton9, moodButton10;
 
     private ToggleGroup moodToggleGroup; // Toggle group for mood rating buttons (So they can be greyed out all together)
 
@@ -60,6 +60,12 @@ public class DashboardController implements Initializable {
     @FXML
     private Button reminderDoneButton;
 
+    /**
+     * Displays a confirmation dialog to the user.
+     *
+     * @param prompt The confirmation message to display.
+     * @return True if the user confirms, false otherwise.
+     */
     private boolean showConfirmationDialog(String prompt)
     {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -70,7 +76,11 @@ public class DashboardController implements Initializable {
         return result.isPresent() && result.get() == ButtonType.OK;
     }
 
-
+    /**
+     * Enables or disables the reminder buttons.
+     *
+     * @param disable Whether to disable the reminder buttons.
+     */
     private void setDisableAllReminderButtons(boolean disable)
     {
         reminderDoneButton.setDisable(disable);
@@ -79,8 +89,9 @@ public class DashboardController implements Initializable {
     /**
      * Initializes the controller. This method is called when the scene is loaded.
      * It sets up the UI elements, loads the mood data, and handles button actions.
-     * @param location
-     * @param resources
+     *
+     * @param location  The location used to resolve relative paths for the root object.
+     * @param resources The resources used to localize the root object.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -217,7 +228,8 @@ public class DashboardController implements Initializable {
 
     /**
      * Loads the mood data for the given username and updates the mood chart in the UI.
-     * @param username The username of the logged-in user
+     *
+     * @param username The username of the logged-in user.
      */
     private void loadMoodData(String username)
     {
@@ -237,7 +249,8 @@ public class DashboardController implements Initializable {
     }
 
     /**
-     * Retrieve the selected mood rating from the radio buttons.
+     * Retrieves the selected mood rating from the radio buttons.
+     *
      * @return The selected mood rating (1-10) or -1 if nothing is selected (for error handling).
      */
     private int getSelectedRating()
@@ -296,6 +309,11 @@ public class DashboardController implements Initializable {
         moodRatingSubmission.setDisable(false);
     }
 
+    /**
+     * Refreshes the medication reminders window by loading new data from the database.
+     *
+     * @throws SQLException if there is an issue retrieving data from the database.
+     */
     private void refreshRemindersWindow() throws SQLException {
         remindersTable.getItems().clear();
         userSavedReminders = MedicationDAO.getAllReminders();
@@ -304,6 +322,11 @@ public class DashboardController implements Initializable {
         remindersTable.setItems(medicationReminders);
     }
 
+    /**
+     * Retrieves the currently selected medication reminder.
+     *
+     * @return The selected MedicationReminder object.
+     */
     public MedicationReminder getSelectedReminder() {
         return remindersTable.getSelectionModel().getSelectedItem();
     }
