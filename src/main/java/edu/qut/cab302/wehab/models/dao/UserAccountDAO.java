@@ -26,19 +26,28 @@ public class UserAccountDAO
      *
      * @param userAccount The UserAccount object containing user information to be registered.
      */
-    public void registerAccount(UserAccount userAccount)
-    {
-        try
-        {
-            PreparedStatement tryRegister = connection.prepareStatement( "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)");
-            tryRegister.setString(1, userAccount.getUsername());
+    public void registerAccount(UserAccount userAccount) {
+        try {
+            // Convert username and email to lowercase before saving
+            String lowerCaseUsername = userAccount.getUsername().toLowerCase();
+            String lowerCaseEmail = userAccount.getEmail().toLowerCase();
+
+            // Prepare SQL statement with lowercased values
+            PreparedStatement tryRegister = connection.prepareStatement(
+                    "INSERT INTO userAccounts (username, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)"
+            );
+            tryRegister.setString(1, lowerCaseUsername);
             tryRegister.setString(2, userAccount.getFirstName());
             tryRegister.setString(3, userAccount.getLastName());
-            tryRegister.setString(4, userAccount.getEmail());
+            tryRegister.setString(4, lowerCaseEmail);
             tryRegister.setString(5, userAccount.getHashedPassword());
+
+            // Execute the statement
             tryRegister.execute();
 
-        } catch (SQLException error) { System.err.println(error); }
+        } catch (SQLException error) {
+            System.err.println(error);
+        }
     }
 
 
