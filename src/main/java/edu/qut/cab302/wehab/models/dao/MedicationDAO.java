@@ -140,7 +140,7 @@ public class MedicationDAO {
      *
      * @throws SQLException if an error occurs while executing the SQL statement.
      */
-    private static void createMedicationRemindersTable() throws SQLException {
+    public static void createMedicationRemindersTable() throws SQLException {
         Statement createMedicationRemindersTable;
 
         String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS medicationReminders (" +

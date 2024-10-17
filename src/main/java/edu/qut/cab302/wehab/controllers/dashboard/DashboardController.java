@@ -60,6 +60,8 @@ public class DashboardController implements Initializable {
     @FXML
     private Button reminderDoneButton;
 
+    MedicationDAO medicationDAO;
+
     private boolean showConfirmationDialog(String prompt)
     {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -97,6 +99,12 @@ public class DashboardController implements Initializable {
         moodButton8.setToggleGroup(moodToggleGroup);
         moodButton9.setToggleGroup(moodToggleGroup);
         moodButton10.setToggleGroup(moodToggleGroup);
+
+        try {
+            MedicationDAO.createMedicationRemindersTable();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         // Retrieve the logged-in user for the session and load their mood data from the table moodRatings
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
