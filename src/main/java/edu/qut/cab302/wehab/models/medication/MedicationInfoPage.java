@@ -5,6 +5,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import javafx.scene.web.WebView;
+import javafx.scene.web.WebEngine;
 import edu.qut.cab302.wehab.util.WrappingText;
 
 import java.io.IOException;
@@ -14,8 +16,7 @@ public class MedicationInfoPage {
     String medicationId;
     String medicationJson;
     JSONObject medicationJsonObject;
-    Scene scene;
-
+    VBox content;
 
     public MedicationInfoPage(String medicationId) {
         this.medicationId = medicationId;
@@ -33,7 +34,7 @@ public class MedicationInfoPage {
 
     public Scene getMedicationInfoPage() {
 
-        VBox content = new VBox();
+        content = new VBox();
         ScrollPane scrollPane = new ScrollPane(content);
         Scene scene = new Scene(scrollPane, sceneWidth, 800);
 
@@ -55,17 +56,20 @@ public class MedicationInfoPage {
                         for (String nestedKey : nestedObject.keySet()) {
                             WrappingText nestedHeading = new WrappingText(capitalizeHeading(nestedKey), textWrappingWidth);
                             nestedHeading.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
-                            content.getChildren().add(nestedHeading);
+                            addContentToView(nestedHeading, content);
+//                            content.getChildren().add(nestedHeading);
 
                             Object nestedValue = nestedObject.get(nestedKey);
                             if (nestedValue instanceof String) {
                                 WrappingText nestedValueWrappingText = new WrappingText((String) nestedValue, textWrappingWidth);
-                                content.getChildren().add(nestedValueWrappingText);
+                                addContentToView(nestedValueWrappingText, content);
+//                                content.getChildren().add(nestedValueWrappingText);
                             } else if (nestedValue instanceof JSONArray) {
                                 JSONArray deepNestedArray = (JSONArray) nestedValue;
                                 for (int j = 0; j < deepNestedArray.length(); j++) {
                                     WrappingText deepNestedValueWrappingText = new WrappingText(deepNestedArray.getString(j), textWrappingWidth);
-                                    content.getChildren().add(deepNestedValueWrappingText);
+                                    addContentToView(deepNestedValueWrappingText, content);
+//                                    content.getChildren().add(deepNestedValueWrappingText);
                                 }
                             } else if (nestedValue instanceof JSONObject) {
                                 handleNestedJSONObject((JSONObject) nestedValue, content);
@@ -77,7 +81,8 @@ public class MedicationInfoPage {
                 handleNestedJSONObject((JSONObject) value, content);
             } else if (value instanceof String) {
                 WrappingText valueWrappingText = new WrappingText((String) value, textWrappingWidth);
-                content.getChildren().add(valueWrappingText);
+                addContentToView(valueWrappingText, content);
+//                content.getChildren().add(valueWrappingText);
             }
 
         }
@@ -94,30 +99,51 @@ public class MedicationInfoPage {
         return key.replace("_", " ").substring(0, 1).toUpperCase() + key.replace("_", " ").substring(1);
     }
 
-    private void handleNestedJSONObject(JSONObject jsonObject, VBox content) {
+    private void handleNestedJSONObject(JSONObject jsonObject, VBox pageContents) {
         for (String key : jsonObject.keySet()) {
             WrappingText nestedHeading = new WrappingText(capitalizeHeading(key), textWrappingWidth);
             nestedHeading.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
-            content.getChildren().add(nestedHeading);
+            addContentToView(nestedHeading, pageContents);
+//            pageContents.getChildren().add(nestedHeading);
 
             Object value = jsonObject.get(key);
             if (value instanceof String) {
                 WrappingText valueWrappingText = new WrappingText((String) value, textWrappingWidth);
-                content.getChildren().add(valueWrappingText);
+                addContentToView(valueWrappingText, pageContents);
+//                pageContents.getChildren().add(valueWrappingText);
             } else if (value instanceof JSONObject) {
-                handleNestedJSONObject((JSONObject) value, content);
+                handleNestedJSONObject((JSONObject) value, pageContents);
             } else if (value instanceof JSONArray) {
                 JSONArray array = (JSONArray) value;
                 for (int i = 0; i < array.length(); i++) {
                     if (array.get(i) instanceof String) {
                         WrappingText valueWrappingText = new WrappingText(array.getString(i), textWrappingWidth);
-                        content.getChildren().add(valueWrappingText);
+                        addContentToView(valueWrappingText, pageContents);
+//                        pageContents.getChildren().add(valueWrappingText);
                     } else if (array.get(i) instanceof JSONObject) {
-                        handleNestedJSONObject(array.getJSONObject(i), content);
+                        handleNestedJSONObject(array.getJSONObject(i), pageContents);
                     }
                 }
             }
         }
+    }
+
+    private void addContentToView(WrappingText text, VBox view) {
+
+        String plainText = text.getText();
+
+        if(isHtml(plainText)) {
+            WebView webView = new WebView();
+            WebEngine webEngine = webView.getEngine();
+            webEngine.loadContent(plainText);
+            content.getChildren().add(webView);
+        } else {
+            content.getChildren().add(text);
+        }
+    }
+
+    private boolean isHtml(String text) {
+        return text != null && text.trim().matches(".*<[^>]+>.*");
     }
 
 }
