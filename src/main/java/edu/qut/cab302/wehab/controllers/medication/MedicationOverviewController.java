@@ -321,6 +321,7 @@ public class MedicationOverviewController {
             }
         });
 
+        viewSummaryButton.setMinWidth(110);
         viewSummaryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -412,7 +413,9 @@ public class MedicationOverviewController {
             private final Region spacer = new Region();
 
             {
+                label.setWrapText(true);
                 hbox.setSpacing(10);
+                label.setMaxWidth(savedMedications.getWidth() * 0.85);
                 HBox.setHgrow(spacer, Priority.ALWAYS);
                 hbox.getChildren().addAll(label, spacer, deleteButton);
                 deleteButton.setOnAction(event -> {

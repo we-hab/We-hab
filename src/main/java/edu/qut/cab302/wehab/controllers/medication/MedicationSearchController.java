@@ -13,10 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.event.EventHandler;
@@ -109,7 +106,7 @@ public class MedicationSearchController {
         apiClient = new OpenFDAClient();
 
         resultsPane.setAlignment(Pos.TOP_LEFT); // Align items to the top left
-        resultsPane.setSpacing(50);
+        resultsPane.setSpacing(20);
         resultsPane.setPadding(new Insets(20, 20, 20, 20));
 
         resultsPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
@@ -135,7 +132,11 @@ public class MedicationSearchController {
 
             Medication[] results = apiClient.searchForMedications(searchField.getText());
 
-            resultMessage = new Label(apiClient.getResultsMessageForView());
+            if(resultMessage == null) {
+                resultMessage = new Label();
+            }
+
+            resultMessage.setText(apiClient.getResultsMessageForView());
             resultsPane.getChildren().add(resultMessage);
 
             if (results != null) {
@@ -160,17 +161,22 @@ public class MedicationSearchController {
         medicationListing.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         medicationListing.setPrefSize(1000, 200);
         medicationListing.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        medicationListing.setStyle("-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;");
 
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setPrefSize(1000, 200);
-        anchorPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_COMPUTED_SIZE);
-        anchorPane.setStyle("-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;");
+//        AnchorPane anchorPane = new AnchorPane();
+//        anchorPane.setPrefSize(medicationListing.getPrefWidth(), medicationListing.getPrefHeight());
+//        anchorPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_COMPUTED_SIZE);
+//        anchorPane.setStyle("-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;");
 
         Label lastUpdated = new Label("Last Updated: " + medication.getLastUpdated().toString());
 
         Label brandName = new Label(medication.getDisplayName());
+        brandName.setWrapText(true);
+        brandName.setMaxWidth(medicationListing.getPrefWidth());
 
         Label genericName = new Label("Generic Name: " + ((medication.hasBrandName()) ? medication.getGenericName() : null));
+        genericName.setWrapText(true);
+        genericName.setMaxWidth(Double.MAX_VALUE);
 
         String activeIngredients = "Active Ingredients: ";
 
@@ -202,17 +208,18 @@ public class MedicationSearchController {
         TextArea description = new TextArea(medication.getDescription());
         description.setLayoutX(14);
         description.setLayoutY(40);
-        description.setPrefSize(614, 65);
+        description.setPrefSize(800, 65);
+        description.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         description.setEditable(false);
         description.setWrapText(true);
 
-        ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/edu/qut/cab302/wehab/images/PanadolBox.jpg")));
-        icon.setFitWidth(158);
-        icon.setFitHeight(85);
-        icon.setLayoutX(658);
-        icon.setLayoutY(27);
-        icon.setPickOnBounds(true);
-        icon.setPreserveRatio(true);
+//        ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/edu/qut/cab302/wehab/images/PanadolBox.jpg")));
+//        icon.setFitWidth(158);
+//        icon.setFitHeight(85);
+//        icon.setLayoutX(658);
+//        icon.setLayoutY(27);
+//        icon.setPickOnBounds(true);
+//        icon.setPreserveRatio(true);
 
         Button viewButton = new Button("View");
         viewButton.setLayoutX(844);
@@ -232,13 +239,13 @@ public class MedicationSearchController {
         });
 
 
-        Button logDoseButton = new Button("Add to List");
-        logDoseButton.setLayoutX(844);
-        logDoseButton.setLayoutY(40);
-        logDoseButton.setPrefSize(81, 25);
-        logDoseButton.setStyle("-fx-background-color: #00FF7F; -fx-border-color: #000000;");
+        Button addToListButton = new Button("Add to List");
+        addToListButton.setLayoutX(844);
+        addToListButton.setLayoutY(40);
+        addToListButton.setPrefSize(81, 25);
+        addToListButton.setStyle("-fx-background-color: #00FF7F; -fx-border-color: #000000;");
 
-        logDoseButton.setOnAction(new EventHandler<ActionEvent>() {
+        addToListButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
@@ -261,27 +268,33 @@ public class MedicationSearchController {
         VBox medicationInfoBox = new VBox();
         medicationInfoBox.setPadding(new Insets((10)));
         medicationInfoBox.setSpacing(5);
-        medicationInfoBox.setLayoutX(20);
-        medicationInfoBox.setLayoutY(10);
+//        medicationInfoBox.setLayoutX(20);
+//        medicationInfoBox.setLayoutY(10);
+        medicationInfoBox.setMaxWidth(resultsPane.getWidth() * 0.75);
 
         VBox buttonsBox = new VBox();
         buttonsBox.setPadding(new Insets((10)));
-        buttonsBox.setSpacing(5);
-        buttonsBox.setLayoutX(20);
-        buttonsBox.setLayoutY(10);
+        buttonsBox.setSpacing(10);
+//        buttonsBox.setLayoutX(20);
+//        buttonsBox.setLayoutY(10);
+        buttonsBox.setMinWidth(120);
 
         // Creating containers for controls
         medicationInfoBox.getChildren().addAll(brandName, genericName, lastUpdated, medicationTypes, descriptionLabel, description);
-        buttonsBox.getChildren().addAll(viewButton, logDoseButton);
+        buttonsBox.getChildren().addAll(addToListButton, viewButton);
         buttonsBox.setAlignment(Pos.CENTER);
 
-        HBox hbox = new HBox(medicationInfoBox, icon, buttonsBox);
-        hbox.setSpacing(40);
-        hbox.setAlignment(Pos.CENTER_LEFT);
+//        HBox listingContents = new HBox(medicationInfoBox, icon, buttonsBox);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        HBox listingContents = new HBox(medicationInfoBox, spacer, buttonsBox);
+        listingContents.setSpacing(40);
 
-        anchorPane.getChildren().add(hbox);
 
-        medicationListing.getChildren().add(anchorPane);
+//        anchorPane.getChildren().add(listingContents);
+//        medicationListing.getChildren().add(anchorPane);
+
+        medicationListing.getChildren().add(listingContents);
 
         return medicationListing;
     }
