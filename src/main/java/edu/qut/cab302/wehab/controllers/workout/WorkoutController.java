@@ -199,6 +199,7 @@ public class WorkoutController {
      */
     private void updateMinutesPerDayChart() {
         // Set up
+        minutesPerDayChart.getData().clear();
         workoutTypeAxis.setCategories(workoutTypeComboBox.getItems());
         XYChart.Series<Number, String> workoutTypeData = new XYChart.Series<>();
 
