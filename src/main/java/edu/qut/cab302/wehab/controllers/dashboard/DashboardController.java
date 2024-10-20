@@ -35,7 +35,7 @@ public class DashboardController implements Initializable {
     private Label loggedInUserLabel;
     @FXML
     private RadioButton moodButton1, moodButton2, moodButton3, moodButton4, moodButton5,
-                        moodButton6, moodButton7, moodButton8, moodButton9, moodButton10;
+            moodButton6, moodButton7, moodButton8, moodButton9, moodButton10;
 
     private ToggleGroup moodToggleGroup; // Toggle group for mood rating buttons (So they can be greyed out all together)
 
