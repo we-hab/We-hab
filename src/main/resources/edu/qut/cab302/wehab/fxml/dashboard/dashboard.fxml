@@ -106,7 +106,6 @@
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="230.0">
                                        <children>
-<!--                                          Workout Target Selection Combo Box-->
                                           <Label styleClass="heading" text="Target Minutes">
                                              <HBox.margin>
                                                 <Insets right="5.0" />
@@ -118,19 +117,6 @@
                                           <Insets />
                                        </VBox.margin>
                                     </HBox>
-<!--                                    -->
-<!--                                    <LineChart>-->
-<!--                                       <xAxis>-->
-<!--                                          <CategoryAxis autoRanging="false" side="BOTTOM" />-->
-<!--                                       </xAxis>-->
-<!--                                       <yAxis>-->
-<!--                                          <NumberAxis autoRanging="false" prefHeight="97.0" prefWidth="28.0" side="LEFT" />-->
-<!--                                       </yAxis>-->
-<!--                                       <VBox.margin>-->
-<!--                                          <Insets top="5.0" />-->
-<!--                                       </VBox.margin>-->
-<!--                                    </LineChart>-->
-
                                     <BarChart fx:id="minutesPerDayChart" barGap="2" categoryGap="5" prefHeight="216.0" prefWidth="422.0" style="-fx-border-color: #000000; -fx-background-color: #FFFFFF;">                                    <xAxis>
                                        <NumberAxis label="Minutes" side="BOTTOM" />
                                     </xAxis>
@@ -142,10 +128,8 @@
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>
                                     </BarChart>
-<!--                                    -->
                                  </children>
                               </VBox>
-<!--                              -->
                            </children>
                            <HBox.margin>
                               <Insets />
