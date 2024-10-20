@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.paint.Color;
 import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 
@@ -111,6 +112,11 @@ public class DashboardController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        // Set the default value for the ComboBox
+        ObservableList<String> targetOptions = FXCollections.observableArrayList("30", "60", "90", "120", "120+"); // Populate ComboBox
+        targetComboBox.setItems(targetOptions); // Set ComboBox options
+        targetComboBox.setValue("30"); // Set ComboBox default
 
         // Retrieve the logged-in user for the session and load their mood data from the table moodRatings
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
@@ -227,6 +233,10 @@ public class DashboardController implements Initializable {
             if (remindersTable.getItems().isEmpty()) {
                 setDisableAllReminderButtons(true);
             }
+        });
+
+        targetComboBox.setOnAction(event -> {
+            updateMinutesPerDayChart(); // If the ComboBox changes, update the chart.
         });
 
     }
@@ -349,7 +359,15 @@ public class DashboardController implements Initializable {
         minutesPerDayChart.getData().clear();
         ObservableList<String> workoutTypes = FXCollections.observableArrayList("Walk", "Jog", "Run", "Yoga", "Cycling", "Other");
         workoutTypeAxis.setCategories(workoutTypes);
-        XYChart.Series<Number, String> workoutTypeData = new XYChart.Series<>();
+
+        String selectedTarget = targetComboBox.getValue(); // Retrieve ComboBox target value
+        int targetValue;
+
+        if(selectedTarget.equals("120+")){
+            targetValue = 120;
+        } else {
+            targetValue = Integer.parseInt(selectedTarget);
+        }
 
         // Add minutes by workout type
         Map<String, Integer> workoutMinutesByType = new HashMap<>();
@@ -359,15 +377,27 @@ public class DashboardController implements Initializable {
         }
 
         // Collect data - total minutes per workout type
+        XYChart.Series<Number, String> workoutTypeData = new XYChart.Series<>();
         for (Map.Entry<String, Integer> entry : workoutMinutesByType.entrySet()) {
             String workoutType = entry.getKey();
             Integer totalMinutes = entry.getValue();
 
             if (totalMinutes > 0) {
-                workoutTypeData.getData().add(new XYChart.Data<>(totalMinutes, workoutType));
+                // Create a datapoint for each node and test against the users target.
+                XYChart.Data<Number, String> dataPoint = new XYChart.Data<>(totalMinutes, workoutType);
+                dataPoint.nodeProperty().addListener((obs, oldNode, newNode) -> {
+
+                    if (newNode != null) {
+                        if (totalMinutes >= targetValue) {
+                            newNode.setStyle("-fx-bar-fill: green;");
+                        } else {
+                            newNode.setStyle("-fx-bar-fill: orange;");
+                        }
+                    }
+                });
+                workoutTypeData.getData().add(dataPoint);
             }
         }
-
         minutesPerDayChart.getData().add(workoutTypeData);
     }
 

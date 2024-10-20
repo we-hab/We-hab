@@ -107,7 +107,7 @@
                                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="230.0">
                                        <children>
 <!--                                          Workout Target Selection Combo Box-->
-                                          <Label styleClass="heading" text="Targets">
+                                          <Label styleClass="heading" text="Target Minutes">
                                              <HBox.margin>
                                                 <Insets right="5.0" />
                                              </HBox.margin>
