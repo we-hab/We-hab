@@ -121,7 +121,7 @@ public class WorkoutController {
     /**
      * This method loads workouts from the database on initialisation to update the UI.
      * */
-    private void loadWorkouts(String username) {
+    public void loadWorkouts(String username) {
         workoutList.clear();
         List<Workout> savedWorkouts = WorkoutReturnModel.getWorkouts(username);
         workoutList.addAll(savedWorkouts);
@@ -195,7 +195,6 @@ public class WorkoutController {
     /**
      * Method to update the Minutes per Day BarChart
      * Bar chart to be updated to change query to retrieve the minutes against the activity type.
-     * The logic should also be updated to include different labels for each excercise.
      */
     private void updateMinutesPerDayChart() {
         // Set up

@@ -1,5 +1,6 @@
 package edu.qut.cab302.wehab.controllers.dashboard;
 
+import edu.qut.cab302.wehab.controllers.workout.WorkoutController;
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.medication.MedicationReminder;
@@ -14,10 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 
@@ -57,6 +55,14 @@ public class DashboardController implements Initializable {
 
     private HashMap<String, String> userSavedMedications;
     private ArrayList<MedicationReminder> userSavedReminders;
+    @FXML
+    private BarChart<Number, String> minutesPerDayChart;
+    @FXML
+    private CategoryAxis workoutTypeAxis;
+    private ObservableList<Workout> workoutList = FXCollections.observableArrayList();
+    @FXML
+    private ComboBox<String> targetComboBox;
+    private WorkoutController workoutController;
     @FXML
     private Button reminderDoneButton;
 
@@ -114,6 +120,8 @@ public class DashboardController implements Initializable {
             String firstName = loggedInUser.getFirstName();
             loggedInUserLabel.setText(firstName); // Displays the user's first name in the top left of the UI.
             loadMoodData(loggedInUser.getUsername()); // Load the mood data for the user
+            loadWorkouts(loggedInUser.getUsername()); // Load workouts for the user
+
             try {
                 refreshRemindersWindow(); // Load the medication data for the user
             } catch (SQLException e) {
@@ -304,6 +312,22 @@ public class DashboardController implements Initializable {
         moodRatingSubmission.setDisable(false);
     }
 
+    /**
+     * This method loads workouts from the database on initialisation to update the UI.
+     * */
+    private void loadWorkouts(String username) {
+        workoutList.clear();
+        List<Workout> savedWorkouts = WorkoutReturnModel.getWorkouts(username);
+        workoutList.addAll(savedWorkouts);
+
+        // Checking async retrieval
+        if (workoutList.isEmpty()) {
+            System.out.println("No workouts found for user.");
+        } else {
+            updateMinutesPerDayChart();
+        }
+    }
+
     private void refreshRemindersWindow() throws SQLException {
         remindersTable.getItems().clear();
         userSavedReminders = MedicationDAO.getAllReminders();
@@ -315,4 +339,36 @@ public class DashboardController implements Initializable {
     public MedicationReminder getSelectedReminder() {
         return remindersTable.getSelectionModel().getSelectedItem();
     }
+
+    /**
+     * Method to update the Minutes per Day BarChart
+     * Bar chart to be updated to change query to retrieve the minutes against the activity type.
+     */
+    private void updateMinutesPerDayChart() {
+        // Set up
+        minutesPerDayChart.getData().clear();
+        ObservableList<String> workoutTypes = FXCollections.observableArrayList("Walk", "Jog", "Run", "Yoga", "Cycling", "Other");
+        workoutTypeAxis.setCategories(workoutTypes);
+        XYChart.Series<Number, String> workoutTypeData = new XYChart.Series<>();
+
+        // Add minutes by workout type
+        Map<String, Integer> workoutMinutesByType = new HashMap<>();
+        for (Workout workout : workoutList) {
+            String workoutType = workout.getWorkoutType();
+            workoutMinutesByType.put(workoutType, workoutMinutesByType.getOrDefault(workoutType, 0) + workout.getDuration());
+        }
+
+        // Collect data - total minutes per workout type
+        for (Map.Entry<String, Integer> entry : workoutMinutesByType.entrySet()) {
+            String workoutType = entry.getKey();
+            Integer totalMinutes = entry.getValue();
+
+            if (totalMinutes > 0) {
+                workoutTypeData.getData().add(new XYChart.Data<>(totalMinutes, workoutType));
+            }
+        }
+
+        minutesPerDayChart.getData().add(workoutTypeData);
+    }
+
 }
