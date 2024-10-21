@@ -15,14 +15,6 @@
    <children>
       <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
          <children>
-            <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/user.png" />
-               </image>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </ImageView>
             <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
                <children>
                   <Label text="Welcome!" />
@@ -64,17 +56,6 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label text="Profile Picture" />
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <ImageView fitHeight="79.0" fitWidth="109.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/user.png" />
-                           </image>
-                        </ImageView>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" styleClass="primary-button" text="Change" />
-                     </children>
-                  </HBox>
                   <Label text="Appearance" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
