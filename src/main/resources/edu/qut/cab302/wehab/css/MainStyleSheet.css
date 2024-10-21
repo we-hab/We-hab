@@ -263,6 +263,12 @@
  -fx-font-size: 16px;
 }
 
+/* Dashboard Page*/
+
+    .mood_vbox {
+        -fx-spacing: 20px;
+    }
+
 /*Settings Page*/
 
     .settings-toggle-button {
