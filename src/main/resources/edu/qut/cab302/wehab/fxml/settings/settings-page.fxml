@@ -13,17 +13,9 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.controllers.settings.SettingsController">
    <children>
-      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
+      <HBox alignment="CENTER" prefHeight="90.0" styleClass="main-header">
          <children>
-            <ImageView fitHeight="50.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/user.png" />
-               </image>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </ImageView>
-            <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
+            <VBox alignment="CENTER_LEFT" HBox.hgrow="NEVER">
                <children>
                   <Label text="Welcome!" />
                   <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
@@ -64,17 +56,6 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label text="Profile Picture" />
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <ImageView fitHeight="79.0" fitWidth="109.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/user.png" />
-                           </image>
-                        </ImageView>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" styleClass="primary-button" text="Change" />
-                     </children>
-                  </HBox>
                   <Label text="Appearance" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -94,13 +75,13 @@
                   <Label text="To update your password, enter your old password and a new password" />
                   <VBox prefHeight="87.0" prefWidth="1083.0" styleClass="button-container">
                      <children>
-                        <HBox prefHeight="33.0" prefWidth="1083.0">
+                        <HBox prefHeight="33.0" prefWidth="1083.0" styleClass="password_hbox">
                            <children>
                               <Label text="Old" />
                               <PasswordField fx:id="oldPassword" styleClass="login-ui-entry" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="33.0" prefWidth="1083.0">
+                        <HBox prefHeight="33.0" prefWidth="1083.0" styleClass="password_hbox">
                            <children>
                               <Label text="New" />
                               <PasswordField fx:id="newPassword" styleClass="login-ui-entry" />

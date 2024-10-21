@@ -110,11 +110,6 @@
   -fx-alignment: CENTER;
 }
 
-.main-header VBox {
-  -fx-max-width: 100px;
-  -fx-wrap-text: true;
-}
-
 .main-header Button {
   -fx-background-color: #ffffff;
   -fx-border-color: #000000;
@@ -168,14 +163,129 @@
 }
 
 .combo-box .label {
-    -fx-text-fill: darkblue;            /* Text color of the selected item */
-    -fx-font-size: 6px;                /* Font size of the selected item */
+    -fx-text-fill: darkblue;
+    -fx-font-size: 6px;
 }
 
 .combo-box .arrow {
-    -fx-background-color: #000000;     /* Background color of the arrow button */
-    -fx-padding: 5px;                   /* Padding inside the arrow button */
+    -fx-background-color: #000000;
+    -fx-padding: 5px;
 }
+
+/* table-view */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-radius: 5px;
+    -fx-padding: 1px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #ffffff;
+
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #000000;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-size: 40px;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 5px;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #000000;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-size: 24px;
+}
+
+.table-row-cell:filled:selected {
+    -fx-font-weight: bold;
+}
+
+.table-view .arrow {
+    -fx-background-color: #000000;
+    -fx-padding: 5px;
+}
+
+/* END table-view */
+
+/*Date Picker */
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-radius: 5px;
+    -fx-padding: 1px;
+}
+
+.date-picker .text-field {
+    -fx-text-fill: #000000;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #ffffff;
+    -fx-padding: 5px;
+}
+
+.date-picker .calendar-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-radius: 5px;
+}
+
+.date-picker .day-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-text-fill: #000000;
+}
+
+.date-picker .day-cell:selected {
+    -fx-background-color: lightgray;
+}
+/* END Date Picker */
+
+/* Spinner */
+.spinner {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-radius: 5px;
+}
+
+.spinner .text-field {
+    -fx-text-fill: #000000;
+}
+
+.spinner .increment-arrow-button, .spinner .decrement-arrow-button {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+}
+
+.spinner .increment-arrow-button:pressed, .spinner .decrement-arrow-button:pressed {
+    -fx-background-color: lightgray;
+    -fx-border-color: #000000;
+}
+
+.spinner .increment-arrow-button .increment-arrow {
+  /* The default Modena styling */
+  -fx-background-color: #000000;
+  -fx-background-insets: 0 0 -1 0, 0;
+  -fx-padding: 0.166667em 0.333333em 0.166667em 0.333333em;  /* 2 4 2 4 */
+  -fx-shape: "M 0 4 h 7 l -3.5 -4 z";
+}
+.spinner .decrement-arrow-button .decrement-arrow {
+  /* The default Modena styling */
+  -fx-background-color: #000000;
+  -fx-background-insets: 0 0 -1 0, 0;
+  -fx-padding: 0.166667em 0.333333em 0.166667em 0.333333em; /* 2 4 2 4 */
+  -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}
+
+/* END Spinner */
 
 .radio-hbox {
     -fx-spacing: 10px;
@@ -263,6 +373,12 @@
  -fx-font-size: 24px;
 }
 
+/* Dashboard Page*/
+
+    .mood_vbox {
+        -fx-spacing: 20px;
+    }
+
 /*Settings Page*/
 
     .settings-toggle-button {
@@ -276,6 +392,16 @@
     .settings-toggle-button: selected {
         -fx-background-color: #A5C894;
     }
+
+    .password_hbox {
+        -fx-pref-width: 20px;
+        -fx-spacing: 10px;
+    }
+
+    .password_hbox > .label {
+            -fx-pref-width: 50px;
+
+        }
 
     .delete-button {
         -fx-background-color: #F5F5DC;
