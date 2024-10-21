@@ -3,7 +3,6 @@ package edu.qut.cab302.wehab.controllers.medication;
 import edu.qut.cab302.wehab.main.MainApplication;
 import edu.qut.cab302.wehab.controllers.dashboard.ButtonController;
 import edu.qut.cab302.wehab.database.Session;
-import edu.qut.cab302.wehab.models.medication.MedicationInfoPage;
 import edu.qut.cab302.wehab.models.medication.MedicationReminder;
 import edu.qut.cab302.wehab.models.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
@@ -26,6 +25,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -41,73 +41,82 @@ import static edu.qut.cab302.wehab.models.dao.MedicationDAO.createMedicationTabl
 import static edu.qut.cab302.wehab.util.EncryptionUtility.encrypt;
 
 /**
- * Controller class for the medication overview page.
- * Manages saved medications and medication reminders, along with user interaction for adding, editing, or deleting reminders.
+ * Controller for the medication overview page in the application.
+ * It manages the medication reminders, interactions with the database,
+ * and handles UI events related to saved medications and reminders.
  */
 public class MedicationOverviewController {
 
     @FXML
-    private Label selectedMedicationLabel;  // Label displaying selected medication name
-
-    private String selectedReminder;  // Stores the selected reminder ID
+    private Label selectedMedicationLabel;
 
     @FXML
-    private Button createReminderButton;  // Button to create a new medication reminder
+    private Button createReminderButton;
 
     @FXML
-    private Button viewSummaryButton;  // Button to view medication summary
+    private Button viewSummaryButton;
 
     @FXML
-    private Button addMedicationButton;  // Button to add new medication
+    private Button addMedicationButton;
 
     @FXML
-    private Button dashboardButton, workoutButton, settingsButton, signOutButton;  // Navigation buttons
+    private Button dashboardButton;
+    @FXML
+    private Button workoutButton;
+    @FXML
+    private Button settingsButton;
+    @FXML
+    private Button signOutButton;
+    @FXML
+    private Label loggedInUserLabel;
 
     @FXML
-    private Label loggedInUserLabel;  // Label displaying logged-in user's name
+    private ListView savedMedicationsListView;
 
     @FXML
-    private ListView savedMedications;  // ListView displaying saved medications
+    private TextField dosageTextField;
 
     @FXML
-    private TextField dosageTextField;  // TextField for entering dosage amount
+    private DatePicker datePicker;
 
     @FXML
-    private DatePicker datePicker;  // DatePicker for selecting the date of the reminder
+    private ComboBox unitComboBox;
 
     @FXML
-    private ComboBox unitComboBox;  // ComboBox for selecting the dosage unit
+    private Spinner<LocalTime> timeSpinner;
 
     @FXML
-    private Spinner<LocalTime> timeSpinner;  // Spinner for selecting the reminder time
-
-    @FXML
-    private TableView<MedicationReminder> remindersTable = new TableView<>();  // Table displaying medication reminders
+    private TableView<MedicationReminder> remindersTable = new TableView<>();
     private ObservableList<MedicationReminder> medicationReminders = FXCollections.observableArrayList();
 
-    private HashMap<String, String> userSavedMedications;  // Stores the user's saved medications
-    private ArrayList<MedicationReminder> userSavedReminders;  // List storing medication reminders
+    private HashMap<String, String> userSavedMedications;
+    private ArrayList<MedicationReminder> userSavedReminders;
 
     @FXML
-    private Button reminderDoneButton, reminderMissedButton, editReminderButton, deleteReminderButton;  // Buttons for reminder actions
+    private Button completeReminderButton;
+    @FXML
+    private Button skipReminderButton;
+    @FXML
+    private Button editReminderButton;
+    @FXML
+    private Button deleteReminderButton;
 
-    private SpinnerValueFactory<LocalTime> timeValueFactory;  // Value factory for the time spinner
+    private SpinnerValueFactory<LocalTime> timeValueFactory;
 
     /**
-     * Returns the SpinnerValueFactory used for the time spinner.
+     * Gets the SpinnerValueFactory for the time spinner.
      *
-     * @return SpinnerValueFactory for LocalTime
+     * @return SpinnerValueFactory controlling time values in the time spinner.
      */
     public SpinnerValueFactory<LocalTime> getTimeValueFactory() { return timeValueFactory; }
 
-    // Singleton pattern for MedicationOverviewController
     private MedicationOverviewController() {}
     private static MedicationOverviewController instance;
 
     /**
-     * Returns the singleton instance of MedicationOverviewController.
+     * Singleton pattern to ensure a single instance of MedicationOverviewController.
      *
-     * @return the singleton instance of MedicationOverviewController
+     * @return instance of MedicationOverviewController.
      */
     public static MedicationOverviewController getInstance() {
         if (instance == null) {
@@ -117,7 +126,8 @@ public class MedicationOverviewController {
     }
 
     /**
-     * Resets the fields for creating a new medication reminder.
+     * Resets the UI entry fields for creating reminders.
+     * Clears text fields and resets values to default.
      */
     public void resetReminderFields() {
         dosageTextField.clear();
@@ -127,19 +137,20 @@ public class MedicationOverviewController {
     }
 
     /**
-     * Refreshes the list of saved medications in the ListView.
+     * Reloads the user's saved medications and refreshes the ListView in which they are displayed.
      */
-    private void refreshResultsWindow() {
-        savedMedications.getItems().clear();
-        for (String medicationName : userSavedMedications.keySet()) {
-            savedMedications.getItems().add(medicationName);
+    private void refreshSavedMedicationsWindow() {
+        savedMedicationsListView.getItems().clear();
+        for(String medicationName : userSavedMedications.keySet()) {
+            savedMedicationsListView.getItems().add(medicationName);
         }
     }
 
     /**
-     * Refreshes the reminders table with the current reminders.
+     * Refreshes the reminders window by fetching all medication reminders from the database
+     * and repopulating the TableView.
      *
-     * @throws SQLException if an error occurs while fetching reminders from the database
+     * @throws SQLException if there is an error accessing the database.
      */
     private void refreshRemindersWindow() throws SQLException {
         remindersTable.getItems().clear();
@@ -148,19 +159,20 @@ public class MedicationOverviewController {
         medicationReminders = FXCollections.observableArrayList(userSavedReminders);
         remindersTable.setItems(medicationReminders);
 
-        // Highlight overdue reminders in red
+        // Customises the TableView rows to indicate overdue reminders by colouring them red.
         remindersTable.setRowFactory(row -> new TableRow<MedicationReminder>() {
 
             @Override
             protected void updateItem(MedicationReminder reminder, boolean empty) {
                 super.updateItem(reminder, empty);
 
-                if (empty || reminder == null) {
+                if(empty || reminder == null) {
                     setStyle("");
                 } else {
                     LocalDateTime reminderDue = LocalDateTime.of(reminder.getDosageDate(), reminder.getDosageTime());
 
-                    if (reminderDue.isBefore(LocalDateTime.now())) {
+                    // Apply red background for overdue reminders
+                    if(reminderDue.isBefore(LocalDateTime.now())) {
                         setStyle("-fx-background-color: rgba(255,0,0,0.68); ");
                     }
                 }
@@ -169,10 +181,11 @@ public class MedicationOverviewController {
     }
 
     /**
-     * Shows a confirmation dialog with the given prompt message.
+     * Displays a confirmation dialog with the given prompt and returns whether
+     * the user confirmed the action.
      *
-     * @param prompt the message to display in the confirmation dialog
-     * @return true if the user confirms, false otherwise
+     * @param prompt Message to display in the confirmation dialog.
+     * @return true if user confirmed the action, false otherwise.
      */
     private boolean showConfirmationDialog(String prompt) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -184,85 +197,102 @@ public class MedicationOverviewController {
     }
 
     /**
-     * Gets the currently selected medication reminder.
+     * Retrieves the currently selected reminder from the TableView.
      *
-     * @return the selected MedicationReminder object
+     * @return the selected MedicationReminder object.
      */
     public MedicationReminder getSelectedReminder() {
         return remindersTable.getSelectionModel().getSelectedItem();
     }
 
     /**
-     * Disables or enables all buttons related to reminder actions.
+     * Disables or enables all reminder-related buttons (done, missed, edit, delete).
      *
-     * @param disable true to disable all buttons, false to enable them
+     * @param disable true to disable buttons, false to enable them.
      */
     private void setDisableAllReminderButtons(boolean disable) {
-        reminderDoneButton.setDisable(disable);
-        reminderMissedButton.setDisable(disable);
+        completeReminderButton.setDisable(disable);
+        skipReminderButton.setDisable(disable);
         editReminderButton.setDisable(disable);
         deleteReminderButton.setDisable(disable);
     }
 
+
     /**
-     * Initializes the controller. Sets up event handlers, loads the medication data, and configures the reminder table and buttons.
+     * Initialises the controller, sets up event handlers, populates UI components,
+     * and handles initial loading of medication reminders.
      *
-     * @throws SQLException if an error occurs while accessing the database
+     * @throws SQLException if there is an error accessing the database.
      */
     @FXML
     public void initialize() throws SQLException {
 
+        // Sets the column resize policy for the reminders table to constrained resize policy
         remindersTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Handle 'Mark as taken' button action
-        reminderDoneButton.setOnAction(new EventHandler<ActionEvent>() {
+        // Handles marking a medication reminder as done
+        completeReminderButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 boolean proceed = showConfirmationDialog("Mark medication as taken?");
-                if (proceed) {
+
+                if(proceed) {
+
                     MedicationReminder reminder = remindersTable.getSelectionModel().getSelectedItem();
                     String reminderIdToSearch = reminder.getReminderID();
+
                     try {
                         System.out.println("Marking medication: " + reminderIdToSearch + " as taken.");
                         MedicationDAO.markMedicationAsTaken(reminderIdToSearch);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
+
+                    // Refresh the table to reflect changes
                     try {
                         refreshRemindersWindow();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 }
+
             }
         });
 
-        // Handle 'Mark as missed' button action
-        reminderMissedButton.setOnAction(new EventHandler<ActionEvent>() {
+        // Handles marking a medication reminder as missed
+        skipReminderButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 boolean proceed = showConfirmationDialog("Mark medication as missed?");
-                if (proceed) {
+
+                if(proceed) {
+
                     MedicationReminder reminder = remindersTable.getSelectionModel().getSelectedItem();
                     String reminderIdToSearch = reminder.getReminderID();
+
                     try {
                         System.out.println("Marking medication: " + reminderIdToSearch + " as missed.");
                         MedicationDAO.markMedicationAsMissed(reminderIdToSearch);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
+
+                    // Refresh the table to reflect changes
                     try {
                         refreshRemindersWindow();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 }
+
             }
         });
 
-        // Handle 'Delete reminder' button action
+        // Handles deleting a medication reminder
         deleteReminderButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 boolean proceed = showConfirmationDialog("Delete reminder?");
-                if (proceed) {
+
+                if(proceed) {
+
                     MedicationReminder reminder = remindersTable.getSelectionModel().getSelectedItem();
                     String reminderIdToSearch;
                     try {
@@ -270,28 +300,33 @@ public class MedicationOverviewController {
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
+
                     try {
                         System.out.println("Deleting reminder " + reminderIdToSearch);
                         MedicationDAO.deleteMedicationReminder(reminderIdToSearch);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
+
+                    // Refresh the table to reflect changes
                     try {
                         refreshRemindersWindow();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 }
+
             }
         });
 
-        // Handle 'Edit reminder' button action
+        // Loads a new FXML scene in a modal window to edit a reminder
         editReminderButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 Stage stage = new Stage();
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setTitle("Edit Reminder");
                 stage.setResizable(false);
+
                 FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/edu/qut/cab302/wehab/fxml/medication/edit-reminder.fxml"));
                 Parent root;
                 try {
@@ -299,29 +334,37 @@ public class MedicationOverviewController {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.showAndWait();
+
+                // Refresh the table to reflect changes
                 try {
                     refreshRemindersWindow();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+
             }
         });
 
-        // Initialize navigation buttons
+        // Initialise button controls for dashboard navigation
         ButtonController.initialiseButtons(dashboardButton, workoutButton, null, settingsButton, signOutButton);
 
-        // Load the logged-in user's name
+        // Retrieve and display the logged-in user details
         UserAccount loggedInUser = Session.getInstance().getLoggedInUser();
-        if (loggedInUser != null) {
-            loggedInUserLabel.setText(loggedInUser.getFirstName());
-        } else {
+
+        if (loggedInUser != null)
+        {
+            String fullName = loggedInUser.getFirstName();
+            loggedInUserLabel.setText(fullName);
+        } else
+        {
             loggedInUserLabel.setText("Error");
         }
 
-        // Set up medication table and fetch saved medications
+        // Attempt to access the medication table in the database
         try {
             System.out.print("Accessing medications table...");
             createMedicationTables();
@@ -330,9 +373,10 @@ public class MedicationOverviewController {
             System.out.println("failed.\n" + e.getMessage());
         }
 
+        // Refresh the reminders window
         refreshRemindersWindow();
 
-        // Handle 'Add Medication' button action
+        // Set action for adding medication, which switches to another scene
         addMedicationButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -345,14 +389,18 @@ public class MedicationOverviewController {
             }
         });
 
-        // Handle 'View Summary' button action
+        viewSummaryButton.setMinWidth(112);
+
+        // Set action for viewing medication summary
         viewSummaryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String medicationIdToSearch = userSavedMedications.get(selectedMedicationLabel.getText());
+
                 System.out.println("Loading view summary page with medication ID: " + medicationIdToSearch);
-                MedicationInfoPage medicationInfoPage = new MedicationInfoPage(medicationIdToSearch);
-                Scene scene = medicationInfoPage.getMedicationInfoPage();
+                MedicationInfoPageController medicationInfoPageController = new MedicationInfoPageController(medicationIdToSearch);
+                Scene scene = medicationInfoPageController.getMedicationInfoPage();
+
                 Stage medicationOverviewModal = new Stage();
                 medicationOverviewModal.initModality(Modality.APPLICATION_MODAL);
                 medicationOverviewModal.setResizable(false);
@@ -361,16 +409,23 @@ public class MedicationOverviewController {
             }
         });
 
-        // Setup reminder creation form
+        Stage notificationPopupModal = new Stage();
+        notificationPopupModal.initModality(Modality.APPLICATION_MODAL);
+        notificationPopupModal.setResizable(false);
+
+        // Set action for creating a new reminder
         createReminderButton.setOnAction(new EventHandler<ActionEvent>() {
+
             public void handle(ActionEvent event) {
                 Label statusMessage;
+
                 String medicationId = null;
                 String amount = null;
                 String unit = null;
                 String date = null;
                 String time = null;
 
+                // Check if all fields are filled before creating the reminder
                 try {
                     medicationId = userSavedMedications.get(selectedMedicationLabel.getText());
                     amount = dosageTextField.getText();
@@ -384,18 +439,23 @@ public class MedicationOverviewController {
                     alert.showAndWait();
                 }
 
+                // If all fields are valid, save the reminder to the database
                 if (!medicationId.isEmpty() && !amount.isEmpty() && !unit.isEmpty() && !date.isEmpty() && !time.isEmpty()) {
                     try {
                         MedicationDAO.addReminder(medicationId, amount, unit, date, time);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
+
+                    // Refresh the reminders table
                     try {
                         refreshRemindersWindow();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
+
                     resetReminderFields();
+
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Alert");
                     alert.setContentText("Reminder created!");
@@ -404,14 +464,15 @@ public class MedicationOverviewController {
             }
         });
 
-        // Validate dosage input to accept only numeric values
+
+        // Add input validation for the dosageTextField (accepts only numeric values up to two decimal places)
         dosageTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
                 dosageTextField.setText(oldValue);
             }
         });
 
-        // Fetch saved medications from the database
+        // Load saved medications for the logged-in user
         try {
             userSavedMedications = MedicationDAO.getUserSavedMedicationNames();
             System.out.println("Fetched Medications: " + userSavedMedications.keySet());
@@ -419,35 +480,45 @@ public class MedicationOverviewController {
             throw new RuntimeException(e);
         }
 
-        refreshResultsWindow();
+        // Refresh the medication results window
+        refreshSavedMedicationsWindow();
 
-        // Setup medication list with delete option
-        savedMedications.setCellFactory(lv -> new ListCell<String>() {
+        // Configure saved medications ListView
+        savedMedicationsListView.setCellFactory(lv -> new ListCell<String>() {
             private final HBox hbox = new HBox();
             private final Label label = new Label();
             private final Button deleteButton = new Button("x");
             private final Region spacer = new Region();
 
             {
+                label.setWrapText(true);
                 hbox.setSpacing(10);
+                label.setMaxWidth(savedMedicationsListView.getWidth() * 0.85);
                 HBox.setHgrow(spacer, Priority.ALWAYS);
                 hbox.getChildren().addAll(label, spacer, deleteButton);
+
                 deleteButton.setOnAction(event -> {
                     String medicationToRemove = getItem();
                     try {
+
+                        // Removes medication from the database and updates the UI
                         if (medicationToRemove != null) {
                             System.out.print("Removing medication: " + medicationToRemove + "...");
                             MedicationDAO.deleteUserSavedMedication(encrypt(userSavedMedications.get(medicationToRemove)));
                             userSavedMedications.remove(medicationToRemove);
                             System.out.println("done.");
-                            refreshResultsWindow();
+
+                            refreshSavedMedicationsWindow();
+                            savedMedicationsListView.getSelectionModel().select(0);
                         }
-                    } catch (SQLException | InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
-                             NoSuchAlgorithmException | BadPaddingException | InvalidKeyException e) {
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (GeneralSecurityException e) {
                         throw new RuntimeException(e);
                     }
                 });
             }
+
 
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -462,15 +533,16 @@ public class MedicationOverviewController {
             }
         });
 
-        if (!savedMedications.getItems().isEmpty()) {
-            savedMedications.getSelectionModel().select(0);
-            selectedMedicationLabel.setText(savedMedications.getSelectionModel().getSelectedItem().toString());
+        // Set the initial selected medication label
+        if (!savedMedicationsListView.getItems().isEmpty()) {
+            savedMedicationsListView.getSelectionModel().select(0);
+            selectedMedicationLabel.setText(savedMedicationsListView.getSelectionModel().getSelectedItem().toString());
         } else {
             selectedMedicationLabel.setText("No Saved Medications");
         }
 
-        // Setup event listeners for selecting medications
-        savedMedications.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        // Update selected medication label when a new medication is selected from the ListView
+        savedMedicationsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 selectedMedicationLabel.setText(newValue.toString());
             } else {
@@ -478,7 +550,7 @@ public class MedicationOverviewController {
             }
         });
 
-        // Event listener to enable/disable reminder action buttons based on table focus and selection
+        // Disable reminder buttons when no reminder is selected
         remindersTable.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue && remindersTable.getSelectionModel().getSelectedItem() == null) {
                 setDisableAllReminderButtons(true);
@@ -487,6 +559,7 @@ public class MedicationOverviewController {
             }
         });
 
+        // Update button states when a new reminder is selected
         remindersTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 setDisableAllReminderButtons(false);
@@ -495,18 +568,21 @@ public class MedicationOverviewController {
             }
         });
 
+        // Disable all reminder buttons if no reminders are present
         remindersTable.getItems().addListener((ListChangeListener<MedicationReminder>) change -> {
             if (remindersTable.getItems().isEmpty()) {
                 setDisableAllReminderButtons(true);
             }
         });
 
-        // Setup the time spinner
+        // Set up the time spinner with 15-minute step increments
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
         LocalTime initialValue = LocalTime.of(12, 0);
         LocalTime minTime = LocalTime.of(0, 0);
         LocalTime maxTime = LocalTime.of(23, 59);
 
+        // SpinnerValueFactory for managing time input
         timeValueFactory = new SpinnerValueFactory<>() {
             {
                 setValue(initialValue);
@@ -526,6 +602,8 @@ public class MedicationOverviewController {
         };
 
         timeSpinner.setValueFactory(timeValueFactory);
+
+        // Allow the time spinner to accept custom time input
         timeSpinner.setEditable(true);
         timeSpinner.getEditor().setTextFormatter(new TextFormatter<>(c -> {
             try {
