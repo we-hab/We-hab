@@ -22,10 +22,10 @@
    <children>
       <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
          <children>
-            <VBox alignment="CENTER" prefHeight="87.0" prefWidth="265.0" HBox.hgrow="SOMETIMES">
+            <VBox alignment="CENTER_LEFT" HBox.hgrow="NEVER">
                <children>
-                  <Label prefHeight="20.0" prefWidth="336.0" text="Welcome!" />
-                  <Label fx:id="loggedInUserLabel" prefHeight="20.0" prefWidth="301.0" text="Firstname" wrapText="true" />
+                  <Label text="Welcome!" />
+                  <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
                </children>
             </VBox>
             <ImageView fitHeight="65.0" fitWidth="912.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="SOMETIMES">

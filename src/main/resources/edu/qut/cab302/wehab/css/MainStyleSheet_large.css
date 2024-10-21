@@ -109,10 +109,6 @@
   -fx-alignment: CENTER;
 }
 
-.main-header VBox {
-  -fx-max-width: 100px;
-  -fx-wrap-text: true;
-}
 
 .main-header Button {
   -fx-background-color: #ffffff;
@@ -274,6 +270,16 @@
     .settings-toggle-button: selected {
         -fx-background-color: #A5C894;
     }
+
+    .password_hbox {
+        -fx-pref-width: 20px;
+        -fx-spacing: 10px;
+    }
+
+    .password_hbox > .label {
+            -fx-pref-width: 50px;
+
+        }
 
     .delete-button {
         -fx-background-color: #F5F5DC;

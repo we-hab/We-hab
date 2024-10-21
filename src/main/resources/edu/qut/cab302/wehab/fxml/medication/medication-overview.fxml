@@ -29,7 +29,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
          <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="61.0" HBox.hgrow="SOMETIMES">
+            <VBox alignment="CENTER_LEFT" HBox.hgrow="NEVER">
                <children>
                   <Label text="Welcome!" />
                   <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
