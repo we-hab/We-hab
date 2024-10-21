@@ -88,8 +88,8 @@
                                           </TableColumn>
                                        </columns>
                                     </TableView>
-                                    <HBox spacing="10">
-                                       <Button fx:id="reminderDoneButton" disable="true" text="Complete" />
+                                    <HBox spacing="10" styleClass="button-container">
+                                       <Button fx:id="reminderDoneButton" disable="true" styleClass="primary-button" text="Complete" />
                                     </HBox>
                                  </children>
                                  <VBox.margin>
