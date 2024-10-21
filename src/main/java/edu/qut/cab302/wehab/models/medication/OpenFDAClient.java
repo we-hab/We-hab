@@ -45,9 +45,7 @@ public class OpenFDAClient {
             String jsonResponse = apiService.queryAPI(query);
             apiResultsMessage = apiService.getResultsMessage();
 
-            if(apiResultsMessage != null) {
-                resultsMessageForView = apiResultsMessage;
-            }
+            resultsMessageForView = apiResultsMessage;
 
             // Parse the JSON response into Medication objects
             Medication[] searchResults = medicationParser.parseMedications(jsonResponse);

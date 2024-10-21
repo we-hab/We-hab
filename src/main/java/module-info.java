@@ -10,6 +10,7 @@ module edu.qut.cab302.wehab {
     requires jdk.compiler;
     requires java.xml.crypto;
     requires java.xml;
+    requires javafx.web;
 
     exports edu.qut.cab302.wehab.models.workout;
     opens edu.qut.cab302.wehab.models.workout to javafx.fxml;
