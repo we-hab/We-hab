@@ -148,7 +148,7 @@ public class DashboardController implements Initializable {
                     // Retrieve the data for the PDF Report
                     List<moodRating> moodRatings = moodRating.getLast7Days(loggedInUser.getUsername());
                     List<Workout> workouts = WorkoutReturnModel.getWorkouts(loggedInUser.getUsername());
-                    List<MedicationReminder> medications = MedicationDAO.getDailyReminders();
+                    List<MedicationReminder> medications = MedicationDAO.getReminderLog(LocalDate.now(), LocalDate.now());
                     TreeMap<LocalDate, Integer> monthlyMinutes = WorkoutReturnModel.getMonthlyMinutes(loggedInUser.getUsername());
 
                     // Format today's date for the file name in Australian date format

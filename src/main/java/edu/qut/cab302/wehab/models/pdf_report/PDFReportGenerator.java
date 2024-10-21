@@ -23,14 +23,14 @@ import java.util.TreeMap;
 public class PDFReportGenerator
 {
     /**
-     * Generates a PDF Report that includes mood ratings, completed workouts, medication reminders and monthly workout minutes.
+     * Generates a PDF Report that includes mood ratings, completed workouts, medication medicationReminders and monthly workout minutes.
      * @param moodRatings The list of mood ratings within the last 7 days in the report.
      * @param workoutsCompleted The list of completed workouts in the month.
-     * @param medications The list of prescribed medications.
+     * @param medicationReminders The list of prescribed medicationReminders.
      * @param monthlyMinutes The total of workout minutes by date for the entire month.
      * @param filePath The file path where the PDF will be saved.
      */
-    public static void generateReport(List<moodRating> moodRatings, List<Workout> workoutsCompleted, List<MedicationReminder> medications, TreeMap<LocalDate, Integer> monthlyMinutes, String filePath)
+    public static void generateReport(List<moodRating> moodRatings, List<Workout> workoutsCompleted, List<MedicationReminder> medicationReminders, TreeMap<LocalDate, Integer> monthlyMinutes, String filePath)
     {
         try
         {
@@ -115,25 +115,33 @@ public class PDFReportGenerator
             document.add(new Paragraph("\n")); // Adds a new line in between the tables, so it looks nice.
 
             //*** Medication Reminders Section ***\\
-            Paragraph remindersTitle = new Paragraph("Medication Reminders")
+            Paragraph remindersTitle = new Paragraph("Medication Log")
                     .setBold()
                     .setFontSize(14);
             document.add(remindersTitle);
 
-            // Create a table with 3 columns
-            Table remindersTable = new Table(3); // Adds three columns to the table
+            float[] columnWidths = {14f, 12f, 50f, 12f, 12f};
+
+            // Create a table with 5 columns
+            Table remindersTable = new Table(UnitValue.createPercentArray(columnWidths)); // Adds five columns to the table
             remindersTable.setWidth(UnitValue.createPercentValue(100)); // Sets the table width to maximum (left side to right side of the entire page)
+            remindersTable.addCell("Date").setBold(); // Column header: Date
+            remindersTable.addCell("Time").setBold(); // Column header: Time
             remindersTable.addCell("Medication").setBold(); // Column header: Medication
-            remindersTable.addCell("When to take").setBold(); // Column header: When to take
-            remindersTable.addCell("How many tablets").setBold(); // Column header: How many tablets
+            remindersTable.addCell("Dosage").setBold(); // Column header: Dosage
+            remindersTable.addCell("Status").setBold(); // Column header: Status
+
 
             // Populate the table
-            for (MedicationReminder medication : medications)
+            for (MedicationReminder reminder : medicationReminders)
             {
-                remindersTable.addCell(medication.getDisplayName()); // Adds information into the 'Medication' cell
-                remindersTable.addCell(medication.getDosageTime().toString()); // Adds information into the 'When to take' cell
-                remindersTable.addCell(medication.getDosageAmount() + " " + medication.getDosageUnit()); // Adds information into the 'How many tablets' cell
+                remindersTable.addCell(reminder.getDosageDate().toString());
+                remindersTable.addCell(reminder.getDosageTime().toString());
+                remindersTable.addCell(reminder.getDisplayName());
+                remindersTable.addCell(reminder.getDosageString());
+                remindersTable.addCell(reminder.getStatus());
             }
+
             document.add(remindersTable); // Add the table to the pdf document
             document.add(new Paragraph("\n")); // Adds a new line in between the tables, so it looks nice.
 
