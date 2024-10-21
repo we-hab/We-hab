@@ -1,6 +1,5 @@
 package edu.qut.cab302.wehab.models.medication;
 
-import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.time.LocalTime;
 

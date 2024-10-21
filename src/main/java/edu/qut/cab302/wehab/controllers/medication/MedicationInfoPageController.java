@@ -1,5 +1,6 @@
-package edu.qut.cab302.wehab.models.medication;
+package edu.qut.cab302.wehab.controllers.medication;
 
+import edu.qut.cab302.wehab.models.medication.FDAApiService;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -11,14 +12,25 @@ import edu.qut.cab302.wehab.util.WrappingText;
 
 import java.io.IOException;
 
-public class MedicationInfoPage {
+/**
+ * Controller for displaying detailed information about a specific medication
+ * by rendering JSON data loaded from the openFDA API using an FDAApiService object.
+ */
+public class MedicationInfoPageController {
 
-    String medicationId;
-    String medicationJson;
-    JSONObject medicationJsonObject;
-    VBox content;
+    // Medication identifier
+    private String medicationId;
 
-    public MedicationInfoPage(String medicationId) {
+    // Raw JSON string of the medication information
+    private String medicationJson;
+
+    // Parsed JSON object containing medication data
+    private JSONObject medicationJsonObject;
+
+    // Container to hold the UI components of the medication page
+    private VBox content;
+
+    public MedicationInfoPageController(String medicationId) {
         this.medicationId = medicationId;
         try {
             medicationJson = queryAPI(medicationId);
@@ -29,21 +41,31 @@ public class MedicationInfoPage {
 
     }
 
+    // UI layout constants
     private int sceneWidth = 1200;
     private int textWrappingWidth = sceneWidth - 50;
 
+    /**
+     * Generates a Scene to display the medication information.
+     * This method processes the JSON data and builds the UI components dynamically.
+     *
+     * @return A Scene object representing the medication information page.
+     */
     public Scene getMedicationInfoPage() {
 
+        // Initialise the VBox to hold all UI components
         content = new VBox();
         ScrollPane scrollPane = new ScrollPane(content);
         Scene scene = new Scene(scrollPane, sceneWidth, 800);
 
+        // Iterate through each key in the JSON object to dynamically generate UI components
         for (String key : medicationJsonObject.keySet()) {
             WrappingText heading = new WrappingText(capitalizeHeading(key), textWrappingWidth);
             heading.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
             content.getChildren().add(heading);
 
             Object value = medicationJsonObject.get(key);
+            // Handle different types of JSON values (String, JSONObject, JSONArray)
             if (value instanceof JSONArray) {
                 JSONArray valuesArray = (JSONArray) value;
                 for (int i = 0; i < valuesArray.length(); i++) {
@@ -57,21 +79,19 @@ public class MedicationInfoPage {
                             WrappingText nestedHeading = new WrappingText(capitalizeHeading(nestedKey), textWrappingWidth);
                             nestedHeading.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
                             addContentToView(nestedHeading, content);
-//                            content.getChildren().add(nestedHeading);
 
                             Object nestedValue = nestedObject.get(nestedKey);
                             if (nestedValue instanceof String) {
                                 WrappingText nestedValueWrappingText = new WrappingText((String) nestedValue, textWrappingWidth);
                                 addContentToView(nestedValueWrappingText, content);
-//                                content.getChildren().add(nestedValueWrappingText);
                             } else if (nestedValue instanceof JSONArray) {
                                 JSONArray deepNestedArray = (JSONArray) nestedValue;
                                 for (int j = 0; j < deepNestedArray.length(); j++) {
                                     WrappingText deepNestedValueWrappingText = new WrappingText(deepNestedArray.getString(j), textWrappingWidth);
                                     addContentToView(deepNestedValueWrappingText, content);
-//                                    content.getChildren().add(deepNestedValueWrappingText);
                                 }
                             } else if (nestedValue instanceof JSONObject) {
+                                // Recursively handle deeply nested JSON objects
                                 handleNestedJSONObject((JSONObject) nestedValue, content);
                             }
                         }
@@ -82,35 +102,51 @@ public class MedicationInfoPage {
             } else if (value instanceof String) {
                 WrappingText valueWrappingText = new WrappingText((String) value, textWrappingWidth);
                 addContentToView(valueWrappingText, content);
-//                content.getChildren().add(valueWrappingText);
             }
-
         }
 
         return scene;
     }
 
+    /**
+     * Queries the FDA API for medication data based on the ID.
+     *
+     * @param medicationID The ID of the medication to query.
+     * @return A JSON string containing the medication data.
+     * @throws IOException If an error occurs while querying the API.
+     */
     private String queryAPI(String medicationID) throws IOException {
         FDAApiService fdaApiService = new FDAApiService();
         return fdaApiService.queryAPIById(medicationID);
     }
 
+    /**
+     * Capitalises the first letter of a JSON key and replaces underscores with spaces.
+     * This is used for formatting JSON keys into readable headings.
+     *
+     * @param key The JSON key to format.
+     * @return The formatted heading string.
+     */
     private String capitalizeHeading(String key) {
         return key.replace("_", " ").substring(0, 1).toUpperCase() + key.replace("_", " ").substring(1);
     }
 
+    /**
+     * Handles nested JSON objects by recursively adding their content to the VBox.
+     *
+     * @param jsonObject The nested JSON object to process.
+     * @param pageContents The VBox to add the content to.
+     */
     private void handleNestedJSONObject(JSONObject jsonObject, VBox pageContents) {
         for (String key : jsonObject.keySet()) {
             WrappingText nestedHeading = new WrappingText(capitalizeHeading(key), textWrappingWidth);
             nestedHeading.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
             addContentToView(nestedHeading, pageContents);
-//            pageContents.getChildren().add(nestedHeading);
 
             Object value = jsonObject.get(key);
             if (value instanceof String) {
                 WrappingText valueWrappingText = new WrappingText((String) value, textWrappingWidth);
                 addContentToView(valueWrappingText, pageContents);
-//                pageContents.getChildren().add(valueWrappingText);
             } else if (value instanceof JSONObject) {
                 handleNestedJSONObject((JSONObject) value, pageContents);
             } else if (value instanceof JSONArray) {
@@ -119,7 +155,6 @@ public class MedicationInfoPage {
                     if (array.get(i) instanceof String) {
                         WrappingText valueWrappingText = new WrappingText(array.getString(i), textWrappingWidth);
                         addContentToView(valueWrappingText, pageContents);
-//                        pageContents.getChildren().add(valueWrappingText);
                     } else if (array.get(i) instanceof JSONObject) {
                         handleNestedJSONObject(array.getJSONObject(i), pageContents);
                     }
@@ -128,6 +163,13 @@ public class MedicationInfoPage {
         }
     }
 
+    /**
+     * Adds a WrappingText node to the provided VBox view.
+     * If the text contains HTML, it renders the content in a WebView.
+     *
+     * @param text The WrappingText object to add.
+     * @param view The VBox container to which the content is added.
+     */
     private void addContentToView(WrappingText text, VBox view) {
 
         String plainText = text.getText();
@@ -136,14 +178,19 @@ public class MedicationInfoPage {
             WebView webView = new WebView();
             WebEngine webEngine = webView.getEngine();
             webEngine.loadContent(plainText);
-            content.getChildren().add(webView);
+            view.getChildren().add(webView);
         } else {
-            content.getChildren().add(text);
+            view.getChildren().add(text);
         }
     }
 
+    /**
+     * Determines if a string contains HTML content.
+     *
+     * @param text The string to check.
+     * @return True if the text contains HTML tags, false otherwise.
+     */
     private boolean isHtml(String text) {
-        return text != null && text.trim().matches(".*<[^>]+>.*");
+        return text != null && text.trim().matches(".*<[^>]+>.*"); // Regex to check for HTML tags
     }
-
 }

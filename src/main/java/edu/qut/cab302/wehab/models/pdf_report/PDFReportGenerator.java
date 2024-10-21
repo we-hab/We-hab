@@ -120,7 +120,7 @@ public class PDFReportGenerator
                     .setFontSize(14);
             document.add(remindersTitle);
 
-            float[] columnWidths = {14f, 12f, 50f, 12f, 12f};
+            float[] columnWidths = {14f, 10f, 50f, 14f, 12f};
 
             // Create a table with 5 columns
             Table remindersTable = new Table(UnitValue.createPercentArray(columnWidths)); // Adds five columns to the table

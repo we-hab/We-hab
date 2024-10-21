@@ -83,7 +83,7 @@
                               <Font size="20.0" />
                            </font>
                         </Text>
-                        <ListView fx:id="savedMedications" prefHeight="443.0" prefWidth="509.0" />
+                        <ListView fx:id="savedMedicationsListView" prefHeight="443.0" prefWidth="509.0" />
                         <Button fx:id="addMedicationButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="181.0" styleClass="primary-button" text="Add Medication" />
                      </children>
                   </VBox>
@@ -172,8 +172,8 @@
                                     </columns>
                                  </TableView>
                                  <HBox spacing="10">
-                                    <Button fx:id="reminderDoneButton" text="Complete" disable="true" />
-                                    <Button fx:id="reminderMissedButton" text="Skip" disable="true" />
+                                    <Button fx:id="completeReminderButton" text="Complete" disable="true" />
+                                    <Button fx:id="skipReminderButton" text="Skip" disable="true" />
                                     <Button fx:id="editReminderButton" text="Edit" disable="true" />
                                     <Button fx:id="deleteReminderButton" text="Delete" disable="true" />
                                  </HBox>

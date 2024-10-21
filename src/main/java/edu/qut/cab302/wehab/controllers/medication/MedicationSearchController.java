@@ -4,21 +4,17 @@ import edu.qut.cab302.wehab.main.MainApplication;
 import edu.qut.cab302.wehab.controllers.dashboard.ButtonController;
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.medication.Medication;
-import edu.qut.cab302.wehab.models.medication.MedicationInfoPage;
 import edu.qut.cab302.wehab.models.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.medication.OpenFDAClient;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -213,25 +209,17 @@ public class MedicationSearchController {
         description.setEditable(false);
         description.setWrapText(true);
 
-//        ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/edu/qut/cab302/wehab/images/PanadolBox.jpg")));
-//        icon.setFitWidth(158);
-//        icon.setFitHeight(85);
-//        icon.setLayoutX(658);
-//        icon.setLayoutY(27);
-//        icon.setPickOnBounds(true);
-//        icon.setPreserveRatio(true);
-
         Button viewButton = new Button("View");
         viewButton.setLayoutX(844);
         viewButton.setLayoutY(76);
-        viewButton.setPrefSize(81, 25);
+        viewButton.setMinSize(81, 25);
         viewButton.setStyle("-fx-background-color: #00FF7F; -fx-border-color: #000000;");
         viewButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                MedicationInfoPage medicationInfoPage = new MedicationInfoPage(medication.getID());
-                Scene scene = medicationInfoPage.getMedicationInfoPage();
+                MedicationInfoPageController medicationInfoPageController = new MedicationInfoPageController(medication.getID());
+                Scene scene = medicationInfoPageController.getMedicationInfoPage();
 
                 medicationOverviewModal.setScene(scene);
                 medicationOverviewModal.showAndWait();
@@ -242,7 +230,7 @@ public class MedicationSearchController {
         Button addToListButton = new Button("Add to List");
         addToListButton.setLayoutX(844);
         addToListButton.setLayoutY(40);
-        addToListButton.setPrefSize(81, 25);
+        addToListButton.setMinSize(81, 25);
         addToListButton.setStyle("-fx-background-color: #00FF7F; -fx-border-color: #000000;");
 
         addToListButton.setOnAction(new EventHandler<ActionEvent>() {
