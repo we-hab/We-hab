@@ -5,9 +5,9 @@ edu.qut.cab302.wehab.controllers.medication
 edu.qut.cab302.wehab.controllers.reminders
 edu.qut.cab302.wehab.controllers.settings
 edu.qut.cab302.wehab.controllers.workout
+edu.qut.cab302.wehab.dao
 edu.qut.cab302.wehab.database
 edu.qut.cab302.wehab.main
-edu.qut.cab302.wehab.models.dao
 edu.qut.cab302.wehab.models.medication
 edu.qut.cab302.wehab.models.mood_ratings
 edu.qut.cab302.wehab.models.pdf_report
