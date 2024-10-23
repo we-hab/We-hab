@@ -1,4 +1,4 @@
-package edu.qut.cab302.wehab.models.dao;
+package edu.qut.cab302.wehab.dao;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.qut.cab302.wehab.database.DatabaseConnection;

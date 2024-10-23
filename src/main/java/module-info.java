@@ -45,8 +45,8 @@ module edu.qut.cab302.wehab {
     exports edu.qut.cab302.wehab.models.medication;
     opens edu.qut.cab302.wehab.models.medication to javafx.fxml;
 
-    exports edu.qut.cab302.wehab.models.dao;
-    opens edu.qut.cab302.wehab.models.dao to javafx.fxml;
+    exports edu.qut.cab302.wehab.dao;
+    opens edu.qut.cab302.wehab.dao to javafx.fxml;
 
     exports edu.qut.cab302.wehab.main;
     opens edu.qut.cab302.wehab.main to javafx.fxml;

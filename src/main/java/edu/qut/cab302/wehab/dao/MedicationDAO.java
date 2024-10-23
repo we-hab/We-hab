@@ -1,42 +1,35 @@
-package edu.qut.cab302.wehab.models.dao;
+package edu.qut.cab302.wehab.dao;
 
 import edu.qut.cab302.wehab.database.DatabaseConnection;
 
 import java.security.GeneralSecurityException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static edu.qut.cab302.wehab.util.EncryptionUtility.encrypt;
 import static edu.qut.cab302.wehab.util.EncryptionUtility.decrypt;
 
+import edu.qut.cab302.wehab.models.medication.MedicationReminderFactory;
+
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.medication.Medication;
 import edu.qut.cab302.wehab.models.medication.MedicationReminder;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
 /**
  * This class provides methods for interacting with the medication-related tables in the database.
- * It includes functionality for creating and deleting the medication and user-medication junction tables,
- * as well as saving medications and resetting the tables.
+ * It includes functionality for performing CRUD operations on the medications and medication reminder tables.
  */
 public class MedicationDAO {
 
     /**
      * The database connection instance to be used for executing SQL queries.
      */
-    private static Connection connection = DatabaseConnection.getInstance();
+    private static final Connection connection = DatabaseConnection.getInstance();
 
-    private static String username = Session.getInstance().getLoggedInUser().getUsername();
+    private static final String username = Session.getInstance().getLoggedInUser().getUsername();
 
     /**
      * Creates the medications table in the database if it does not already exist.
@@ -48,7 +41,8 @@ public class MedicationDAO {
 
         Statement createMedicationsTable;
 
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS medications (" +
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS medications (" +
                 "medicationID TEXT NOT NULL," +
                 "username TEXT NOT NULL," +
                 "displayName TEXT NOT NULL," +
@@ -124,10 +118,12 @@ public class MedicationDAO {
 
     private static ResultSet queryUserSavedMedications() throws SQLException {
 
-        String sqlCommand = "SELECT * FROM medications " +
+        String sqlCommand =
+                "SELECT * " +
+                "FROM medications " +
                 "WHERE username = ? " +
                 "ORDER BY addedDateTime ASC";
-        PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM medications WHERE username = ?");
+        PreparedStatement sqlStatement = connection.prepareStatement(sqlCommand);
 
         sqlStatement.setString(1, username);
         return sqlStatement.executeQuery();
@@ -162,7 +158,10 @@ public class MedicationDAO {
     }
 
     public static void markMedicationAsTaken(String reminderID) throws SQLException {
-        String sql = "UPDATE medicationReminders SET status = 'Taken' WHERE reminderID = ?";
+        String sql =
+            "UPDATE medicationReminders" +
+            "SET status = 'Taken'" +
+            "WHERE reminderID = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, reminderID);
@@ -170,7 +169,7 @@ public class MedicationDAO {
     }
 
     public static void markMedicationAsMissed(String reminderID) throws SQLException {
-        String sql = "UPDATE medicationReminders SET status = 'Missed' WHERE reminderID = ? ";
+        String sql = "UPDATE medicationReminders SET status = 'Missed' WHERE reminderID = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, reminderID);
@@ -186,7 +185,9 @@ public class MedicationDAO {
     }
 
     public static void addReminder(String medicationID, String dosageAmount, String dosageUnit, String dosageTime, String dosageDate) throws SQLException {
-        String sql = "INSERT INTO medicationReminders(username, medicationID, dosageAmount, dosageUnit, dosageDate, dosageTime) " +
+        String sql =
+                "INSERT INTO medicationReminders(username, medicationID, dosageAmount," +
+                "dosageUnit, dosageDate, dosageTime) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
         String encryptedMedicationID;
@@ -222,7 +223,7 @@ public class MedicationDAO {
 
         if (currentDayMedicationsStream != null) {
             while (currentDayMedicationsStream.next()) {
-                reminders.add(getReminderFromDatabaseEntry(currentDayMedicationsStream));
+                reminders.add(MedicationReminderFactory.createFromResultSet(currentDayMedicationsStream));
             }
         }
 
@@ -236,7 +237,7 @@ public class MedicationDAO {
         ResultSet reminderLogStream = queryLoggedReminders(startDate.toString(), endDate.toString());
         if (reminderLogStream != null) {
             while (reminderLogStream.next()) {
-                loggedReminders.add(getReminderFromDatabaseEntry(reminderLogStream));
+                loggedReminders.add(MedicationReminderFactory.createFromResultSet(reminderLogStream));
             }
         }
         return loggedReminders;
@@ -244,7 +245,11 @@ public class MedicationDAO {
 
     private static ResultSet queryLoggedReminders(String startDate, String endDate) throws SQLException {
 
-        String sqlQuery = "SELECT * FROM medicationReminders WHERE STATUS IS NOT NULL AND dosageDate BETWEEN ? AND ?";
+        String sqlQuery =
+                "SELECT *" +
+                "FROM medicationReminders" +
+                "WHERE STATUS IS NOT NULL" +
+                "AND dosageDate BETWEEN ? AND ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
         preparedStatement.setString(1, startDate.toString());
@@ -269,45 +274,18 @@ public class MedicationDAO {
 
         if (currentDayMedicationsStream != null) {
             while (currentDayMedicationsStream.next()) {
-                reminders.add(getReminderFromDatabaseEntry(currentDayMedicationsStream));
+                reminders.add(MedicationReminderFactory.createFromResultSet(currentDayMedicationsStream));
             }
         }
 
         return reminders;
     }
 
-    private static MedicationReminder getReminderFromDatabaseEntry(ResultSet rs) throws SQLException {
-
-        String reminderID = rs.getString("reminderID");
-        String username = rs.getString("username");
-        String ciphertextMedicationID = rs.getString("medicationID");
-        String plaintextMedicationID;
-        try {
-            plaintextMedicationID = decrypt(ciphertextMedicationID);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
-        String displayName;
-
-        displayName = getDisplayNameById(plaintextMedicationID);
-        double dosageAmount = rs.getDouble("dosageAmount");
-        String dosageUnit = rs.getString("dosageUnit");
-        LocalDate dosageDate = LocalDate.parse(rs.getString("dosageDate"));
-        LocalTime dosageTime = LocalTime.parse(rs.getString("dosageTime"));
-
-        System.out.println("Created object for reminder ID: " + reminderID);
-        System.out.println("\tUsername: " + username);
-        System.out.println("\tCiphertextMedicationID: " + ciphertextMedicationID);
-        System.out.println("\tPlaintextMedicationID: " + plaintextMedicationID);
-
-        String status = rs.getString("status") != null ? rs.getString("status") : null;
-
-        return new MedicationReminder(reminderID, username, plaintextMedicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime, status);
-    }
-
     private static ResultSet queryCurrentDayReminders() throws SQLException {
 
-        String sqlCommand = "SELECT * FROM medicationReminders " +
+        String sqlCommand =
+                "SELECT *" +
+                "FROM medicationReminders " +
                 "WHERE username = ? " +
                 "AND dosageDate = ? " +
                 "AND status IS NULL " +
@@ -331,7 +309,9 @@ public class MedicationDAO {
 
     private static ResultSet queryActiveUsersReminders() throws SQLException {
 
-        String sqlCommand = "SELECT * FROM medicationReminders " +
+        String sqlCommand =
+                "SELECT *" +
+                "FROM medicationReminders " +
                 "WHERE username = ? " +
                 "AND status IS NULL " +
                 "ORDER BY dosageTime ASC";
@@ -351,9 +331,11 @@ public class MedicationDAO {
         return results;
     }
 
-    private static String getDisplayNameById(String id) throws SQLException {
+    public static String getDisplayNameById(String id) throws SQLException {
 
-        String sqlCommand = "SELECT displayName FROM medications " +
+        String sqlCommand =
+                "SELECT displayName " +
+                "FROM medications " +
                 "WHERE medicationId = ?";
 
         String encryptedMedicationID;
@@ -435,7 +417,9 @@ public class MedicationDAO {
 
     public static void updateReminder(MedicationReminder reminder) throws SQLException {
 
-        String sql = "UPDATE medicationReminders SET dosageAmount = ?, dosageUnit = ?, dosageTime = ?, dosageDate = ?  " +
+        String sql =
+                "UPDATE medicationReminders" +
+                "SET dosageAmount = ?, dosageUnit = ?, dosageTime = ?, dosageDate = ?  " +
                 "WHERE reminderID = ? ";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);

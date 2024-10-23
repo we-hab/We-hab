@@ -1,6 +1,6 @@
 package edu.qut.cab302.wehab.controllers.medication;
 
-import edu.qut.cab302.wehab.models.dao.MedicationDAO;
+import edu.qut.cab302.wehab.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.medication.MedicationReminder;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

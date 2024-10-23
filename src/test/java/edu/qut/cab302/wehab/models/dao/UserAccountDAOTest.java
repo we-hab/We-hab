@@ -1,5 +1,6 @@
 package edu.qut.cab302.wehab.models.dao;
 
+import edu.qut.cab302.wehab.dao.UserAccountDAO;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
