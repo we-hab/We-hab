@@ -37,38 +37,34 @@ public class OpenFDAClient {
      */
     public Medication[] searchForMedications(String query) {
 
-        String apiResultsMessage;
         String jsonParserResultsMessage;
+        String jsonResponse;
 
         try {
             // Query the API with the given search string
-            String jsonResponse = apiService.queryAPI(query);
-            apiResultsMessage = apiService.getResultsMessage();
-
-            resultsMessageForView = apiResultsMessage;
-
-            // Parse the JSON response into Medication objects
-            Medication[] searchResults = medicationParser.parseMedications(jsonResponse);
-            jsonParserResultsMessage = medicationParser.getResultsMessage();
-
-            if(resultsMessageForView != null) {
-                resultsMessageForView += "\n" + jsonParserResultsMessage;
-            } else {
-                resultsMessageForView = jsonParserResultsMessage;
-            }
-
-            // Print the results message for debugging
-            System.out.println(resultsMessageForView);
-
-            return searchResults;
+            jsonResponse = apiService.queryAPI(query);
 
         } catch (SocketTimeoutException e) {
             resultsMessageForView = e.getMessage();
             e.printStackTrace();
             return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
+
+        resultsMessageForView = apiService.getResultsMessage();
+
+        // Parse the JSON response into Medication objects
+        Medication[] searchResults = medicationParser.parseMedications(jsonResponse);
+        jsonParserResultsMessage = medicationParser.getResultsMessage();
+
+        if(resultsMessageForView != null) {
+            resultsMessageForView += "\n" + jsonParserResultsMessage;
+        } else {
+            resultsMessageForView = jsonParserResultsMessage;
+        }
+
+        // Print the results message for debugging
+        System.out.println(resultsMessageForView);
+
+        return searchResults;
     }
 }
