@@ -2,10 +2,8 @@ package edu.qut.cab302.wehab.main;
 
 import edu.qut.cab302.wehab.controllers.medication.MedicationOverviewController;
 import edu.qut.cab302.wehab.database.DatabaseConnection;
-import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.mood_ratings.moodRating;
-import edu.qut.cab302.wehab.models.dao.UserAccountDAO;
-import edu.qut.cab302.wehab.models.user_account.UserAccount;
+import edu.qut.cab302.wehab.dao.UserAccountDAO;
 import edu.qut.cab302.wehab.models.workout.WorkoutReturnModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -4,7 +4,7 @@ import edu.qut.cab302.wehab.main.MainApplication;
 import edu.qut.cab302.wehab.controllers.dashboard.ButtonController;
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.medication.Medication;
-import edu.qut.cab302.wehab.models.dao.MedicationDAO;
+import edu.qut.cab302.wehab.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.medication.OpenFDAClient;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import javafx.fxml.FXML;
@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static edu.qut.cab302.wehab.models.dao.MedicationDAO.*;
+import static edu.qut.cab302.wehab.dao.MedicationDAO.*;
 
 /**
  * The MedicationSearchController class is responsible for linking the UI view with the

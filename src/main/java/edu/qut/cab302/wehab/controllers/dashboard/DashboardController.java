@@ -2,7 +2,7 @@ package edu.qut.cab302.wehab.controllers.dashboard;
 
 import edu.qut.cab302.wehab.controllers.workout.WorkoutController;
 import edu.qut.cab302.wehab.database.Session;
-import edu.qut.cab302.wehab.models.dao.MedicationDAO;
+import edu.qut.cab302.wehab.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.medication.MedicationReminder;
 import edu.qut.cab302.wehab.models.mood_ratings.moodRating;
 import edu.qut.cab302.wehab.models.pdf_report.PDFReportGenerator;

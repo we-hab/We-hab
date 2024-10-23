@@ -4,7 +4,7 @@ import edu.qut.cab302.wehab.main.MainApplication;
 import edu.qut.cab302.wehab.controllers.dashboard.ButtonController;
 import edu.qut.cab302.wehab.database.Session;
 import edu.qut.cab302.wehab.models.medication.MedicationReminder;
-import edu.qut.cab302.wehab.models.dao.MedicationDAO;
+import edu.qut.cab302.wehab.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.user_account.UserAccount;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -21,14 +21,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -37,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static edu.qut.cab302.wehab.models.dao.MedicationDAO.createMedicationTables;
+import static edu.qut.cab302.wehab.dao.MedicationDAO.createMedicationTables;
 import static edu.qut.cab302.wehab.util.EncryptionUtility.encrypt;
 
 /**

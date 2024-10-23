@@ -32,7 +32,7 @@ public class MedicationReminder {
      * @param dosageTime Time for the medication to be taken.
      * @param status Status of the reminder (e.g., taken, missed).
      */
-    public MedicationReminder(String reminderID, String username, String medicationID, String displayName,
+    private MedicationReminder(String reminderID, String username, String medicationID, String displayName,
                               double dosageAmount, String dosageUnit, LocalDate dosageDate,
                               LocalTime dosageTime, String status) {
         this.reminderID = reminderID;
@@ -226,5 +226,67 @@ public class MedicationReminder {
         System.out.println("Dosage Time: " + dosageTime);
         System.out.println("Status: " + status);
         System.out.println("-------------------------------");
+    }
+
+    public static class MedicationReminderBuilder {
+
+        private String reminderID;
+        private String username;
+        private String medicationID;
+        private String displayName;
+        private double dosageAmount;
+        private String dosageUnit;
+        private LocalDate dosageDate;
+        private LocalTime dosageTime;
+        private String status;
+
+        public MedicationReminderBuilder withReminderID(String reminderID) {
+            this.reminderID = reminderID;
+            return this;
+        }
+
+        public MedicationReminderBuilder withUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public MedicationReminderBuilder withMedicationID(String medicationID) {
+            this.medicationID = medicationID;
+            return this;
+        }
+
+        public MedicationReminderBuilder withDisplayName(String displayName) {
+            this.displayName = displayName;
+            return this;
+        }
+
+        public MedicationReminderBuilder withDosageAmount(double dosageAmount) {
+            this.dosageAmount = dosageAmount;
+            return this;
+        }
+
+        public MedicationReminderBuilder withDosageUnit(String dosageUnit) {
+            this.dosageUnit = dosageUnit;
+            return this;
+        }
+
+        public MedicationReminderBuilder withDosageDate(LocalDate dosageDate) {
+            this.dosageDate = dosageDate;
+            return this;
+        }
+
+        public MedicationReminderBuilder withDosageTime(LocalTime dosageTime) {
+            this.dosageTime = dosageTime;
+            return this;
+        }
+
+        public MedicationReminderBuilder withStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public MedicationReminder build() {
+            return new MedicationReminder(reminderID, username, medicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime, status);
+        }
     }
 }

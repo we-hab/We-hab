@@ -2,6 +2,7 @@ package edu.qut.cab302.wehab.models.medication;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import edu.qut.cab302.wehab.models.medication.Medication;
 
 /**
  * The MedicationParser class provides methods to parse medication data returned by API queries.
@@ -50,7 +51,7 @@ public class MedicationParser {
             Medication[] medications = new Medication[resultsCount];
 
             for(int i = 0; i < results.length(); i++) {
-                medications[i] = new Medication(results.getJSONObject(i));
+                medications[i] = Medication.createFromJsonObject(results.getJSONObject(i));
             }
             return medications;
 
