@@ -37,6 +37,16 @@ public class MedicationReminderFactory {
 
         String status = rs.getString("status") != null ? rs.getString("status") : null;
 
-        return new MedicationReminder(reminderID, username, plaintextMedicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime, status);
+        return new MedicationReminder.MedicationReminderBuilder()
+                .withReminderID(reminderID)
+                .withUsername(username)
+                .withMedicationID(plaintextMedicationID)
+                .withDisplayName(displayName)
+                .withDosageAmount(dosageAmount)
+                .withDosageUnit(dosageUnit)
+                .withDosageDate(dosageDate)
+                .withDosageTime(dosageTime)
+                .withStatus(status)
+                .build();
     }
 }

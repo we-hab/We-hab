@@ -51,7 +51,7 @@ public class MedicationParser {
             Medication[] medications = new Medication[resultsCount];
 
             for(int i = 0; i < results.length(); i++) {
-                medications[i] = MedicationFactory.createFromJsonObject(results.getJSONObject(i));
+                medications[i] = Medication.createFromJsonObject(results.getJSONObject(i));
             }
             return medications;
 

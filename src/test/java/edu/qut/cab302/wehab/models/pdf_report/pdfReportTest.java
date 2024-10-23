@@ -37,7 +37,16 @@ public class pdfReportTest {
         testWorkouts.add(new Workout("Running", LocalDate.now(), 30, 4));
 
         testMedications = new ArrayList<>();
-        testMedications.add(new MedicationReminder(testUser.toString(), "1", "1", "Paracetamol", 2, "tablets", LocalDate.now(), LocalTime.now(), "status"));
+        testMedications.add(new MedicationReminder.MedicationReminderBuilder()
+                .withUsername(testUser.toString())
+                .withMedicationID("1")
+                .withDisplayName("Paracetamol")
+                .withDosageAmount(2)
+                .withDosageUnit("tablets")
+                .withDosageDate(LocalDate.now())
+                .withDosageTime(LocalTime.now())
+                .build()
+                );
 
         testMonthlyMinutes = new TreeMap<>();
         testMonthlyMinutes.put(LocalDate.now(), 90);

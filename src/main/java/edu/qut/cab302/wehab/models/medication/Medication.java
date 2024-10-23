@@ -14,19 +14,34 @@ import java.time.format.DateTimeFormatter;
  */
 public class Medication {
 
-    private String id;
-    private String displayName;
-    private LocalDate lastUpdated;
-    private String brandName;
-    private String genericName;
-    private String manufacturer;
-    private JSONArray activeIngredients;
-    private String administrationRoute;
-    private JSONArray establishedPharmacologicClasses;
-    private String description;
+    private final String id;
+    private final String displayName;
+    private final LocalDate lastUpdated;
+    private final String brandName;
+    private final String genericName;
+    private final String manufacturer;
+    private final String administrationRoute;
+    private final String description;
+    private final String[] activeIngredientNames;
+    private final String[] establishedPharmacologicClassNames;
 
-    private String[] activeIngredientNames;
-    private String[] establishedPharmacologicClassNames;
+    private Medication(MedicationBuilder builder) {
+
+        this.id = builder.id;
+        this.lastUpdated = builder.lastUpdated;
+        this.brandName = builder.brandName;
+        this.genericName = builder.genericName;
+        this.manufacturer = builder.manufacturer;
+
+        this.displayName = ((builder.brandName != null) ? builder.brandName : builder.genericName) + " (" + builder.manufacturer + ")";
+
+        this.administrationRoute = builder.administrationRoute;
+        this.description = builder.description;
+        this.activeIngredientNames = builder.parsedActiveIngredients;
+        this.establishedPharmacologicClassNames = builder.parsedEstablishedPharmClasses;
+
+
+    }
 
     /**
      * @return The FDA ID of the medication.
@@ -88,61 +103,67 @@ public class Medication {
      */
     public boolean hasBrandName() { return brandName != null; }
 
+
     /**
      * Constructs a Medication object by parsing a JSONObject containing the
      * medication information from the openFDA API.
      *
      * @param jsonMedicationObject The JSONObject representing the medication data.
      */
-    Medication(JSONObject jsonMedicationObject) {
 
-        id = jsonMedicationObject.getString("id");
+    public static Medication createFromJsonObject(JSONObject jsonMedicationObject) {
+
+        MedicationBuilder builder = new MedicationBuilder();
+
+        builder.withID(jsonMedicationObject.getString("id"));
 
         String effectiveTime = jsonMedicationObject.optString("effective_time");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        lastUpdated = LocalDate.parse(effectiveTime, formatter);
+        builder.withLastUpdated(LocalDate.parse(effectiveTime, formatter));
 
         if(jsonMedicationObject.has("description")) {
-            description = jsonMedicationObject.optJSONArray("description").optString(0);
+            builder.withDescription(jsonMedicationObject.optJSONArray("description").optString(0));
         } else if(jsonMedicationObject.has("purpose")) {
-            description = jsonMedicationObject.optJSONArray("purpose").optString(0);
+            builder.withDescription(jsonMedicationObject.optJSONArray("purpose").optString(0));
         }
 
         JSONObject openfda = jsonMedicationObject.optJSONObject("openfda");
 
-        manufacturer = openfda.optJSONArray("manufacturer_name").optString(0);
+        builder.withManufacturer(openfda.optJSONArray("manufacturer_name").optString(0));
 
-        brandName = openfda.optJSONArray("brand_name").optString(0) + " (" + manufacturer + ")";
+        builder.withBrandName(openfda.optJSONArray("brand_name").optString(0));
 
-        genericName = openfda.optJSONArray("generic_name").optString(0);
-
-        displayName = (brandName != null) ? brandName : genericName;
+        builder.withGenericName(openfda.optJSONArray("generic_name").optString(0));
 
         if(openfda.has("substance_name")) {
-            activeIngredients = openfda.optJSONArray("substance_name");
-            activeIngredientNames = new String[activeIngredients.length()];
-            for(int i = 0; i < activeIngredients.length(); i++) {
-                activeIngredientNames[i] = activeIngredients.optString(i);
+            JSONArray activeIngredientsTemp = openfda.optJSONArray("substance_name");
+            String[] activeIngredientNames = new String[activeIngredientsTemp.length()];
+            for(int i = 0; i < activeIngredientsTemp.length(); i++) {
+                activeIngredientNames[i] = activeIngredientsTemp.optString(i);
             }
+            builder.withActiveIngredients(activeIngredientNames);
         } else if(openfda.has("active_ingredients")) {
-            activeIngredients = openfda.optJSONArray("active_ingredients");
-            activeIngredientNames = new String[activeIngredients.length()];
-            for(int i = 0; i < activeIngredients.length(); i++) {
-                activeIngredientNames[i] = activeIngredients.optString(i);
+            JSONArray activeIngredientsTemp = openfda.optJSONArray("active_ingredients");
+            String[] activeIngredientNames = new String[activeIngredientsTemp.length()];
+            for(int i = 0; i < activeIngredientsTemp.length(); i++) {
+                activeIngredientNames[i] = activeIngredientsTemp.optString(i);
             }
+            builder.withActiveIngredients(activeIngredientNames);
         }
 
         if (openfda.has("route")) {
-            administrationRoute = openfda.optJSONArray("route").optString(0);
+            builder.withAdministrationRoute(openfda.optJSONArray("route").optString(0));
         }
 
         if(openfda.has("pharm_class_epc")) {
-            establishedPharmacologicClasses = openfda.optJSONArray("pharm_class_epc");
-            establishedPharmacologicClassNames = new String[establishedPharmacologicClasses.length()];
-            for(int i = 0; i < establishedPharmacologicClasses.length(); i++) {
-                establishedPharmacologicClassNames[i] = establishedPharmacologicClasses.optString(i);
+            JSONArray establishedPharmacologicClassesTemp = openfda.optJSONArray("pharm_class_epc");
+            String[] establishedPharmacologicClassNames = new String[establishedPharmacologicClassesTemp.length()];
+            for(int i = 0; i < establishedPharmacologicClassesTemp.length(); i++) {
+                establishedPharmacologicClassNames[i] = establishedPharmacologicClassesTemp.optString(i);
             }
+            builder.withEstablishedPharmClasses(establishedPharmacologicClassNames);
         }
+        return builder.build();
     }
 
     /**
@@ -179,5 +200,68 @@ public class Medication {
 
         System.out.println("Description: " + description);
         System.out.println();
+    }
+
+    public static class MedicationBuilder {
+
+        private String id;
+        private String displayName;
+        private LocalDate lastUpdated;
+        private String brandName;
+        private String genericName;
+        private String manufacturer;
+        private String administrationRoute;
+        private String description;
+        private String[] parsedActiveIngredients;
+        private String[] parsedEstablishedPharmClasses;
+
+        public MedicationBuilder withID(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public MedicationBuilder withLastUpdated(LocalDate lastUpdated) {
+            this.lastUpdated = lastUpdated;
+            return this;
+        }
+
+        public MedicationBuilder withBrandName(String brandName) {
+            this.brandName = brandName;
+            return this;
+        }
+
+        public MedicationBuilder withGenericName(String genericName) {
+            this.genericName = genericName;
+            return this;
+        }
+
+        public MedicationBuilder withManufacturer(String manufacturer) {
+            this.manufacturer = manufacturer;
+            return this;
+        }
+
+        public MedicationBuilder withAdministrationRoute(String administrationRoute) {
+            this.administrationRoute = administrationRoute;
+            return this;
+        }
+
+        public MedicationBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public MedicationBuilder withActiveIngredients(String[] activeIngredientNames) {
+            this.parsedActiveIngredients = activeIngredientNames;
+            return this;
+        }
+
+        public MedicationBuilder withEstablishedPharmClasses(String[] establishedPharmacologicClasses) {
+            this.parsedEstablishedPharmClasses = establishedPharmacologicClasses;
+            return this;
+        }
+
+        public Medication build() {
+            return new Medication(this);
+        }
     }
 }
