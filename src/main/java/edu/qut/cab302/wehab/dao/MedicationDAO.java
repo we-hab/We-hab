@@ -159,7 +159,7 @@ public class MedicationDAO {
 
     public static void markMedicationAsTaken(String reminderID) throws SQLException {
         String sql =
-            "UPDATE medicationReminders" +
+            "UPDATE medicationReminders " +
             "SET status = 'Taken'" +
             "WHERE reminderID = ?";
 
@@ -169,7 +169,10 @@ public class MedicationDAO {
     }
 
     public static void markMedicationAsMissed(String reminderID) throws SQLException {
-        String sql = "UPDATE medicationReminders SET status = 'Missed' WHERE reminderID = ?";
+        String sql =
+                "UPDATE medicationReminders " +
+                "SET status = 'Missed' " +
+                "WHERE reminderID = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, reminderID);
@@ -247,8 +250,8 @@ public class MedicationDAO {
 
         String sqlQuery =
                 "SELECT *" +
-                "FROM medicationReminders" +
-                "WHERE STATUS IS NOT NULL" +
+                "FROM medicationReminders " +
+                "WHERE STATUS IS NOT NULL " +
                 "AND dosageDate BETWEEN ? AND ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
@@ -418,7 +421,7 @@ public class MedicationDAO {
     public static void updateReminder(MedicationReminder reminder) throws SQLException {
 
         String sql =
-                "UPDATE medicationReminders" +
+                "UPDATE medicationReminders " +
                 "SET dosageAmount = ?, dosageUnit = ?, dosageTime = ?, dosageDate = ?  " +
                 "WHERE reminderID = ? ";
 
