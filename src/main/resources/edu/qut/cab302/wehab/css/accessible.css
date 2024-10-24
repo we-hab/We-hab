@@ -224,8 +224,8 @@
     -fx-alignment: CENTER_LEFT;
 }
 
-.table-row-cell:filled:selected {
-    -fx-font-weight: bold;
+.table-view .table-row-cell:filled:selected {
+    -fx-background-color: #DDDDDD;
 }
 
 .table-view .arrow {

@@ -96,7 +96,7 @@ public class SettingsController implements Initializable {
      */
     private void updateTextSizeSelection() {
         String currentTextSize = MainApplication.getActiveTextSizeSheet();
-        defaultText.setSelected(currentTextSize.startsWith("MainStyleSheet") || currentTextSize.startsWith("accessible"));
+        defaultText.setSelected(currentTextSize.startsWith("/edu/qut/cab302/wehab/css/MainStyleSheet") || currentTextSize.startsWith("/edu/qut/cab302/wehab/css/accessible"));
         largeText.setSelected(currentTextSize.endsWith("large.css"));
         extraText.setSelected(currentTextSize.endsWith("extraLarge.css"));
     }
