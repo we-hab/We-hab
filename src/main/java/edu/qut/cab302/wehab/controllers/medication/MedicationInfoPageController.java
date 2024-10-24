@@ -43,6 +43,7 @@ public class MedicationInfoPageController {
 
     // UI layout constants
     private int sceneWidth = 1200;
+    private int sceneHeight = 900;
     private int textWrappingWidth = sceneWidth - 50;
 
     /**
@@ -55,8 +56,10 @@ public class MedicationInfoPageController {
 
         // Initialise the VBox to hold all UI components
         content = new VBox();
+        content.setMinSize(sceneWidth, sceneHeight);
         ScrollPane scrollPane = new ScrollPane(content);
-        Scene scene = new Scene(scrollPane, sceneWidth, 800);
+        scrollPane.setMinSize(sceneWidth, sceneHeight);
+        Scene scene = new Scene(scrollPane, sceneWidth, sceneHeight);
 
         // Iterate through each key in the JSON object to dynamically generate UI components
         for (String key : medicationJsonObject.keySet()) {

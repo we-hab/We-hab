@@ -16,22 +16,22 @@ import java.util.Base64;
 public class EncryptionUtility {
 
     // 16-byte AES key represented as a string
-    private static String plainTextKey = "put16ByteKeyHere";
+    private static final String plainTextKey = "put16ByteKeyHere";
 
     // Convert the key string into a byte array to be used for AES encryption
-    private static byte[] plainTextKeyBytes = plainTextKey.getBytes();
+    private static final byte[] plainTextKeyBytes = plainTextKey.getBytes();
 
     // Create the AES SecretKey object using the 16-byte key
-    private static SecretKey key = new SecretKeySpec(plainTextKeyBytes, "AES");
+    private static final SecretKey key = new SecretKeySpec(plainTextKeyBytes, "AES");
 
     // 16-byte IV string
     private static final String ivString = "put16ByteKeyHere";
 
     // Convert the IV string into a byte array
-    private static byte[] ivBytes = ivString.getBytes();
+    private static final byte[] ivBytes = ivString.getBytes();
 
     // Create the IvParameterSpec object using the IV byte array
-    private static IvParameterSpec iv = new IvParameterSpec(ivBytes);
+    private static final IvParameterSpec iv = new IvParameterSpec(ivBytes);
 
     /**
      * Encrypts the given plain text using AES/CBC/PKCS5Padding.
@@ -58,9 +58,8 @@ public class EncryptionUtility {
         byte[] cipherText = cipher.doFinal(plainText.getBytes());
 
         // Encode the encrypted byte array into a Base64 string
-        String cipherTextBase64 = Base64.getEncoder().encodeToString(cipherText);
 
-        return cipherTextBase64;
+        return Base64.getEncoder().encodeToString(cipherText);
     }
 
     /**

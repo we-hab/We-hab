@@ -9,8 +9,8 @@ import java.net.SocketTimeoutException;
  */
 public class OpenFDAClient {
 
-    private FDAApiService apiService;
-    private MedicationParser medicationParser;
+    private final FDAApiService apiService;
+    private final MedicationParser medicationParser;
 
     /**
      * A message intended for the view, providing information about the status of the API query and parsing of results.
@@ -46,7 +46,6 @@ public class OpenFDAClient {
 
         } catch (SocketTimeoutException e) {
             resultsMessageForView = e.getMessage();
-            e.printStackTrace();
             return null;
         }
 

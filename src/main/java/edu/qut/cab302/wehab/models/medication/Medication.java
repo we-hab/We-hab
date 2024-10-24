@@ -25,6 +25,14 @@ public class Medication {
     private final String[] activeIngredientNames;
     private final String[] establishedPharmacologicClassNames;
 
+    /**
+     * Private constructor for the Medication class.
+     * This constructor is private to enforce the use of the MedicationBuilder for instantiation,
+     * following the builder pattern. It initialises the properties of the Medication based on
+     * the provided MedicationBuilder.
+     *
+     * @param builder The MedicationBuilder used to build the Medication instance.
+     */
     private Medication(MedicationBuilder builder) {
 
         this.id = builder.id;
@@ -110,7 +118,6 @@ public class Medication {
      *
      * @param jsonMedicationObject The JSONObject representing the medication data.
      */
-
     public static Medication createFromJsonObject(JSONObject jsonMedicationObject) {
 
         MedicationBuilder builder = new MedicationBuilder();

@@ -228,6 +228,9 @@ public class MedicationReminder {
         System.out.println("-------------------------------");
     }
 
+    /**
+     * Static inner builder class for constructing MedicationReminder objects.
+     */
     public static class MedicationReminderBuilder {
 
         private String reminderID;
@@ -240,51 +243,110 @@ public class MedicationReminder {
         private LocalTime dosageTime;
         private String status;
 
+        /**
+         * Sets the reminder ID in the builder.
+         *
+         * @param reminderID The reminder ID to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withReminderID(String reminderID) {
             this.reminderID = reminderID;
             return this;
         }
 
+        /**
+         * Sets the username in the builder.
+         *
+         * @param username The username to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withUsername(String username) {
             this.username = username;
             return this;
         }
 
+        /**
+         * Sets the medication ID in the builder.
+         *
+         * @param medicationID The medication ID to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withMedicationID(String medicationID) {
             this.medicationID = medicationID;
             return this;
         }
 
+        /**
+         * Sets the display name in the builder.
+         *
+         * @param displayName The display name to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withDisplayName(String displayName) {
             this.displayName = displayName;
             return this;
         }
 
+        /**
+         * Sets the dosage amount in the builder.
+         *
+         * @param dosageAmount The dosage amount to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withDosageAmount(double dosageAmount) {
             this.dosageAmount = dosageAmount;
             return this;
         }
 
+        /**
+         * Sets the dosage unit in the builder.
+         *
+         * @param dosageUnit The dosage unit to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withDosageUnit(String dosageUnit) {
             this.dosageUnit = dosageUnit;
             return this;
         }
 
+        /**
+         * Sets the dosage date in the builder.
+         *
+         * @param dosageDate The dosage date to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withDosageDate(LocalDate dosageDate) {
             this.dosageDate = dosageDate;
             return this;
         }
 
+        /**
+         * Sets the dosage time in the builder.
+         *
+         * @param dosageTime The dosage time to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withDosageTime(LocalTime dosageTime) {
             this.dosageTime = dosageTime;
             return this;
         }
 
+        /**
+         * Sets the status in the builder.
+         *
+         * @param status The status to set.
+         * @return The current instance of the builder.
+         */
         public MedicationReminderBuilder withStatus(String status) {
             this.status = status;
             return this;
         }
 
+        /**
+         * Builds a new MedicationReminder object with the set parameters.
+         *
+         * @return A new instance of MedicationReminder.
+         */
         public MedicationReminder build() {
             return new MedicationReminder(reminderID, username, medicationID, displayName, dosageAmount, dosageUnit, dosageDate, dosageTime, status);
         }
