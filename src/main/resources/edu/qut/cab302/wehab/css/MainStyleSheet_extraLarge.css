@@ -188,7 +188,6 @@
 .table-view .column-header .label {
     -fx-text-fill: #000000;
     -fx-alignment: CENTER_LEFT;
-    -fx-font-size: 40px;
 }
 
 .table-view .table-row-cell {
@@ -201,7 +200,6 @@
 .table-view .table-cell {
     -fx-text-fill: #000000;
     -fx-alignment: CENTER_LEFT;
-    -fx-font-size: 24px;
 }
 
 .table-row-cell:filled:selected {
