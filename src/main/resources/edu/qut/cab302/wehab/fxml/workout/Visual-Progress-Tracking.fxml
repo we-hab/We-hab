@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.controllers.workout.WorkoutController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../../css/MainStyleSheet.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.controllers.workout.WorkoutController">
     <children>
         <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
             <children>
@@ -127,10 +127,30 @@
                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                     </padding>
                                                 </Label>
-                                                <ComboBox fx:id="workoutTypeComboBox" prefHeight="30.0" prefWidth="120.0" />
-                                                <DatePicker fx:id="datePicker" prefHeight="30.0" prefWidth="120.0" />
-                                                <Spinner fx:id="durationSpinner" prefHeight="30.0" prefWidth="120.0" />
-                                                <ComboBox fx:id="effortComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Effort" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
+                                       <children>
+                                          <Label text="Type" />
+                                                      <ComboBox fx:id="workoutTypeComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Acitivity" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
+                                       <children>
+                                          <Label text="Date" />
+                                                      <DatePicker fx:id="datePicker" prefHeight="30.0" prefWidth="120.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
+                                       <children>
+                                          <Label text="Minutes" />
+                                                      <Spinner fx:id="durationSpinner" prefHeight="30.0" prefWidth="120.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
+                                       <children>
+                                          <Label prefHeight="25.0" prefWidth="75.0" text="Intensity" />
+                                                      <ComboBox fx:id="effortComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Effort" />
+                                       </children>
+                                    </HBox>
                                                 <Button fx:id="confirmButton" mnemonicParsing="false" styleClass="primary-button" text="Confirm" />
                                             </children>
                                         </VBox>

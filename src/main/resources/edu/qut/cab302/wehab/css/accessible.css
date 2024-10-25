@@ -139,6 +139,16 @@
     -fx-background-color: #0F0F0F;
 }
 
+.workout_hbox {
+        -fx-pref-width: 20px;
+        -fx-spacing: 10px;
+    }
+
+    .workout_hbox > .label {
+            -fx-pref-width: 75px;
+
+        }
+
 .primary-button {
   -fx-base: -fx-primary-button;
   -fx-background-color: #000000;
