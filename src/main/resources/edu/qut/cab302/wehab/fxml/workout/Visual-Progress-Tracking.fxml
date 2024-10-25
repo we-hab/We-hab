@@ -130,7 +130,7 @@
                                     <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
                                        <children>
                                           <Label text="Type" />
-                                                      <ComboBox fx:id="workoutTypeComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Acitivity" />
+                                                      <ComboBox fx:id="workoutTypeComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Activity" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
