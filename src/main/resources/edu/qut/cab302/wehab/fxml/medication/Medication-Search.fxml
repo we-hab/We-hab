@@ -62,6 +62,7 @@
                               <Font size="20.0" />
                            </font>
                         </TextField>
+                        <Label text="Search for your medication" />
                      </children>
                   </HBox>
                   <VBox prefHeight="628.0" prefWidth="1078.0" styleClass="main-content-container-vbox" VBox.vgrow="ALWAYS">
