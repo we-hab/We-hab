@@ -184,9 +184,13 @@
     -fx-padding: 1px;
 }
 
-.combo-box .label {
-    -fx-text-fill: black;
-    -fx-font-size: 6px;
+.combo-box .list-cell:hover {
+    -fx-background-color: lightgray;
+    -fx-text-fill: #000000;
+}
+
+.combo-box .list-cell:selected {
+    -fx-text-fill: #000000;
 }
 
 .combo-box .arrow {
