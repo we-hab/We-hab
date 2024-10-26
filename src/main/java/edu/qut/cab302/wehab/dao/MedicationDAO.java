@@ -27,9 +27,16 @@ public class MedicationDAO {
     /**
      * The database connection instance to be used for executing SQL queries.
      */
-    private static final Connection connection = DatabaseConnection.getInstance();
 
     private static final String username = Session.getInstance().getLoggedInUser().getUsername();
+
+    private static Connection getConnection() throws SQLException {
+        Connection connection = DatabaseConnection.getInstance();
+        if (connection.isClosed()) {
+            connection = DatabaseConnection.getInstance(); // Reconnect if closed
+        }
+        return connection;
+    }
 
     /**
      * Creates the medications table in the database if it does not already exist.
@@ -38,7 +45,7 @@ public class MedicationDAO {
      * @throws SQLException if an error occurs while executing the SQL statement.
      */
     private static void createMedicationsTable() throws SQLException {
-
+        Connection connection = getConnection();
         Statement createMedicationsTable;
 
         String createTableSQL =
@@ -56,7 +63,7 @@ public class MedicationDAO {
     }
 
     public static void addMedicationToUserList(Medication medication) throws SQLException {
-
+        Connection connection = getConnection();
         String encryptedMedicationID;
 
         try {
@@ -109,6 +116,7 @@ public class MedicationDAO {
     }
 
     public static void deleteUserSavedMedication(String medicationID) throws SQLException {
+        Connection connection = getConnection();
         String deleteMedicationSql = "DELETE FROM medications WHERE username = ? AND medicationID = ?";
         PreparedStatement deleteMedication = connection.prepareStatement(deleteMedicationSql);
         deleteMedication.setString(1, username);
@@ -117,6 +125,7 @@ public class MedicationDAO {
     }
 
     private static ResultSet queryUserSavedMedications() throws SQLException {
+        Connection connection = getConnection();
 
         String sqlCommand =
                 "SELECT * " +
@@ -137,6 +146,7 @@ public class MedicationDAO {
      * @throws SQLException if an error occurs while executing the SQL statement.
      */
     public static void createMedicationRemindersTable() throws SQLException {
+        Connection connection = getConnection();
         Statement createMedicationRemindersTable;
 
         String createJunctionTableSQL = "CREATE TABLE IF NOT EXISTS medicationReminders (" +
@@ -158,6 +168,7 @@ public class MedicationDAO {
     }
 
     public static void markMedicationAsTaken(String reminderID) throws SQLException {
+        Connection connection = getConnection();
         String sql =
             "UPDATE medicationReminders " +
             "SET status = 'Taken'" +
@@ -169,6 +180,7 @@ public class MedicationDAO {
     }
 
     public static void markMedicationAsMissed(String reminderID) throws SQLException {
+        Connection connection = getConnection();
         String sql =
                 "UPDATE medicationReminders " +
                 "SET status = 'Missed' " +
@@ -180,6 +192,7 @@ public class MedicationDAO {
     }
 
     public static void deleteMedicationReminder(String reminderID) throws SQLException {
+        Connection connection = getConnection();
         String sql = "DELETE FROM medicationReminders WHERE reminderID = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -188,6 +201,7 @@ public class MedicationDAO {
     }
 
     public static void addReminder(String medicationID, String dosageAmount, String dosageUnit, String dosageTime, String dosageDate) throws SQLException {
+        Connection connection = getConnection();
         String sql =
                 "INSERT INTO medicationReminders(username, medicationID, dosageAmount," +
                 "dosageUnit, dosageDate, dosageTime) " +
@@ -247,6 +261,7 @@ public class MedicationDAO {
     }
 
     private static ResultSet queryLoggedReminders(String startDate, String endDate) throws SQLException {
+        Connection connection = getConnection();
 
         String sqlQuery =
                 "SELECT *" +
@@ -285,6 +300,7 @@ public class MedicationDAO {
     }
 
     private static ResultSet queryCurrentDayReminders() throws SQLException {
+        Connection connection = getConnection();
 
         String sqlCommand =
                 "SELECT *" +
@@ -311,6 +327,7 @@ public class MedicationDAO {
     }
 
     private static ResultSet queryActiveUsersReminders() throws SQLException {
+        Connection connection = getConnection();
 
         String sqlCommand =
                 "SELECT *" +
@@ -335,6 +352,7 @@ public class MedicationDAO {
     }
 
     public static String getDisplayNameById(String id) throws SQLException {
+        Connection connection = getConnection();
 
         String sqlCommand =
                 "SELECT displayName " +
@@ -368,6 +386,7 @@ public class MedicationDAO {
      * @throws SQLException if an error occurs while executing the SQL statement.
      */
     private static void deleteMedicationsTable() throws SQLException {
+        Connection connection = getConnection();
 
         Statement deleteMedicationsTable;
         String deleteMedicationsTableSQL = "DROP TABLE IF EXISTS medications";
@@ -381,6 +400,7 @@ public class MedicationDAO {
      * @throws SQLException if an error occurs while executing the SQL statement.
      */
     private static void deleteJunctionTable() throws SQLException {
+        Connection connection = getConnection();
         Statement deleteJunctionTable;
         String deleteJunctionTableSQL = "DROP TABLE IF EXISTS medicationReminders";
         deleteJunctionTable = connection.createStatement();
@@ -419,6 +439,7 @@ public class MedicationDAO {
     }
 
     public static void updateReminder(MedicationReminder reminder) throws SQLException {
+        Connection connection = getConnection();
 
         String sql =
                 "UPDATE medicationReminders " +

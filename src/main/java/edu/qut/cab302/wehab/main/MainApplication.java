@@ -34,11 +34,11 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException  {
         primaryStage = stage;
-        primaryStage.setTitle("We-Hab"); // Set the title here
+        primaryStage.setTitle("We-Hab");
 
         // Set the minimum width and height for the application window
-        primaryStage.setMinWidth(1280); // Set minimum width
-        primaryStage.setMinHeight(800);  // Set minimum height
+        primaryStage.setMinWidth(1280);
+        primaryStage.setMinHeight(800);
 
         UserAccountDAO userAccountDAO = new UserAccountDAO();
         switchScene("/edu/qut/cab302/wehab/fxml/user_account/Login.fxml");
@@ -85,7 +85,7 @@ public class MainApplication extends Application {
         scene.getStylesheets().add(MainApplication.class.getResource(activeStyleSheet).toExternalForm());
         scene.getStylesheets().add(MainApplication.class.getResource(activeTextSizeSheet).toExternalForm());
 
-        Stage stage = primaryStage; // Assuming primaryStage is accessible here
+        Stage stage = primaryStage;
 
         // Preserve the current size of the stage
         double currentWidth = stage.getWidth();

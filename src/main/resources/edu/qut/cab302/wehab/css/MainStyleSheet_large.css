@@ -127,6 +127,16 @@
     -fx-background-color: #589D52
 }
 
+.workout_hbox {
+        -fx-pref-width: 20px;
+        -fx-spacing: 10px;
+    }
+
+    .workout_hbox > .label {
+            -fx-pref-width: 75px;
+
+        }
+
 .primary-button {
   -fx-base: -fx-primary-button;
   -fx-background-color: #00ff7f;
@@ -187,7 +197,6 @@
 .table-view .column-header .label {
     -fx-text-fill: #000000;
     -fx-alignment: CENTER_LEFT;
-    -fx-font-size: 36px;
 }
 
 .table-view .table-row-cell {
@@ -200,7 +209,6 @@
 .table-view .table-cell {
     -fx-text-fill: #000000;
     -fx-alignment: CENTER_LEFT;
-    -fx-font-size: 20px;
 }
 
 .table-row-cell:filled:selected {

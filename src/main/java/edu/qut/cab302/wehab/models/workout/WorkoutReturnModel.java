@@ -17,14 +17,20 @@ public class WorkoutReturnModel {
     /**
      * The database connection instance to be used for executing SQL queries.
      */
-    private static Connection connection = DatabaseConnection.getInstance();
+    private static Connection getConnection() throws SQLException {
+        Connection connection = DatabaseConnection.getInstance();
+        if (connection.isClosed()) {
+            connection = DatabaseConnection.getInstance(); // Reconnect if closed
+        }
+        return connection;
+    }
+
 
     /**
      * Create the Workout table in database using the username as the primary key.
      * This table stores workout records detailing workout type, date, duration, and effort.
      */
     public static void createWorkoutTable() {
-        Statement createWorkoutTable;
 
         // PK = ID, FK = username
         String createWorkoutTableSQL = "CREATE TABLE IF NOT EXISTS workouts (" +
@@ -36,11 +42,8 @@ public class WorkoutReturnModel {
                 "effort INTEGER NOT NULL, " +
                 "FOREIGN KEY (username) REFERENCES userAccounts(username) ON DELETE CASCADE" +
                 ")";
-        try {
-
-        createWorkoutTable = connection.createStatement();
-        createWorkoutTable.execute(createWorkoutTableSQL);
-        createWorkoutTable.close();
+        try (Statement createWorkoutTable = getConnection().createStatement()) {
+            createWorkoutTable.execute(createWorkoutTableSQL);
         } catch (SQLException error) {
             System.err.println(error.getMessage());
         }
@@ -53,7 +56,7 @@ public class WorkoutReturnModel {
 
         String insertSQL = "INSERT INTO workouts (username, workoutType, date, duration, effort) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement insertWorkoutTable = connection.prepareStatement(insertSQL)) {
+        try (PreparedStatement insertWorkoutTable = getConnection().prepareStatement(insertSQL)) {
             insertWorkoutTable.setString(1, username);
             insertWorkoutTable.setString(2, workout.getWorkoutType());
             insertWorkoutTable.setString(3, workout.getDate().toString());
@@ -72,7 +75,7 @@ public class WorkoutReturnModel {
 
         String querySQL = "SELECT workoutType, date, duration, effort FROM workouts WHERE username = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(querySQL)) {
+        try (PreparedStatement statement = getConnection().prepareStatement(querySQL)) {
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
 
@@ -99,7 +102,7 @@ public class WorkoutReturnModel {
 
         // Talk to the DB and handle errors.
         String querySQL = "SELECT date, duration FROM workouts WHERE username = ?";
-        try (PreparedStatement statement = connection.prepareStatement(querySQL)) {
+        try (PreparedStatement statement = getConnection().prepareStatement(querySQL)) {
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
 

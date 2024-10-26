@@ -229,6 +229,8 @@
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin></Button>
+                                    <Label text="Record how you are feeling today" />
+                                    <Label text="1 is feeling very low and 10 is the happiest you can be" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="10.0" />

@@ -117,6 +117,17 @@
                                     <children>
                                         <VBox alignment="CENTER" prefHeight="237.0" prefWidth="284.0" style="-fx-spacing: 20;">
                                             <children>
+                                    <Label text="Record a completed workout">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label text="and">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label text="Track your recovery journey!" />
 <!--                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add new workout">-->
 <!--                                                    <font>-->
 <!--                                                        <Font size="20.0" />-->
@@ -127,10 +138,30 @@
                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                     </padding>
                                                 </Label>
-                                                <ComboBox fx:id="workoutTypeComboBox" prefHeight="30.0" prefWidth="120.0" />
-                                                <DatePicker fx:id="datePicker" prefHeight="30.0" prefWidth="120.0" />
-                                                <Spinner fx:id="durationSpinner" prefHeight="30.0" prefWidth="120.0" />
-                                                <ComboBox fx:id="effortComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Effort" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
+                                       <children>
+                                          <Label text="Type" />
+                                                      <ComboBox fx:id="workoutTypeComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Activity" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
+                                       <children>
+                                          <Label text="Date" />
+                                                      <DatePicker fx:id="datePicker" prefHeight="30.0" prefWidth="120.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
+                                       <children>
+                                          <Label text="Minutes" />
+                                                      <Spinner fx:id="durationSpinner" prefHeight="30.0" prefWidth="120.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="workout_hbox">
+                                       <children>
+                                          <Label prefHeight="25.0" prefWidth="75.0" text="Intensity" />
+                                                      <ComboBox fx:id="effortComboBox" prefHeight="30.0" prefWidth="120.0" promptText="Effort" />
+                                       </children>
+                                    </HBox>
                                                 <Button fx:id="confirmButton" mnemonicParsing="false" styleClass="primary-button" text="Confirm" />
                                             </children>
                                         </VBox>
