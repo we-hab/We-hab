@@ -18,8 +18,8 @@ The goal of We-Hab is to provide patients undergoing rehabilitation with an intu
 - Medication tracking and reminders
 - Exercise tracking and progress visualisation
 - Daily mood ratings
-- Report Generation
-- User-Friendly Interface
+- Report generation
+- User-friendly Interface
 
 
 
@@ -28,7 +28,7 @@ The goal of We-Hab is to provide patients undergoing rehabilitation with an intu
 - Sign up or log in to access your dashboard.
 - Track your medication schedule and receive reminders.
 - Log daily exercises and visualise your progress over time.
-
+- Generate progress report.
 
 
 ## Tech Stack

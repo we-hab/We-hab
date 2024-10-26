@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
@@ -11,11 +9,10 @@
 <?import javafx.collections.FXCollections?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="edu.qut.cab302.wehab.controllers.medication.EditReminderController"
-      >
+      fx:controller="edu.qut.cab302.wehab.controllers.medication.EditReminderController">
 
     <children>
-        <VBox styleClass="main-content-container-vbox" spacing="10">
+        <VBox styleClass="modal-container" spacing="10">
             <padding>
                 <Insets topRightBottomLeft="10" />
             </padding>
@@ -64,9 +61,9 @@
 
                 </GridPane>
                 <TextArea prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <HBox spacing="10">
-                    <Button fx:id="updateReminderButton" text="Update Reminder" />
-                    <Button fx:id="cancelButton" text="Cancel" />
+                <HBox styleClass="button-container" spacing="10">
+                    <Button fx:id="updateReminderButton" text="Update Reminder" styleClass="primary-button" />
+                    <Button fx:id="cancelButton" text="Cancel" styleClass="primary-button" />
                 </HBox>
             </children>
         </VBox>

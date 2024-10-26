@@ -27,7 +27,9 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.controllers.medication.MedicationOverviewController">
    <children>
-      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
+      <HBox prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
+
+         <Region HBox.hgrow="ALWAYS" />
          <children>
             <VBox alignment="CENTER_LEFT" HBox.hgrow="NEVER">
                <children>
@@ -35,7 +37,9 @@
                   <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
                </children>
             </VBox>
-            <ImageView fitHeight="65.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
+
+            <Region HBox.hgrow="ALWAYS" />
+            <ImageView fitHeight="65.0" fitWidth="912.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -43,11 +47,14 @@
                   <Image url="@../../images/Wehab_banner-removebg.png" />
                </image>
             </ImageView>
-            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out">
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
+            <Region HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" VBox.vgrow="ALWAYS">
@@ -177,10 +184,10 @@
                                     </columns>
                                  </TableView>
                                  <HBox spacing="10">
-                                    <Button fx:id="completeReminderButton" disable="true" text="Complete" />
-                                    <Button fx:id="skipReminderButton" disable="true" text="Skip" />
-                                    <Button fx:id="editReminderButton" disable="true" text="Edit" />
-                                    <Button fx:id="deleteReminderButton" disable="true" text="Delete" />
+                                    <Button fx:id="completeReminderButton" disable="true" text="Complete" styleClass="primary-button" />
+                                    <Button fx:id="skipReminderButton" disable="true" text="Skip" styleClass="primary-button" />
+                                    <Button fx:id="editReminderButton" disable="true" text="Edit" styleClass="primary-button" />
+                                    <Button fx:id="deleteReminderButton" disable="true" text="Delete" styleClass="primary-button" />
                                  </HBox>
                               </children>
                            </VBox>
