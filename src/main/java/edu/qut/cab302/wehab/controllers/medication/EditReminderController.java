@@ -19,10 +19,7 @@ import java.time.LocalTime;
 public class EditReminderController {
 
     @FXML
-    private Button updateReminderButton;  // Button to update the reminder
-
-    @FXML
-    private Button cancelButton;  // Button to cancel the edit and close the window
+    private Button updateReminderButton, cancelButton;  // Buttons to update the reminder and cancel the edit and close the window
 
     @FXML
     private Label selectedReminderLabel;  // Label displaying the selected reminder's name
@@ -40,7 +37,7 @@ public class EditReminderController {
     private Spinner<LocalTime> timeSpinner;  // Spinner to select the reminder time
 
     // Instance of MedicationOverviewController to access selected reminder details
-    private MedicationOverviewController controllerInstance = MedicationOverviewController.getInstance();
+    private final MedicationOverviewController controllerInstance = MedicationOverviewController.getInstance();
 
     private Stage stage;  // Current stage reference for closing the window
 
@@ -50,6 +47,7 @@ public class EditReminderController {
      */
     @FXML
     public void initialize() {
+
         MedicationReminder selectedReminder = controllerInstance.getSelectedReminder();
 
         // Populate UI elements with the selected reminder's data

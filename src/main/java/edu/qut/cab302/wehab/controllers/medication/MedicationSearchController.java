@@ -31,7 +31,7 @@ import static edu.qut.cab302.wehab.dao.MedicationDAO.*;
  */
 public class MedicationSearchController {
 
-    private static Stage medicationOverviewModal = new Stage();
+    private static final Stage medicationOverviewModal = new Stage();
 
     /**
      * The TextField control where the user enters the medication search query.
@@ -57,15 +57,8 @@ public class MedicationSearchController {
     private Label resultMessage;
 
     @FXML
-    private Button dashboardButton;
-    @FXML
-    private Button workoutButton;
-    @FXML
-    private Button medicationButton;
-    @FXML
-    private Button settingsButton;
-    @FXML
-    private Button signOutButton;
+    private Button dashboardButton, workoutButton, medicationButton, settingsButton, signOutButton;
+
     @FXML
     private Label loggedInUserLabel;
 
@@ -158,11 +151,6 @@ public class MedicationSearchController {
         medicationListing.setPrefSize(1000, 200);
         medicationListing.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         medicationListing.setStyle("-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;");
-
-//        AnchorPane anchorPane = new AnchorPane();
-//        anchorPane.setPrefSize(medicationListing.getPrefWidth(), medicationListing.getPrefHeight());
-//        anchorPane.setMinSize(Region.USE_PREF_SIZE, Region.USE_COMPUTED_SIZE);
-//        anchorPane.setStyle("-fx-background-radius: 10px; -fx-background-color: #F5F5DC; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10px;");
 
         Label lastUpdated = new Label("Last Updated: " + medication.getLastUpdated().toString());
 

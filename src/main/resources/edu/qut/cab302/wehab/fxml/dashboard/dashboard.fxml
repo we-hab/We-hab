@@ -16,10 +16,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.qut.cab302.wehab.controllers.dashboard.DashboardController">
    <children>
-      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
+      <HBox prefHeight="90.0" prefWidth="1280.0" styleClass="main-header">
+
+         <Region HBox.hgrow="ALWAYS" />
          <children>
             <VBox alignment="CENTER_LEFT" HBox.hgrow="NEVER">
                <children>
@@ -27,6 +30,8 @@
                   <Label fx:id="loggedInUserLabel" text="Firstname" wrapText="true" />
                </children>
             </VBox>
+
+            <Region HBox.hgrow="ALWAYS" />
             <ImageView fitHeight="65.0" fitWidth="912.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets />
@@ -35,11 +40,14 @@
                   <Image url="@../../images/Wehab_banner-removebg.png" />
                </image>
             </ImageView>
+            <Region HBox.hgrow="ALWAYS" />
+
             <Button fx:id="signOutButton" alignment="CENTER" mnemonicParsing="false" text="Sign Out" HBox.hgrow="SOMETIMES">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
+            <Region HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox prefHeight="715.0" prefWidth="1280.0" styleClass="main-container" VBox.vgrow="ALWAYS">
@@ -61,7 +69,10 @@
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox" HBox.hgrow="ALWAYS">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" spacing="10">
+                                 <padding>
+                                    <Insets topRightBottomLeft="10" />
+                                 </padding>
                                  <children>
                                     <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Reminders" />
                                     <TableView fx:id="remindersTable">
@@ -89,13 +100,16 @@
                                        </columns>
                                     </TableView>
                                     <HBox spacing="10" styleClass="button-container">
-                                       <Button fx:id="reminderDoneButton" disable="true" styleClass="primary-button" text="Complete" />
+                                       <Button fx:id="completeReminderButton" disable="true" styleClass="primary-button" text="Complete" />
+                                       <Button fx:id="skipReminderButton" disable="true" styleClass="primary-button" text="Skip" />
                                     </HBox>
                                  </children>
                                  <VBox.margin>
-                                    <Insets bottom="20.0" />
+                                    <Insets bottom="10.0" />
                                  </VBox.margin>
                               </VBox>
+
+                              <Region VBox.vgrow="ALWAYS" />
                               <VBox alignment="TOP_CENTER" prefHeight="76.0" prefWidth="232.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label styleClass="heading" text="Message of the day:">
@@ -109,6 +123,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </VBox>
+                              <Region VBox.vgrow="ALWAYS" />
 
                               <VBox alignment="TOP_CENTER" prefHeight="295.0" prefWidth="531.0" VBox.vgrow="ALWAYS">
                                  <children>
@@ -146,6 +161,9 @@
                         <VBox prefHeight="717.0" prefWidth="680.0" styleClass="main-content-container-vbox" HBox.hgrow="ALWAYS">
                            <children>
                               <VBox alignment="TOP_CENTER" prefHeight="131.0" prefWidth="523.0" styleClass="mood_vbox" VBox.vgrow="ALWAYS">
+                                 <padding>
+                                    <Insets topRightBottomLeft="10" />
+                                 </padding>
                                  <children>
                                     <Label styleClass="heading" text="Daily Mood Rating">
                                        <VBox.margin>

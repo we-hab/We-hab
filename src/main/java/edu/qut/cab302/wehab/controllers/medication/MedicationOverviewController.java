@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import static edu.qut.cab302.wehab.dao.MedicationDAO.createMedicationTables;
+
 import static edu.qut.cab302.wehab.util.EncryptionUtility.encrypt;
 
 /**
@@ -41,28 +42,15 @@ import static edu.qut.cab302.wehab.util.EncryptionUtility.encrypt;
  */
 public class MedicationOverviewController {
 
-    @FXML
-    private Label selectedMedicationLabel;
+    private static String activeStyleSheet = "/edu/qut/cab302/wehab/css/MainStyleSheet.css";  // Default stylesheet
+    private static String activeTextSizeSheet = "/edu/qut/cab302/wehab/css/MainStyleSheet.css";  // Default text size
 
     @FXML
-    private Button createReminderButton;
+    private Label selectedMedicationLabel, loggedInUserLabel;
 
     @FXML
-    private Button viewSummaryButton;
-
-    @FXML
-    private Button addMedicationButton;
-
-    @FXML
-    private Button dashboardButton;
-    @FXML
-    private Button workoutButton;
-    @FXML
-    private Button settingsButton;
-    @FXML
-    private Button signOutButton;
-    @FXML
-    private Label loggedInUserLabel;
+    private Button createReminderButton, viewSummaryButton, addMedicationButton,
+            dashboardButton, workoutButton, settingsButton, signOutButton;
 
     @FXML
     private ListView savedMedicationsListView;
@@ -87,13 +75,8 @@ public class MedicationOverviewController {
     private ArrayList<MedicationReminder> userSavedReminders;
 
     @FXML
-    private Button completeReminderButton;
-    @FXML
-    private Button skipReminderButton;
-    @FXML
-    private Button editReminderButton;
-    @FXML
-    private Button deleteReminderButton;
+    private Button completeReminderButton, skipReminderButton,
+            editReminderButton, deleteReminderButton;
 
     private SpinnerValueFactory<LocalTime> timeValueFactory;
 
@@ -330,6 +313,8 @@ public class MedicationOverviewController {
                 }
 
                 Scene scene = new Scene(root);
+                scene.getStylesheets().add(MainApplication.class.getResource(activeStyleSheet).toExternalForm());
+                scene.getStylesheets().add(MainApplication.class.getResource(activeTextSizeSheet).toExternalForm());
                 stage.setScene(scene);
                 stage.showAndWait();
 
@@ -394,6 +379,9 @@ public class MedicationOverviewController {
                 System.out.println("Loading view summary page with medication ID: " + medicationIdToSearch);
                 MedicationInfoPageController medicationInfoPageController = new MedicationInfoPageController(medicationIdToSearch);
                 Scene scene = medicationInfoPageController.getMedicationInfoPage();
+
+                scene.getStylesheets().add(MainApplication.class.getResource(activeStyleSheet).toExternalForm());
+                scene.getStylesheets().add(MainApplication.class.getResource(activeTextSizeSheet).toExternalForm());
 
                 Stage medicationOverviewModal = new Stage();
                 medicationOverviewModal.initModality(Modality.APPLICATION_MODAL);

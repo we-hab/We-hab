@@ -1,7 +1,11 @@
 package edu.qut.cab302.wehab.controllers.medication;
 
+import edu.qut.cab302.wehab.dao.MedicationDAO;
 import edu.qut.cab302.wehab.models.medication.FDAApiService;
+import edu.qut.cab302.wehab.models.medication.Medication;
+import edu.qut.cab302.wehab.models.medication.MedicationParser;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
@@ -11,12 +15,16 @@ import javafx.scene.web.WebEngine;
 import edu.qut.cab302.wehab.util.WrappingText;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Controller for displaying detailed information about a specific medication
  * by rendering JSON data loaded from the openFDA API using an FDAApiService object.
  */
 public class MedicationInfoPageController {
+
+    private static String activeStyleSheet = "/edu/qut/cab302/wehab/css/MainStyleSheet.css";  // Default stylesheet
+    private static String activeTextSizeSheet = "/edu/qut/cab302/wehab/css/MainStyleSheet.css";  // Default text size
 
     // Medication identifier
     private String medicationId;
@@ -25,26 +33,27 @@ public class MedicationInfoPageController {
     private String medicationJson;
 
     // Parsed JSON object containing medication data
-    private JSONObject medicationJsonObject;
+    private final JSONObject medicationJsonObject;
 
-    // Container to hold the UI components of the medication page
-    private VBox content;
+    private Medication medication;
 
     public MedicationInfoPageController(String medicationId) {
         this.medicationId = medicationId;
         try {
-            medicationJson = queryAPI(medicationId);
+            medicationJson = queryAPI(this.medicationId);
         } catch (IOException e) {
             medicationJson = null;
         }
-        medicationJsonObject = new JSONObject(medicationJson);
+        MedicationParser medicationParser = new MedicationParser();
+        medication = medicationParser.parseMedications(medicationJson)[0];
 
+        medicationJsonObject = new JSONObject(medicationJson);
     }
 
     // UI layout constants
-    private int sceneWidth = 1200;
-    private int sceneHeight = 900;
-    private int textWrappingWidth = sceneWidth - 50;
+    private final int sceneWidth = 1200;
+    private final int sceneHeight = 900;
+    private final int textWrappingWidth = sceneWidth - 50;
 
     /**
      * Generates a Scene to display the medication information.
@@ -55,11 +64,19 @@ public class MedicationInfoPageController {
     public Scene getMedicationInfoPage() {
 
         // Initialise the VBox to hold all UI components
-        content = new VBox();
+        // Container to hold the UI components of the medication page
+        VBox content = new VBox();
         content.setMinSize(sceneWidth, sceneHeight);
+        content.setMaxWidth(sceneWidth);
         ScrollPane scrollPane = new ScrollPane(content);
         scrollPane.setMinSize(sceneWidth, sceneHeight);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         Scene scene = new Scene(scrollPane, sceneWidth, sceneHeight);
+
+        Label displayName = new Label(medication.getDisplayName());
+        displayName.setWrapText(true);
+        displayName.setStyle("-fx-font-weight: bold; -fx-font-size: 24;");
+        content.getChildren().add(displayName);
 
         // Iterate through each key in the JSON object to dynamically generate UI components
         for (String key : medicationJsonObject.keySet()) {
@@ -107,6 +124,10 @@ public class MedicationInfoPageController {
                 addContentToView(valueWrappingText, content);
             }
         }
+
+        scene.getStylesheets().add(getClass().getResource(activeStyleSheet).toExternalForm());
+        scene.getStylesheets().add(getClass().getResource(activeTextSizeSheet).toExternalForm());
+        content.getStyleClass().add("modal-container");
 
         return scene;
     }
@@ -181,6 +202,7 @@ public class MedicationInfoPageController {
             WebView webView = new WebView();
             WebEngine webEngine = webView.getEngine();
             webEngine.loadContent(plainText);
+            webView.setFocusTraversable(false);
             view.getChildren().add(webView);
         } else {
             view.getChildren().add(text);

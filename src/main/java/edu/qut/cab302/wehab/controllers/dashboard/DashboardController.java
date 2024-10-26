@@ -64,9 +64,9 @@ public class DashboardController implements Initializable {
     private ComboBox<String> targetComboBox;
     private WorkoutController workoutController;
     @FXML
-    private Button reminderDoneButton;
-
-    MedicationDAO medicationDAO;
+    private Button completeReminderButton;
+    @FXML
+    private Button skipReminderButton;
 
     private boolean showConfirmationDialog(String prompt)
     {
@@ -81,7 +81,8 @@ public class DashboardController implements Initializable {
 
     private void setDisableAllReminderButtons(boolean disable)
     {
-        reminderDoneButton.setDisable(disable);
+        completeReminderButton.setDisable(disable);
+        skipReminderButton.setDisable(disable);
     }
 
     /**
@@ -186,7 +187,7 @@ public class DashboardController implements Initializable {
 
         remindersTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        reminderDoneButton.setOnAction(new EventHandler<ActionEvent>() {
+        completeReminderButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 boolean proceed = showConfirmationDialog("Mark medication as taken?");
 
@@ -198,6 +199,31 @@ public class DashboardController implements Initializable {
                     try {
                         System.out.println("Marking medication: " + reminderIdToSearch + " as taken.");
                         MedicationDAO.markMedicationAsTaken(reminderIdToSearch);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    try {
+                        refreshRemindersWindow();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        skipReminderButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                boolean proceed = showConfirmationDialog("Mark medication as missed?");
+
+                if(proceed) {
+
+                    MedicationReminder reminder = remindersTable.getSelectionModel().getSelectedItem();
+                    String reminderIdToSearch = reminder.getReminderID();
+
+                    try {
+                        System.out.println("Marking medication: " + reminderIdToSearch + " as missed.");
+                        MedicationDAO.markMedicationAsMissed(reminderIdToSearch);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
