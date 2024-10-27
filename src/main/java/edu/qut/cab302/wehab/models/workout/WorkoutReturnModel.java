@@ -68,7 +68,7 @@ public class WorkoutReturnModel {
         }
     }
 
-    /** Method to retrieve all workout data from a user from the database to display in the UI.
+    /** Method to retrieve all workout data for a user from the database to display in the UI.
      * */
     public static List<Workout> getWorkouts(String username) {
         List<Workout> workouts = new ArrayList<>();
@@ -90,8 +90,8 @@ public class WorkoutReturnModel {
         } catch (SQLException error) {
             System.err.println(error.getMessage());
         }
-        return workouts;
 
+        return workouts;
     }
 
     /** Method to retrieve aggregated workout minutes from the database for a given user to display in the heatmap.
@@ -118,7 +118,6 @@ public class WorkoutReturnModel {
             System.err.println(error.getMessage());
         }
 
-        // Sort result by date.
         return monthlyMinutes;
     }
 }

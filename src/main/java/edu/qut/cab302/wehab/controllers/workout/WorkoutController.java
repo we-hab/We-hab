@@ -80,6 +80,7 @@ public class WorkoutController {
         {
             loggedInUserLabel.setText("Error: No logged in user.");
         }
+        updateMinutesPerDayChart();
 
         ButtonController.initialiseButtons(dashboardButton, null, medicationButton, settingsButton, signOutButton);
 
@@ -214,9 +215,7 @@ public class WorkoutController {
             String workoutType = entry.getKey();
             Integer totalMinutes = entry.getValue();
 
-            if (totalMinutes > 0) {
-                workoutTypeData.getData().add(new XYChart.Data<>(totalMinutes, workoutType));
-            }
+            workoutTypeData.getData().add(new XYChart.Data<>(totalMinutes, workoutType));
         }
 
         minutesPerDayChart.getData().add(workoutTypeData);
