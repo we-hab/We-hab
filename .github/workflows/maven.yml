@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - WH-70_medication_testing
   pull_request:
     branches:
       - main
